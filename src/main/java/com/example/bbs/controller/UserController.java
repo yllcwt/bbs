@@ -1,9 +1,15 @@
 package com.example.bbs.controller;
 
 
+import com.example.bbs.entity.User;
+import com.example.bbs.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,5 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/bbs/user")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("test")
+    public List<User> testUser(){
+        return userService.listUsers();
+    }
 }
 

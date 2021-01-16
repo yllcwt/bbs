@@ -34,7 +34,7 @@ public class User implements Serializable {
 
     private Integer userSex;
 
-    private String userInsterest;
+    private String userInterest;
 
     private Date userBirthday;
 
