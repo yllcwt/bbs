@@ -14,7 +14,7 @@ public class MyConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry){
         //添加视图映射
-        registry.addViewController("/").setViewName("index");
+//        registry.addViewController("/").setViewName("index");
 
     }
 
@@ -23,11 +23,11 @@ public class MyConfig implements WebMvcConfigurer {
         WebMvcConfigurer webMvcConfigurer = new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry){
-                registry.addViewController("/user_manage").setViewName("test");
-                registry.addViewController("/index").setViewName("blank_page");
-                registry.addViewController("/templates/index.html").setViewName("blank_page");
-                registry.addViewController("/publish").setViewName("publish");
-                registry.addViewController("/menu").setViewName("menu_manager");
+//                registry.addViewController("/user_manage").setViewName("test");
+//                registry.addViewController("/index").setViewName("blank_page");
+//                registry.addViewController("/templates/index.html").setViewName("blank_page");
+                registry.addViewController("/dashboard").setViewName("dashboard");
+                registry.addViewController("/menu").setViewName("menu_manage");
             }
         };
         return webMvcConfigurer;
