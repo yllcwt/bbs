@@ -25,7 +25,7 @@ public class MyConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry){
 //                registry.addViewController("/user_manage").setViewName("test");
 //                registry.addViewController("/index").setViewName("blank_page");
-//                registry.addViewController("/templates/index.html").setViewName("blank_page");
+                registry.addViewController("/publish.html").setViewName("publish");
                 registry.addViewController("/dashboard").setViewName("dashboard");
                 registry.addViewController("/menu").setViewName("menu_manage");
             }
