@@ -14,7 +14,7 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath*:mapper/*.xml
-  type-aliases-package: com.example.demo
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.demo #错了
 server:
   port: 8081

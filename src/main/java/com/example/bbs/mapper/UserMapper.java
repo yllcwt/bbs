@@ -2,6 +2,7 @@ package com.example.bbs.mapper;
 
 import com.example.bbs.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author yl
  * @since 2021-01-16
  */
-@Repository
+@Mapper
 public interface UserMapper extends BaseMapper<User> {
 
     List<User> listUsers();
