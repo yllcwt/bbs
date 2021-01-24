@@ -11,6 +11,8 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+  thymeleaf:
+    cache: false
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,30 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/css/editormd.preview.css" />
-    <link rel="stylesheet" href="/css/editormd.min.css" />
-    <script src="/js/jquery-3.4.1.min.js"></script>
-    <script src="/js/editormd.min.js"></script>
-    <script src="/js/lib/marked.min.js"></script>
-    <script src="/js/lib/prettify.min.js"></script>
+    <div th:replace="import :: head_js"></div>
 </head>
 <body>
-dddddd
-<div id="editor">
-    <!-- Server-side output Markdown text -->
-    <textarea style="display:none;">### Hello world!</textarea>
-</div>
-<script type="text/javascript">
-    $(function() {
-        var editor = editormd("editor", {
-            // width: "100%",
-            // height: "100%",
-            // markdown: "xxxx",     // dynamic set Markdown text
-            path : "js/lib/"  // Autoload modules mode, codemirror, marked... dependents libs path
-        });
-    });
-</script>
+<div th:replace="bar :: top_nav"></div>
+
+
+<div th:replace="import :: footer_js"></div>
 </body>
 </html>
