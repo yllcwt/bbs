@@ -24,4 +24,17 @@
     <select id="listUsers" resultMap="resultUsers" >
         select <include refid="Base_User_Info"/> from user
     </select>
+
+    <select id="selectByUserNameAndUserPassword" parameterType="Map" resultMap="resultUsers">
+        select <include refid="Base_User_Info"></include>
+        from user 
+        <where>
+            <if test="p.userName!=null and p.userName != ''">
+                user_name = #{p.userName}
+            </if>
+            <if test="p.userPassword != null and p.userPassword != ''">
+                and user_password = #{p.userPassword}
+            </if>
+        </where>
+    </select>
 </mapper>

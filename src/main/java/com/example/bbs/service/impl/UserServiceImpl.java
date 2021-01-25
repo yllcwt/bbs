@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,5 +28,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> listUsers() {
         return userMapper.listUsers();
+    }
+
+    @Override
+    public User checkLogin(String userName, String userPassword) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userName", userName);
+        map.put("userPassword", userPassword);
+        User user = userMapper.selectByUserNameAndUserPassword(map);
+        return user;
     }
 }

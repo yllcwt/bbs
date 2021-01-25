@@ -1,16 +1,14 @@
 package com.example.bbs.controller;
 
 
+import com.example.bbs.dto.JsonResult;
 import com.example.bbs.entity.User;
 import com.example.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ import java.util.List;
  * @since 2021-01-16
  */
 @Controller
-@RequestMapping("/bbs/user")
+//@RequestMapping("/bbs/user")
 public class UserController {
 
     @Autowired
@@ -37,6 +35,21 @@ public class UserController {
     @ResponseBody
     public void test(){
         System.out.println( userService.listUsers());
+    }
+
+    @PostMapping("userLogin")
+    @ResponseBody
+    public JsonResult userLogin(@RequestParam String userName,
+                                @RequestParam String userPassword,
+                                HttpServletRequest request) {
+        User user = userService.checkLogin(userName, userPassword);
+        if (user == null) {
+            return JsonResult.error("登录失败");
+        } else {
+            request.getSession().setAttribute("user", user);
+            return JsonResult.success("登录成功");
+        }
+
     }
 
 

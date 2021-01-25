@@ -4,7 +4,7 @@
     <div th:replace="import :: head_js"></div>
 </head>
 <body>
-<div th:replace="bar :: top_nav"></div>
+<div th:text="${session.user.userName}"></div>
 
 
 <div th:replace="import :: footer_js"></div>

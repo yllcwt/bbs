@@ -3,9 +3,11 @@ package com.example.bbs.mapper;
 import com.example.bbs.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,4 +21,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     List<User> listUsers();
+
+    User selectByUserNameAndUserPassword(@Param("p") Map<String, String> map);
 }
