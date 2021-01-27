@@ -52,6 +52,18 @@ public class UserController {
 
     }
 
+    @PostMapping("userRegister")
+    @ResponseBody
+    public JsonResult userRegister(@RequestParam String userName,
+                                   @RequestParam String userPassword,
+                                   @RequestParam String reUserPassword,
+                                   @RequestParam String userSex,
+                                   @RequestParam String userAge,
+                                   @RequestParam String userEmail){
+        System.out.println(userName+userPassword+reUserPassword+userAge+userSex+userEmail);
+        return JsonResult.success("success");
+    }
+
 
 }
 

@@ -50,30 +50,36 @@ $('#user-login').click(function () {
 });
 
 
-$('#btn-register').click(function () {
-    $('#btn-register').button('loading');
+$('#userRegister').click(function () {
+    $('#userRegister').button('loading');
     const userName = $("#userName").val();
-    const userPass = $("#userPass").val();
+    const userPassword = $("#userPassword").val();
+    const reUserPassword = $("#reUserPassword").val();
     const userEmail = $("#userEmail").val();
-    if (userName == "" || userPass == "" || userEmail == "") {
+    const userSex = $("input[type='radio']:checked").val();
+    const userAge = $("#userAge").val();
+    if (userName == "" || userPassword == "" || userEmail == "" || reUserPassword == "" || userSex == "" || userAge == "") {
         showMsg("请输入完整信息！", "error", 1000);
-        $('#btn-register').button('reset');
+        $('#userRegister').button('reset');
     } else {
         $.ajax({
             type: 'POST',
-            url: '/register',
+            url: '/userRegister',
             async: false,
             data: {
                 'userName': userName,
-                'userPass': userPass,
-                'userEmail': userEmail
+                'userPassword': userPassword,
+                'userEmail': userEmail,
+                'reUserPassword' : reUserPassword,
+                'userSex' : userSex,
+                'userAge' : userAge
             },
             success: function (data) {
                 if (data.code == 1) {
                     showMsgAndRedirect(data.msg, "success", 1000, "/login");
                 } else {
                     showMsg(data.msg, "error", 1000);
-                    $('#btn-register').button('reset');
+                    $('#userRegister').button('reset');
                     localStorage.setItem('userName', userName);
                 }
             }
