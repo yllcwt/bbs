@@ -37,7 +37,7 @@ $('#user-login').click(function () {
                 }
                 if (data.code == 1) {
                     if ($.trim(prevLink) == '' || $.trim(prevLink).indexOf('/login') != -1 || $.trim(prevLink).indexOf('/register') != -1 || $.trim(prevLink).indexOf('/forget') != -1) {
-                        prevLink = '/test';
+                        prevLink = '/main';
                     }
                     showMsgAndRedirect(data.msg, "success", 1000, prevLink);
                 } else {

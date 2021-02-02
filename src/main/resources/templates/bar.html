@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:fragment="top_menu">
-        <nav  class="navbar navbar-inverse navbar-fixed-top">
+        <nav  class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">Project name</a>
@@ -25,17 +25,17 @@
             </div>
         </nav>
     </div>
-        <div th:fragment="sider_menu" class="col-sm-3 col-md-2 sidebar">
+        <div th:fragment="sider_menu" class="col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Reports</a></li>
+                <li class="active"><a href="#">个人资料 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">文章列表</a></li>
                 <li><a href="#">Analytics</a></li>
                 <li><a href="#">Export</a></li>
             </ul>
         </div>
 
     <div th:fragment="top_nav">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -53,9 +53,9 @@
                         <button type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <!--                        <li >-->
-                        <!--                            <a href="/publish">发布帖子</a>-->
-                        <!--                        </li>-->
+                        <li >
+                            <a href="/publish">发布帖子</a>
+                        </li>
                         <li th:if="${session.user == null}">
                             <a th:href="@{/login}">登录 </a>
                         </li>
@@ -63,12 +63,18 @@
                             <a th:href="@{/register}">注册 </a>
                         </li>
                         <li th:if="${session.user != null}">
-                            <div class="navbar-brand" th:text="${session.user.userName}"></div>
+                            <div class="media" style="display: inline-block">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object img-rounded" src="/images/avatar/1.jpeg">
+                                    </a>
+                                </div>
+                            </div>
                         </li>
-                        <li class="dropdown" >
+                        <li class="dropdown" th:if="${session.user != null}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                                aria-expanded="false">
-                                <span ></span>
+                                <span th:text="${session.user.userName}"></span>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">

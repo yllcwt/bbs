@@ -18,4 +18,6 @@ public interface UserService extends IService<User> {
     List<User> listUsers();
 
     User checkLogin(String userName, String userPassword);
+
+    User selectByUserName(String userName);
 }

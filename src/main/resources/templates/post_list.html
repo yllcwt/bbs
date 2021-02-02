@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <style>
+        .navbar-default {
+            background-color: #b1cdff;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .breadcrumb{
+            float: right;
+            background: transparent;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 7px 5px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border-radius: 2px;
+        }
+        .content-header{
+            display: block;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .label{
+            color: #fff;
+            background-color: #8a8a8a;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="bar :: top_menu"></div>
+<div class="row">
+
+    <div th:replace="bar :: sider_menu"></div>
+    <div class="col-md-10 col-md-offset-2 content-wrapper">
+
+        <style>
+            .form-horizontal .control-label {
+                text-align: left;
+            }
+        </style>
+        <section class="content-header">
+            <h1 style="display: inline-block">
+                文章列表
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> 首页</a>
+                </li>
+                <li class="active">文章列表</li>
+            </ol>
+        </section>
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="col-md-4 col-xs-12" style="margin-bottom: 10px;padding-left: 0;">
+                    <a class="btn btn-primary" href="/admin/post/new">
+                        <i class="fa fa-plus"></i> 新增
+                    </a>
+                    <button type="button" class="btn btn-danger" onclick="batchDelete()">
+                        <i class="fa fa-remove"></i> 批量删除
+                    </button>
+                </div>
+                <div class="col-md-8 col-xs-12" style="margin-bottom: 10px; text-align:right;padding-left: 0; padding-right: 0;">
+                    <form class="form-inline" action="/admin/post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="keywords" name="keywords" value="" placeholder="请输入关键字">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="searchType">
+                                <option value="title" disabled="">搜索范围</option>
+                                <option value="title">标题</option>
+                                <option value="content">内容</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="status">
+                                <option value="0" disabled="">状态</option>
+                                <option value="0" selected="selected">已发布</option>
+                                <option value="1">草稿</option>
+                                <option value="2">回收站</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="sort">
+                                <option value="createTime" disabled="">排序字段</option>
+                                <option value="createTime">发布时间</option>
+                                <option value="postViews">访问量</option>
+                                <option value="commentSize">回复数</option>
+                                <option value="postLikes">点赞数</option>
+                                <option value="isSticky">是否置顶</option>
+                                <option value="isRecommend">是否推荐</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="order">
+                                <option value="desc" disabled="">升序/降序</option>
+                                <option value="asc">升序</option>
+                                <option value="desc" selected="selected">倒序</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="allSelect" onclick="doCheck()"></th>
+                                <th class="col-md-5">标题</th>
+                                <th>回复数</th>
+                                <th>点赞数</th>
+                                <th>访问量</th>
+                                <th>日期</th>
+                                <th class="col-md-3">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="post-41">
+                                <td><input type="checkbox" name="ids" value="41"></td>
+                                <td>
+                                    <label>
+                                        <a href="/post/41" target="_blank">
+
+
+                                            sdsd
+                                        </a>
+                                    </label>
+                                </td>
+                                <td>
+                                    <span class="label" >0</span>
+                                </td>
+                                <td>
+                                    <span class="label" >0</span>
+                                </td>
+                                <td>
+                                    <span class="label" >0</span>
+                                </td>
+                                <td>2021-02-02 20:18</td>
+
+                                <td>
+                                    <a href="/post/41" class="btn btn-primary btn-xs" target="_blank">查看</a>
+                                    <button class="btn btn-success btn-xs " onclick="stickIt(41)">置顶
+                                    </button>
+
+                                    <button class="btn btn-warning btn-xs " onclick="recommendIt(41)">推荐
+                                    </button>
+
+                                    <a href="/admin/post/edit?id=41" class="btn btn-info btn-xs ">编辑</a>
+                                    <button class="btn btn-danger btn-xs " onclick="throwIt(41)">
+                                        丢弃
+                                    </button>
+                                </td>
+
+
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <div class="no-margin pull-left">
+                            第 1 / 1 页
+                        </div>
+                        <ul class="pagination no-margin pull-right">
+                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                                首页
+                            </a>
+                            </li>
+                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;page=0&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                                上一页
+                            </a>
+                            </li>
+                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;page=2&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                                下一页
+                            </a>
+                            </li>
+                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;page=1&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                                尾页
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="import :: footer_js"></div>
+</body>
+</html>

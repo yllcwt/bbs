@@ -37,4 +37,15 @@
             </if>
         </where>
     </select>
+
+    <select id="selectByUserName" parameterType="String" resultMap="resultUsers">
+        select <include refid="Base_User_Info"></include>
+        from user
+        <where>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName}
+            </if>
+        </where>
+    </select>
+
 </mapper>

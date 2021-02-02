@@ -4,12 +4,16 @@ package com.example.bbs.controller;
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.entity.User;
 import com.example.bbs.service.UserService;
+import com.example.bbs.util.RegexUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static java.lang.System.*;
 
 /**
  * <p>
@@ -34,7 +38,7 @@ public class UserController {
     @GetMapping("testUser")
     @ResponseBody
     public void test(){
-        System.out.println( userService.listUsers());
+        out.println( userService.listUsers());
     }
 
     @PostMapping("userLogin")
@@ -60,8 +64,42 @@ public class UserController {
                                    @RequestParam String userSex,
                                    @RequestParam String userAge,
                                    @RequestParam String userEmail){
-        System.out.println(userName+userPassword+reUserPassword+userAge+userSex+userEmail);
-        return JsonResult.success("success");
+        //判断合法性
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userPassword) || StringUtils.isEmpty(reUserPassword)
+                || StringUtils.isEmpty(userSex) || StringUtils.isEmpty(userAge) || StringUtils.isEmpty(userEmail)) {
+            return JsonResult.error("请输入完整信息！");
+        }
+        if (!RegexUtil.isEmail(userEmail)){
+            return JsonResult.error("邮箱格式不正确！");
+        }
+        if (userPassword.length() > 20 || userPassword.length() < 3) {
+            return JsonResult.error("密码长度不正确！");
+        }
+        if (!userPassword.equals(reUserPassword)) {
+            return JsonResult.error("输入密码不一致！");
+        }
+        //判断用户名是否被注册
+        User user = userService.selectByUserName(userName);
+        if(user != null){
+            return JsonResult.error("用户名已存在！");
+        }else{
+            //插入
+            user = new User();
+            user.setUserName(userName);
+            user.setUserAge(Integer.parseInt(userAge));
+            user.setUserSex(Integer.parseInt(userSex));
+            user.setUserEmail(userEmail);
+            user.setUserStatus(0);
+            user.setUserPassword(userPassword);
+            boolean flag = false;
+            flag = userService.save(user);
+            if (flag) {
+                return JsonResult.success("注册成功！");
+            } else {
+                return JsonResult.error("注册失败！");
+            }
+        }
+
     }
 
 

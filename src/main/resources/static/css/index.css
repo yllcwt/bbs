@@ -1,0 +1,21 @@
+body {
+    background-color: #efefef;
+}
+
+.main {
+    background-color: white;
+    margin: 30px;
+}
+
+.side {
+    margin: 5px 0;
+}
+
+.top-header {
+    padding-left: 20px;
+}
+
+.media-object {
+    width: 38px;
+    height: 38px;
+}

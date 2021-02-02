@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <style>
+        .navbar-default {
+            background-color: #b1cdff;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .breadcrumb{
+            float: right;
+            background: transparent;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 7px 5px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border-radius: 2px;
+        }
+        .content-header{
+            display: block;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="bar :: top_menu"></div>
+<div class="row">
+
+    <div th:replace="bar :: sider_menu"></div>
+    <div class="col-md-10 col-md-offset-2 content-wrapper">
+
+        <style>
+            .form-horizontal .control-label {
+                text-align: left;
+            }
+        </style>
+        <section class="content-header">
+            <h1 style="display: inline-block">
+                个人信息
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> 首页</a>
+                </li>
+                <li><a data-pjax="true" href="#">用户管理</a></li>
+                <li class="active">个人信息</li>
+            </ol>
+        </section>
+        <div class="container-fluid">
+                <div class="col-md-12">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#general"
+                                   data-toggle="tab">基本信息</a>
+                            </li>
+                            <li>
+                                <a href="#pass"
+                                   data-toggle="tab">修改密码</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="general">
+                                <form method="post" class="form-horizontal" id="profileForm">
+                                    <input type="hidden" id="userPass" name="userPass"
+                                           value="a021a665f503979c06f50b8de66a4218">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="userAvatar"
+                                                   class="col-lg-2 col-sm-4 control-label">头像</label>
+                                            <div class="col-lg-4 col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control"
+                                                           id="userAvatar"
+                                                           name="userAvatar" value="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg">
+                                                    <span class="input-group-btn">
+                                                                <input type="file" id="file" accept=".png, .jpg, .jpeg" style="display: none">
+                                                                    <button onclick="$('#file').click();" class="btn btn-default "
+                                                                            type="button">选择</button>
+                                                                </span>
+                                                </div>
+                                                <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" id="userAvatarImg" style="width: 200px;" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName"
+                                                   class="col-lg-2 col-sm-4 control-label">用户名
+                                                <span data-toggle="tooltip" data-placement="top"
+                                                      title="用户登录的账号"
+                                                      style="cursor: pointer">
+                                                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                                            </span>
+                                            </label>
+                                            <div class="col-lg-4 col-sm-8">
+                                                <input type="text" class="form-control" id="userName" name="userName"
+                                                       value="admin">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userDisplayName"
+                                                   class="col-lg-2 col-sm-4 control-label">显示名
+                                                <span data-toggle="tooltip" data-placement="top"
+                                                      title="用于显示的名称"
+                                                      style="cursor: pointer">
+                                                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                                            </span>
+                                            </label>
+                                            <div class="col-lg-4 col-sm-8">
+                                                <input type="text" class="form-control" id="userDisplayName"
+                                                       name="userDisplayName"
+                                                       value="管理员">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userEmail"
+                                                   class="col-lg-2 col-sm-4 control-label">电子邮箱</label>
+                                            <div class="col-lg-4 col-sm-8">
+                                                <input type="email" class="form-control" id="userEmail"
+                                                       name="userEmail"
+                                                       value="847064370@qq.com">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userDesc"
+                                                   class="col-lg-2 col-sm-4 control-label">个人描述
+                                            </label>
+                                            <div class="col-lg-4 col-sm-8">
+                                                            <textarea class="form-control" rows="3" id="userDesc" name="userDesc"
+                                                                      style="resize: none">人生得意须尽欢</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer">
+                                        <button type="button" class="btn btn-primary btn-sm "
+                                                onclick="saveUser('profileForm')">保存</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="pass">
+                                <form method="post" class="form-horizontal" id="passForm">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="beforePass"
+                                                   class="col-sm-2 control-label">旧密码</label>
+                                            <div class="col-sm-4">
+                                                <input type="password" class="form-control" id="beforePass"
+                                                       name="beforePass">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newPass"
+                                                   class="col-sm-2 control-label">新密码</label>
+                                            <div class="col-sm-4">
+                                                <input type="password" class="form-control" id="newPass"
+                                                       name="newPass">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reNewPass"
+                                                   class="col-sm-2 control-label">确认密码</label>
+                                            <div class="col-sm-4">
+                                                <input type="password" class="form-control" id="reNewPass"
+                                                       name="reNewPass">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer">
+                                        <button type="button" class="btn btn-primary btn-sm "
+                                                onclick="changPass()">修改</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+<div th:replace="import :: footer_js"></div>
+</body>
+</html>

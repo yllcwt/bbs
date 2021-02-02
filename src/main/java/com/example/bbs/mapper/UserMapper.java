@@ -23,4 +23,6 @@ public interface UserMapper extends BaseMapper<User> {
     List<User> listUsers();
 
     User selectByUserNameAndUserPassword(@Param("p") Map<String, String> map);
+
+    User selectByUserName(String userName);
 }

@@ -2,11 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="import :: head_js"></div>
+    <link href="css/clndr.css" rel="stylesheet">
+    <link href="css/springboot2/style.css" rel="stylesheet">
 </head>
 <body>
-<div th:text="${session.user.userName}"></div>
+<!--<div th:text="${session.user.userName}"></div>-->
+<div class="panel">
+    <div class="panel-body">
+        <div class="calendar-block ">
+            <div class="cal1">
 
+            </div>
+        </div>
+    </div>
+</div>
 
 <div th:replace="import :: footer_js"></div>
+<!--Calendar-->
+<script src="js/calendar/clndr.js"></script>
+<script src="js/calendar/evnt.calendar.init.js"></script>
+<script src="js/calendar/moment-2.2.1.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 </body>
 </html>

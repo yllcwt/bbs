@@ -2,6 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="import :: head_js"></div>
+    <link href="css/index.css" rel="stylesheet">
+    <!--dashboard calendar-->
+    <link href="css/clndr.css" rel="stylesheet">
+    <style>
+        .cal1 .clndr .clndr-controls {
+            -webkit-border-radius:5px 5px 0px 0px;
+            -moz-border-radius:5px 5px 0px 0px;
+            border-radius:5px 5px 0px 0px;
+            display: block !important;
+            position: relative;
+            margin-bottom: 10px;
+            text-align: center;
+            background: #b1cdff;
+            margin-left: -15px;
+            margin-right: -15px;
+            margin-top: -15px;
+            padding: 56px 20px;
+            width: auto !important;
+            color: #fff2bd;
+        }
+        .cal1 .clndr .clndr-controls .clndr-control-button .clndr-next-button, .cal1 .clndr .clndr-controls .clndr-control-button .clndr-previous-button{
+            color: #ffffff;
+        }
+        .cal1 .clndr .clndr-controls .month {
+            color: #fff;
+        }
+        .today .day-contents {
+            width:30px;
+            background:#b1cdff;
+            cursor:pointer;
+            color:#fff;
+            -webkit-border-radius:3px;
+            -moz-border-radius:3px;
+            border-radius:3px;
+        }
+        .panel{
+            background-color: #fafafa;
+        }
+        .cal1 .clndr .clndr-table .header-days {
+            height: 40px;
+            font-size: 10px;
+            background: #fafafa;
+
+        }
+    </style>
 </head>
 <body>
     <div th:replace="bar :: top_nav"></div>
@@ -16,10 +61,23 @@
                 </ul>
             </div>
             <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                ddd
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="calendar-block ">
+                            <div class="cal1">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div th:replace="import :: footer_js"></div>
+    <!--Calendar-->
+    <script src="js/calendar/clndr.js"></script>
+    <script src="js/calendar/evnt.calendar.init.js"></script>
+    <script src="js/calendar/moment-2.2.1.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 </body>
 </html>
