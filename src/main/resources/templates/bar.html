@@ -27,9 +27,14 @@
     </div>
         <div th:fragment="sider_menu" class="col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">个人资料 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">文章列表</a></li>
-                <li><a href="#">Analytics</a></li>
+                <li th:class="${activeUri == 'user_manage'} ? 'active' : ''">
+                    <a th:href="@{/user_manage}">个人资料 </a>
+                </li>
+                <li th:class="${activeUri == 'post_list'} ? 'active' : ''">
+                    <a th:href="@{/post_list}">文章列表</a>
+                </li>
+                <li th:class="${activeUri == 'post_publish'} ? 'active' : ''">
+                    <a th:href="@{/post_publish}">发布文章</a></li>
                 <li><a href="#">Export</a></li>
             </ul>
         </div>

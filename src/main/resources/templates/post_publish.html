@@ -39,7 +39,7 @@
 <div th:replace="bar :: top_menu"></div>
 <div class="row">
 
-    <div th:replace="bar :: sider_menu"></div>
+    <div th:replace="bar :: sider_menu(activeUri='post_publish')"></div>
     <div class="col-md-10 col-md-offset-2 content-wrapper">
 
         <style>
@@ -87,7 +87,7 @@
                                 placeholder: "请输入问题描述",
                                 imageUpload: true,
                                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                                imageUploadURL: "/file/upload",
+                                imageUploadURL: "/upload",
                             });
                         });
                     </script>
