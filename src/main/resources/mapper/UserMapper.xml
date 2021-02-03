@@ -48,4 +48,11 @@
         </where>
     </select>
 
+    <select id="updateUserPasswordByUserId" resultMap="resultUsers">
+        update user set user_password = #{newPassword}
+        <where>
+         user_id= #{userId}
+        </where>
+    </select>
+
 </mapper>

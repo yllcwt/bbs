@@ -3,13 +3,17 @@ package com.example.bbs.controller;
 
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.entity.User;
+import com.example.bbs.service.MailService;
 import com.example.bbs.service.UserService;
 import com.example.bbs.util.RegexUtil;
+import io.github.biezhi.ome.SendMailException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -29,6 +33,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private MailService mailService;
 
     @GetMapping("test")
     public String testUser(){
@@ -100,6 +106,26 @@ public class UserController {
             }
         }
 
+    }
+    @PostMapping("userForget")
+    @ResponseBody
+    public JsonResult userForget(@RequestParam("email") String email, @RequestParam("forgetUserName") String forgetUserName){
+        User user = userService.selectByUserName(forgetUserName);
+        if(user != null && user.getUserEmail().equalsIgnoreCase(email)){
+            //验证成功，将新密码邮件发送给他
+            String newPassword = RandomStringUtils.randomNumeric(8);
+            userService.updateUserPasswordByUserId(user.getUserId(),newPassword);
+            //send email
+            try {
+                mailService.sendEmail(email, "重置密码", "你的密码已重置："+newPassword);
+            }catch (SendMailException e){
+                e.printStackTrace();
+                return JsonResult.error("邮箱发送失败，系统配置smtp失败");
+            }
+        }else {
+            return JsonResult.error("用户名与邮箱账号不一致！");
+        }
+        return JsonResult.success("密码已发送到你的邮箱！");
     }
 
 

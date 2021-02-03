@@ -20,3 +20,10 @@ mybatis-plus:
   type-aliases-package: com.example.demo #错了
 server:
   port: 8081
+mail:
+  smtp:
+    host: smtp.qq.com
+    username: 2724059421@qq.com
+    password: joejlbqanbbzdfec
+  from:
+    name: yllcwt

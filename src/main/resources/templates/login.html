@@ -66,13 +66,15 @@
                         <h4 class="modal-title">Forgot Password ?</h4>
                     </div>
                     <div class="modal-body">
-                        <p>Enter your e-mail address below to reset your password.</p>
-                        <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+                        <p>请输入账号</p>
+                        <input type="text" name="userName" id="forgetUserName" placeholder="账号" autocomplete="off" class="form-control placeholder-no-fix">
+                        <p>请输入邮箱号</p>
+                        <input type="text" name="email" id="email" placeholder="邮箱号" autocomplete="off" class="form-control placeholder-no-fix">
 
                     </div>
                     <div class="modal-footer">
                         <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-                        <button class="btn btn-primary" type="button">Submit</button>
+                        <button class="btn btn-primary" id="forgetPassword" type="button" onclick="forget()">Submit</button>
                     </div>
                 </div>
             </div>
@@ -84,6 +86,37 @@
 </div>
 <!-- Placed js at the end of the document so the pages load faster -->
 
+
+<script type="text/javascript">
+    function forget(){
+        const email = $('#email').val();
+        const forgetUserName = $('#forgetUserName').val();
+        $('#forgetPassword').button('loading');
+        if (email == null || email == "" || forgetUserName == "" || forgetUserName == null) {
+            showMsg("请输入完整信息", "error", 1000);
+            $('#forgetPassword').button('reset');
+        }else{
+            $.ajax({
+                type:'POST',
+                url:'/userForget',
+                async:false,
+                data:{
+                    'email':email,
+                    'forgetUserName':forgetUserName
+                },
+                success: function (data){
+                    if(data.code == 1){
+                        showMsg(data.msg, "success", 1000);
+                    }else {
+                        showMsg(data.msg, "error", 1000);
+                        $('#forgetPassword').button('reset');
+                    }
+                }
+            });
+        }
+    }
+
+</script>
 <!-- Placed js at the end of the document so the pages load faster -->
 <script src="js/login.js" type="text/javascript"></script>
 <script src="js/bootstrap.min.js"></script>

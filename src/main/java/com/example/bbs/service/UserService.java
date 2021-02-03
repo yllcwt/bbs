@@ -20,4 +20,6 @@ public interface UserService extends IService<User> {
     User checkLogin(String userName, String userPassword);
 
     User selectByUserName(String userName);
+
+    void updateUserPasswordByUserId(Integer userId, String newPassword);
 }

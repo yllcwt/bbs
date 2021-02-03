@@ -17,7 +17,7 @@ import java.util.Map;
  * @author yl
  * @since 2021-01-16
  */
-@Mapper
+@Repository
 public interface UserMapper extends BaseMapper<User> {
 
     List<User> listUsers();
@@ -25,4 +25,6 @@ public interface UserMapper extends BaseMapper<User> {
     User selectByUserNameAndUserPassword(@Param("p") Map<String, String> map);
 
     User selectByUserName(String userName);
+
+    void updateUserPasswordByUserId(Map<String, String> map);
 }
