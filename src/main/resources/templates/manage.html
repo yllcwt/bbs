@@ -71,25 +71,25 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="general">
-                                <form method="post" class="form-horizontal" id="profileForm">
+                                <form method="post" class="form-horizontal" id="uploadForm">
                                     <input type="hidden" id="userPass" name="userPass"
                                            value="a021a665f503979c06f50b8de66a4218">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label for="userAvatar"
+                                            <label for="imageText"
                                                    class="col-lg-2 col-sm-4 control-label">头像</label>
                                             <div class="col-lg-4 col-sm-8">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"
-                                                           id="userAvatar"
-                                                           name="userAvatar" value="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg">
+                                                           id="imageText"
+                                                           name="userAvatar" readonly="readonly">
                                                     <span class="input-group-btn">
-                                                                <input type="file" id="file" accept=".png, .jpg, .jpeg" style="display: none">
+                                                                <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg" style="display: none" onchange="mychange()">
                                                                     <button onclick="$('#file').click();" class="btn btn-default "
                                                                             type="button">选择</button>
                                                                 </span>
                                                 </div>
-                                                <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" id="userAvatarImg" style="width: 200px;" alt="">
+                                                <img src="" id="userAvatarImg" style="width: 200px;" alt="">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -186,6 +186,25 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function mychange(){
+        var formData = new FormData($('#uploadForm')[0]);
+        $.ajax({
+            type: 'post',
+            url: "/upload", //上传文件的请求路径必须是绝对路劲
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $('#imageText').val(data.url);
+                $('#userAvatarImg').attr('src',data.url);
+            }
+        });
+    }
+
+</script>
 <div th:replace="import :: footer_js"></div>
 </body>
 </html>

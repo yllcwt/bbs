@@ -3,12 +3,12 @@ package com.example.bbs.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-@Component
 public class MyConfig implements WebMvcConfigurer {
 
     @Override
@@ -33,5 +33,12 @@ public class MyConfig implements WebMvcConfigurer {
             }
         };
         return webMvcConfigurer;
+    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:///" + System.getProperties().getProperty("user.home") + "/sens/upload/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
     }
 }
