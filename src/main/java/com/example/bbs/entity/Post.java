@@ -18,7 +18,7 @@ public class Post implements Serializable {
 
     private String postContent;
 
-    private Integer postTime;
+    private Long postTime;
 
     private Integer postView;
 
