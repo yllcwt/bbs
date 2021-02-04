@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link rel="stylesheet" href="/static/css/front/css/style.css?version=2.0">
+        <link rel="stylesheet" href="/static/css/front/css/main.css">
+        <link rel="stylesheet" href="/static/css/front/css/jsmodern-1.1.1.min.css">
+    <style>
+        .tt-tab-wrapper .nav-tabs .nav-item:first-child a {
+            padding-left: 13px; }
+        .tt-tab-wrapper .nav-tabs .nav-item:last-child a {
+            padding-right: 13px; }
+        /*.nav-item.active{*/
+        /*    background-color: #2172cd;*/
+        /*}*/
+        .tt-tab-wrapper .nav-tabs .nav-item.active a span:after{
+            background-color: #2172cd;
+        }
+    </style>
+</head>
+<body>
+<nav class="panel-menu" id="mobile-menu"><div class="mmpanels"><div class="mmpanel mmopened mmcurrent" id="mm0"><ul><li class="mm-close-parent"><a href="#close" data-target="#close" class="mm-close">
+    Close
+    <div class="tt-icon">
+        <svg>
+            <use xlink:href="#icon-cancel"></use>
+        </svg>
+    </div>
+</a></li>
+
+    <li><a href="/category"><span>分类</span></a></li><li class="active"><a href="/tag"><span>热门标签</span></a></li><li><a href="/admin/post/new"><span>发布文章</span></a></li></ul></div></div></nav>
+
+<div th:replace="bar :: post_menu(activeUri = 'post_tag')"></div>
+<main id="tt-pageContent" data-page="1" data-type="new" class="tt-offset-small">
+    <div class="container">
+        <div class="tt-tab-wrapper">
+            <div class="tt-wrapper-inner">
+                <ul class="nav nav-tabs pt-tabs-default" >
+<!--                    <li class="nav-item show">-->
+<!--                        <a class="nav-link active"></a>-->
+<!--                    </li>-->
+                    <li role="presentation" class="nav-item show active"><a href="#"><span>最新文章</span></a></li>
+                    <li role="presentation" class="nav-item show"><a href="/main"><span>热门文章</span></a></li>
+                    <li role="presentation" class="nav-item show"><a href="#"><span>我发布的</span></a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane tt-indent-none show active" id="tt-tab-01" role="tabpanel">
+
+                    <div class="tt-topic-list">
+                        <div class="tt-list-header">
+                            <div class="tt-col-topic">标题</div>
+                            <div class="tt-col-category">板块</div>
+                            <div class="tt-col-value hide-mobile">点赞数</div>
+                            <div class="tt-col-value hide-mobile">回复数</div>
+                            <div class="tt-col-value hide-mobile">点击数</div>
+                            <div class="tt-col-value">发布</div>
+                        </div>
+                        <div id="tt-item-wrapper">
+                            <div class="tt-item tt-itemselect">
+                                <div class="tt-col-avatar">
+                                    <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/17.jpeg" class="avatar" alt="">
+                                </div>
+                                <div class="tt-col-description">
+                                    <h6 class="tt-title">
+                                        <a href="/post/35">
+                                            <span class="font-success"><svg class="tt-icon"><use xlink:href="#icon-pinned"></use></svg></span>
+
+                                            Twitter 如何应用 Druid 分析 ZB 级实时数据？
+                                        </a></h6>
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col-11">
+                                            <ul class="tt-list-badge">
+                                                <li><a href="/tag/60"><span class="tt-badge">CPU</span></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-1 ml-auto show-mobile">
+                                            <div class="tt-value">10月前</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tt-col-category"><a href="/category/10"><span class="tt-color04 tt-badge">大数据</span></a>
+                                </div>
+                                <div class="tt-col-value  hide-mobile">1</div>
+                                <div class="tt-col-value tt-color-select  hide-mobile">0</div>
+                                <div class="tt-col-value  hide-mobile">16</div>
+                                <div class="tt-col-value hide-mobile">10月前</div>
+                            </div>
+                            <div class="tt-item">
+                                <div class="tt-col-avatar">
+                                    <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/17.jpeg" class="avatar" alt="">
+                                </div>
+                                <div class="tt-col-description">
+                                    <h6 class="tt-title">
+                                        <a href="/post/24">
+
+
+                                            CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍
+                                        </a></h6>
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col-11">
+                                            <ul class="tt-list-badge">
+                                                <li><a href="/tag/60"><span class="tt-badge">CPU</span></a></li>
+                                                <li><a href="/tag/61"><span class="tt-badge">GPU</span></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-1 ml-auto show-mobile">
+                                            <div class="tt-value">10月前</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tt-col-category"><a href="/category/13"><span class="tt-color06 tt-badge">计算机原理</span></a>
+                                </div>
+                                <div class="tt-col-value  hide-mobile">3</div>
+                                <div class="tt-col-value tt-color-select  hide-mobile">1</div>
+                                <div class="tt-col-value  hide-mobile">50</div>
+                                <div class="tt-col-value hide-mobile">10月前</div>
+                            </div>
+                        </div>
+                        <div id="no-data" class="tt-wrapper-inner" style="display:none;">
+                            <h4 class="tt-title-separator"><span>已经到了末尾了</span></h4>
+                        </div>
+                        <div class="tt-row-btn" id="load-more-div">
+                            <button type="button" class="btn-icon js-topiclist-showmore" id="load-more-btn" data-no="1">
+                                <svg class="tt-icon">
+                                    <use xlink:href="#icon-load_lore_icon"></use>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <div th:replace="import :: footer_js"></div>
+    <!--Calendar-->
+    <script src="/static/css/front/js/bundle.js"></script>
+    <script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>
+    <!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/highlight.css">-->
+    <!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/prettify.css">-->
+    <!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/highlight.js"></script>-->
+    <!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/prettify.js"></script>-->
+    <svg with="0" height="0" class="hidden">
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 117 117" id="icon-search"><path d="M54 108C24.22 108 0 83.78 0 54S24.22 0 54 0s54 24.22 54 54-24.22 54-54 54zm0-99C29.19 9 9 29.19 9 54s20.19 45 45 45 45-20.19 45-45S78.81 9 54 9z"></path><path d="M112.5 117c-1.15 0-2.3-.44-3.18-1.32l-23.5-23.5a4.49 4.49 0 0 1 0-6.36 4.49 4.49 0 0 1 6.36 0l23.5 23.5a4.49 4.49 0 0 1 0 6.36c-.88.88-2.03 1.32-3.18 1.32z"></path></symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 86" id="icon-load_lore_icon"><path d="M65 86H3c-1.66 0-3-1.34-3-3V21c0-1.66 1.34-3 3-3h62c1.66 0 3 1.34 3 3v62c0 1.66-1.34 3-3 3zM6 80h56V24H6v56z"></path><path d="M47 15c-1.66 0-3-1.34-3-3V6H24v6c0 1.66-1.34 3-3 3s-3-1.34-3-3V3c0-1.66 1.34-3 3-3h26c1.66 0 3 1.34 3 3v9c0 1.66-1.34 3-3 3z" opacity=".25"></path><path d="M34 69.33c-.77 0-1.54-.29-2.12-.88L21.21 57.79a3 3 0 0 1 0-4.24 3 3 0 0 1 4.24 0L34 62.09l8.54-8.54a3 3 0 0 1 4.24 0 3 3 0 0 1 0 4.24L36.12 68.45c-.58.59-1.35.88-2.12.88z"></path><path d="M34 66c-1.66 0-3-1.34-3-3V37c0-1.66 1.34-3 3-3s3 1.34 3 3v26c0 1.66-1.34 3-3 3z"></path><path d="M56 24c-1.66 0-3-1.34-3-3v-6H15v6c0 1.66-1.34 3-3 3s-3-1.34-3-3v-9c0-1.66 1.34-3 3-3h44c1.66 0 3 1.34 3 3v9c0 1.66-1.34 3-3 3z" opacity=".5"></path></symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81 123" id="icon-pinned"><path d="M76.5 61h-5.24l-7.38-41h3.62c2.48 0 4.5-2.02 4.5-4.5v-11C72 2.02 69.98 0 67.5 0h-54C11.02 0 9 2.02 9 4.5v11c0 2.48 2.02 4.5 4.5 4.5h3.62L9.74 61H4.5A4.5 4.5 0 0 0 0 65.5v11C0 78.98 2.02 81 4.5 81h72c2.48 0 4.5-2.02 4.5-4.5v-11c0-2.48-2.02-4.5-4.5-4.5zM36 54c0 2.48-2.02 4.5-4.5 4.5S27 56.48 27 54V27c0-2.48 2.02-4.5 4.5-4.5S36 24.51 36 27v27zm4.5 69c-3.04 0-5.5-2.46-5.5-5.5v-25c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5v25c0 3.04-2.46 5.5-5.5 5.5z"></path></symbol>
+    </svg>
+</body>
+</html>

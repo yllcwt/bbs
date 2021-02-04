@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link rel="stylesheet" href="/static/css/front/css/style.css?version=2.0">
+    <!--    <link rel="stylesheet" href="/static/css/front/css/main.css">-->
+    <!--    <link rel="stylesheet" href="/static/css/front/css/jsmodern-1.1.1.min.css">-->
+</head>
+<body>
+<!-- tt-mobile menu -->
+<nav class="panel-menu" id="mobile-menu"><div class="mmpanels"><div class="mmpanel mmopened mmcurrent" id="mm0"><ul><li class="mm-close-parent"><a href="#close" data-target="#close" class="mm-close">
+    Close
+    <div class="tt-icon">
+        <svg>
+            <use xlink:href="#icon-cancel"></use>
+        </svg>
+    </div>
+</a></li>
+
+    <li class="active"><a href="/category"><span>分类</span></a></li><li><a href="/tag"><span>热门标签</span></a></li><li><a href="/admin/post/new"><span>发布文章</span></a></li></ul></div></div></nav>
+
+<div th:replace="bar :: post_menu(activeUri = 'post_category')"></div>
+
+<main id="tt-pageContent">
+    <div class="tt-custom-mobile-indent container">
+        <div class="tt-categories-title">
+            <div class="tt-title">分类列表</div>
+            <div class="tt-search">
+                <form class="search-wrapper" action="/category">
+                    <div class="search-form">
+                        <input type="text" name="keywords" class="tt-search__input" placeholder="搜索分类">
+                        <button class="tt-search__btn" type="submit">
+                            <svg class="tt-icon">
+                                <use xlink:href="#icon-search"></use>
+                            </svg>
+                        </button>
+                        <button class="tt-search__close">
+                            <svg class="tt-icon">
+                                <use xlink:href="#icon-cancel"></use>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="tt-categories-list">
+            <div class="row">
+                <div class="col-md-6 col-lg-4">
+                    <div class="tt-item">
+                        <div class="tt-item-header">
+                            <ul class="tt-list-badge">
+                                <li><a href="/category/12"><span class="tt-color02 tt-badge">程序人生</span></a></li>
+                            </ul>
+                        </div>
+                        <div class="tt-item-layout">
+                            <div class="tt-innerwrapper">
+                                分享程序人生的酸甜苦辣
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!--<a href="/admin/post/new" class="tt-btn-create-topic">-->
+<!--    <span class="tt-icon">-->
+<!--        <svg>-->
+<!--          <use xlink:href="#icon-create_new"></use>-->
+<!--        </svg>-->
+<!--    </span>-->
+<!--</a>-->
+
+<div th:replace="import :: footer_js"></div>
+<!--Calendar-->
+<!--<script src="/static/css/front/js/bundle.js"></script>-->
+<!--<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>-->
+<!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/highlight.css">-->
+<!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/prettify.css">-->
+<!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/highlight.js"></script>-->
+<!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/prettify.js"></script>-->
+<svg with="0" height="0" class="hidden">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 117 117" id="icon-search"><path d="M54 108C24.22 108 0 83.78 0 54S24.22 0 54 0s54 24.22 54 54-24.22 54-54 54zm0-99C29.19 9 9 29.19 9 54s20.19 45 45 45 45-20.19 45-45S78.81 9 54 9z"></path><path d="M112.5 117c-1.15 0-2.3-.44-3.18-1.32l-23.5-23.5a4.49 4.49 0 0 1 0-6.36 4.49 4.49 0 0 1 6.36 0l23.5 23.5a4.49 4.49 0 0 1 0 6.36c-.88.88-2.03 1.32-3.18 1.32z"></path></symbol>
+</svg>
+</body>
+</html>
