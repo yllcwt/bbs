@@ -1,7 +1,8 @@
 package com.example.bbs.service;
 
-import com.example.bbs.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.bbs.entity.User;
+
 
 import java.util.List;
 

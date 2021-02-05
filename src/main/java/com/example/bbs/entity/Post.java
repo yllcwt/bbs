@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 public class Post implements Serializable {
@@ -18,7 +19,7 @@ public class Post implements Serializable {
 
     private String postContent;
 
-    private Long postTime;
+    private Date postTime;
 
     private Integer postView;
 
