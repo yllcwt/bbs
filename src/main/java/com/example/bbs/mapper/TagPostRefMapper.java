@@ -1,6 +1,6 @@
 package com.example.bbs.mapper;
 
-import com.example.bbs.entity.CategoryPostRef;
+import com.example.bbs.entity.TagPostRef;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author yl
  * @since 2021-02-05
  */
-public interface CategoryPostRefMapper extends BaseMapper<CategoryPostRef> {
+public interface TagPostRefMapper extends BaseMapper<TagPostRef> {
 
 }

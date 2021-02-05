@@ -21,7 +21,7 @@ public class AutoGenerate {
         // Step2：全局配置
         GlobalConfig gc = new GlobalConfig();
         // 填写代码生成的目录(需要修改)
-        String projectPath = "G:\\myideaproject\\bbs";
+        String projectPath = "F:\\my_software\\myproject\\bbs";
         // 拼接出代码最终输出的目录
         gc.setOutputDir(projectPath + "/src/main/java");
         // 配置开发者信息（可选）（需要修改）
@@ -43,7 +43,7 @@ public class AutoGenerate {
         // Step3：数据源配置（需要修改）
         DataSourceConfig dsc = new DataSourceConfig();
         // 配置数据库 url 地址
-        dsc.setUrl("jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT");
+        dsc.setUrl("jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai");
         // dsc.setSchemaName("testMyBatisPlus"); // 可以直接在 url 中指定数据库名
         // 配置数据库驱动
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
@@ -72,7 +72,7 @@ public class AutoGenerate {
         // Step5：策略配置（数据库表配置）
         StrategyConfig strategy = new StrategyConfig();
         // 指定表名（可以同时操作多个表，使用 , 隔开）（需要修改）
-        strategy.setInclude("user");
+        strategy.setInclude("category_post_ref");
         // 配置数据表与实体类名之间映射的策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         // 配置数据表的字段与实体类的属性名之间映射的策略

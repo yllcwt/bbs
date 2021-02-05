@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -27,20 +28,23 @@ public class PostController {
     private CategoryPostRefService categoryPostRefService;
 
     @PostMapping("/savePost")
+    @ResponseBody
     public JsonResult savePost(Post post,
-                               HttpServletRequest request,
-                               @RequestParam("categoryId") Integer categoryId,
-                               @RequestParam("tags") String tags){
-        //检查标签合法性
-        String[] originTags = tags.split(",");
-        if(originTags.length > 5){
-            return JsonResult.error("每个帖子最多5个标签！");
-        }
-        for (String tag : originTags) {
-            if(tag.length() > 20){
-                return JsonResult.error("每个标签长度最多为20个字符！");
-            }
-        }
+                               HttpServletRequest request)
+//                               @RequestParam("categoryId") Integer categoryId,
+//                               @RequestParam("tags") String tags){
+    {
+
+//        //检查标签合法性
+//        String[] originTags = tags.split(",");
+//        if(originTags.length > 5){
+//            return JsonResult.error("每个帖子最多5个标签！");
+//        }
+//        for (String tag : originTags) {
+//            if(tag.length() > 20){
+//                return JsonResult.error("每个标签长度最多为20个字符！");
+//            }
+//        }
 
         Post originPost = null;
         //获取登录用户
@@ -62,17 +66,22 @@ public class PostController {
             post.setPostView(0);
             post.setUserId(user.getUserId());
         }
-        //分类
-        CategoryPostRef categoryPostRef = new CategoryPostRef();
-        categoryPostRef.setCategoryId(categoryId);
-        categoryPostRef.setPostId(post.getPostId());
-        categoryPostRefService.addCategoryPostRef(categoryPostRef);
 
-        if(StringUtils.isNotEmpty(tags)){
-            List<Tag> list = tagPostRefService.addOrSelectTag(StringUtils.deleteWhitespace(tags));
-        }
+        postService.addPost(post);
 
-        return JsonResult.success("");
+
+
+//        //分类
+//        CategoryPostRef categoryPostRef = new CategoryPostRef();
+//        categoryPostRef.setCategoryId(categoryId);
+//        categoryPostRef.setPostId(post.getPostId());
+//        categoryPostRefService.addCategoryPostRef(categoryPostRef);
+//
+//        if(StringUtils.isNotEmpty(tags)){
+//            List<Tag> list = tagPostRefService.addOrSelectTag(StringUtils.deleteWhitespace(tags));
+//        }
+
+        return JsonResult.success("发布成功！");
     }
 
 }

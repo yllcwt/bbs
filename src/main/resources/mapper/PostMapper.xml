@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bbs.mapper.PostMapper">
+    <resultMap id="resultPosts" type="com.example.bbs.entity.Post">
+        <id column="post_id" property="postId"/>
+        <result column="user_id" property="userId"/>
+        <result column="post_title" property="postTitle"/>
+        <result column="post_content" property="postContent"/>
+        <result column="post_like" property="postLike"/>
+        <result column="post_view" property="postView"/>
+        <result column="post_time" property="postTime"/>
+        <result column="post_comment_count" property="postCommentCount"/>
+    </resultMap>
+
+    <sql id="Base_Post_Info">
+        user_id,post_id,post_title,post_content,post_like,post_view
+        ,post_time,post_comment_count
+    </sql>
+
+    <select id="addPost" resultMap="resultPosts" parameterType="com.example.bbs.entity.Post">
+        insert into post(user_id, post_title, post_content, post_like, post_view, post_time, post_comment_count)
+        values (#{post.userId}, #{post.postTitle}, #{post.postContent}, #{post.postLike}, #{post.postView}, #{post.postTime}, #{post.postCommentCount})
+    </select>
+</mapper>

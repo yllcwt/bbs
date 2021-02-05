@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 public class Tag implements Serializable {
 
-    @TableId(value = "tag", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     private Integer tagId;
