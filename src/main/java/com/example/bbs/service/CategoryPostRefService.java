@@ -13,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CategoryPostRefService extends IService<CategoryPostRef> {
 
-    void addCategoryPostRef(CategoryPostRef categoryPostRef);
+    void addOrSelectCategoryPostRef(CategoryPostRef categoryPostRef);
 }

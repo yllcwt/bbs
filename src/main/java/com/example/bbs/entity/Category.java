@@ -12,8 +12,5 @@ public class Category implements Serializable {
     @TableId(value = "category", type = IdType.AUTO)
     private Integer id;
 
-    private Integer categoryId;
-
-    private String explanation;
-
+    private String categoryExplanation;
 }

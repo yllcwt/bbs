@@ -1,5 +1,7 @@
 package com.example.bbs.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.entity.CategoryPostRef;
 import com.example.bbs.mapper.CategoryPostRefMapper;
 import com.example.bbs.service.CategoryPostRefService;
@@ -22,7 +24,13 @@ public class CategoryPostRefServiceImpl extends ServiceImpl<CategoryPostRefMappe
     private CategoryPostRefMapper categoryPostRefMapper;
 
     @Override
-    public void addCategoryPostRef(CategoryPostRef categoryPostRef) {
-
+    public void addOrSelectCategoryPostRef(CategoryPostRef categoryPostRef) {
+        LambdaQueryWrapper<CategoryPostRef> categoryPostRefLambdaQueryWrapper = Wrappers.lambdaQuery();
+        categoryPostRefLambdaQueryWrapper.eq(CategoryPostRef::getPostId, categoryPostRef.getPostId());
+        categoryPostRefLambdaQueryWrapper.eq(CategoryPostRef::getCategoryId, categoryPostRef.getCategoryId());
+        CategoryPostRef originCategoryPostRef = getOne(categoryPostRefLambdaQueryWrapper);
+        if(originCategoryPostRef == null){
+            categoryPostRefMapper.insert(categoryPostRef);
+        }
     }
 }

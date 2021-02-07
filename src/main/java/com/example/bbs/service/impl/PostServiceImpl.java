@@ -20,8 +20,22 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Autowired
     private PostMapper postMapper;
+
+//    @Override
+//    public void addPost(Post post) {
+//        postMapper.insert(post);
+//    }
     @Override
-    public void addPost(Post post) {
-         postMapper.addPost(post);
+    public void insertOrUpdatePost(Post post) {
+        if (post.getPostId() == null) {
+            insertPost(post);
+        }else {
+//            updatePost(post);
+        }
+    }
+
+    private void insertPost(Post post) {
+        postMapper.insert(post);
+
     }
 }

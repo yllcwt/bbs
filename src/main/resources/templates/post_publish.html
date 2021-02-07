@@ -93,6 +93,21 @@
                                     });
                                 });
                             </script>
+                            <br>
+                            <div class="form-group">
+                                <select class="form-control  input-lg" id="cateId">
+                                    <option value="8">前端开发</option>
+                                    <option value="9">后端开发</option>
+                                    <option value="10">大数据</option>
+                                    <option value="11">人工智能</option>
+                                    <option value="12">程序人生</option>
+                                    <option value="13">计算机原理</option>
+                                    <option value="14">算法</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control input-lg" id="tags"   placeholder="请输入标签,逗号分隔" >
+                            </div>
                         </div>
                         <div class="box-footer">
                             <button type="button" class="btn btn-primary" onclick="push()">发布</button>
@@ -110,10 +125,10 @@
      */
     function push() {
         var title = $('#title').val();
-        // var tags = $('#tags').val();
+        var tags = $('#tags').val();
+        var cateId = $('#cateId').val();
         // var content =  $("#edit").froalaEditor('html.get');
         var content = $('#postContent').val();
-        alert(title+content);
         if(title == null || title == '') {
             showMsg("请输入文章标题", "info", 2000);
             return;
@@ -132,8 +147,8 @@
                 // 'postStatus': status,
                 'postTitle': title,
                 'postContent': content,
-                // 'cateId': cateId,
-                // 'tags': tags
+                'categoryId': cateId,
+                'tags': tags
             },
             success: function (data) {
                 if (data.code == 1) {

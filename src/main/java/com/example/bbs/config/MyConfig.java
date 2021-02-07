@@ -13,7 +13,7 @@ public class MyConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry){
         //添加视图映射
-        registry.addViewController("/test").setViewName("test");
+//        registry.addViewController("/test").setViewName("test");
 
     }
 

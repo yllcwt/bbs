@@ -17,8 +17,8 @@
         ,post_time,post_comment_count
     </sql>
 
-    <select id="addPost" resultMap="resultPosts" parameterType="com.example.bbs.entity.Post">
-        insert into post(user_id, post_title, post_content, post_like, post_view, post_time, post_comment_count)
-        values (#{post.userId}, #{post.postTitle}, #{post.postContent}, #{post.postLike}, #{post.postView}, #{post.postTime}, #{post.postCommentCount})
-    </select>
+<!--    <select id="addPost" resultMap="resultPosts" parameterType="com.example.bbs.entity.Post">-->
+<!--        insert into post(user_id, post_title, post_content, post_like, post_view, post_time, post_comment_count)-->
+<!--        values (#{post.userId}, #{post.postTitle}, #{post.postContent}, #{post.postLike}, #{post.postView}, #{post.postTime}, #{post.postCommentCount})-->
+<!--    </select>-->
 </mapper>

@@ -29,5 +29,9 @@ public class TagPostRef implements Serializable {
 
     private Integer postId;
 
-
+    public TagPostRef(Integer tagId, Integer postId){
+        this.tagId = tagId;
+        this.postId = postId;
+    }
+    public TagPostRef(){}
 }

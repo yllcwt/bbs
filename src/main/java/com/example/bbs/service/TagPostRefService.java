@@ -1,7 +1,10 @@
 package com.example.bbs.service;
 
+import com.example.bbs.entity.Tag;
 import com.example.bbs.entity.TagPostRef;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TagPostRefService extends IService<TagPostRef> {
 
+    void addOrSelectTagPostRef(List<Tag> list, Integer postId);
 }
