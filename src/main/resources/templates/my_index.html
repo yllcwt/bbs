@@ -56,7 +56,7 @@
                             <div class="tt-col-value hide-mobile">点击数</div>
                             <div class="tt-col-value">发布</div>
                         </div>
-                        <div id="tt-item-wrapper">
+                        <div id="tt-item-wrapper" th:each="pagination : ${paginationDTO.getData()}">
                             <div class="tt-item tt-itemselect">
                                 <div class="tt-col-avatar">
                                     <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/17.jpeg" class="avatar" alt="">
@@ -93,9 +93,7 @@
                                 <div class="tt-col-description">
                                     <h6 class="tt-title">
                                         <a href="/post/24">
-
-
-                                            CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍
+                                            <div th:text="${pagination.getPostTitle()}"></div>
                                         </a></h6>
                                     <div class="row align-items-center no-gutters">
                                         <div class="col-11">
@@ -104,32 +102,73 @@
                                                 <li><a href="/tag/61"><span class="tt-badge">GPU</span></a></li>
                                             </ul>
                                         </div>
-                                        <div class="col-1 ml-auto show-mobile">
-                                            <div class="tt-value">10月前</div>
-                                        </div>
+<!--                                        <div class="col-1 ml-auto show-mobile">-->
+<!--                                            <div class="tt-value">10月前</div>-->
+<!--                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="tt-col-category"><a href="/category/13"><span class="tt-color06 tt-badge">计算机原理</span></a>
                                 </div>
-                                <div class="tt-col-value  hide-mobile">3</div>
-                                <div class="tt-col-value tt-color-select  hide-mobile">1</div>
+                                <div class="tt-col-value  hide-mobile" th:text="${pagination.postLike}"></div>
+                                <div class="tt-col-value tt-color-select  hide-mobile" th:text="${pagination.postCommentCount}"></div>
                                 <div class="tt-col-value  hide-mobile">50</div>
                                 <div class="tt-col-value hide-mobile">10月前</div>
                             </div>
                         </div>
-                        <div id="no-data" class="tt-wrapper-inner" style="display:none;">
-                            <h4 class="tt-title-separator"><span>已经到了末尾了</span></h4>
-                        </div>
-                        <div class="tt-row-btn" id="load-more-div">
-                            <button type="button" class="btn-icon js-topiclist-showmore" id="load-more-btn" data-no="1">
-                                <svg class="tt-icon">
-                                    <use xlink:href="#icon-load_lore_icon"></use>
-                                </svg>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
+<!--            <nav aria-label="Page navigation">-->
+<!--                <ul class="pagination">-->
+<!--                    <li>-->
+<!--                        <a href="#" aria-label="Previous">-->
+<!--                            <span aria-hidden="true">&laquo;</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li><a href="#">1</a></li>-->
+<!--                    <li><a href="#">2</a></li>-->
+<!--                    <li><a href="#">3</a></li>-->
+<!--                    <li><a href="#">4</a></li>-->
+<!--                    <li><a href="#">5</a></li>-->
+<!--                    <li>-->
+<!--                        <a href="#" aria-label="Next">-->
+<!--                            <span aria-hidden="true">&raquo;</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li th:if="${paginationDTO.showFirstPage}">
+                        <a th:href="@{/homepage(pageIndex=1,search=${search},tag=${tag},pageSize=1)}" aria-label="Previous">
+                            <span aria-hidden="true">首页</span>
+                        </a>
+                    </li>
+                    <li th:if="${paginationDTO.showPrevious}">
+                        <a th:href="@{/homepage(pageIndex=${paginationDTO.page - 1},search=${search},tag=${tag},pageSize=1)}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+
+                    <li th:each="page : ${paginationDTO.pages}" th:class="${paginationDTO.page == page}? 'active' : ''">
+                        <a th:href="@{/homepage(pageIndex=${page},search=${search},tag=${tag},pageSize=1)}" th:text="${page}"></a>
+                    </li>
+
+                    <li th:if="${paginationDTO.showNext}">
+                        <a th:href="@{/homepage(pageIndex=${paginationDTO.page +1 },search=${search},tag=${tag},pageSize=1)}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                    <li th:if="${paginationDTO.showEndPage}">
+                        <a th:href="@{/homepage(pageIndex=${paginationDTO.totalPage},search=${search},tag=${tag},pageSize=1)}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">末页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </main>

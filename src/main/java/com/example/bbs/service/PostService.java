@@ -1,5 +1,6 @@
 package com.example.bbs.service;
 
+import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.entity.Post;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,4 +17,6 @@ public interface PostService extends IService<Post> {
 //    void addPost(Post post);
 
     void insertOrUpdatePost(Post post);
+
+    PaginationDTO listPost(Integer pageIndex, Integer pageSize, String search, String tag, String category);
 }

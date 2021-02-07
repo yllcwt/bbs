@@ -21,4 +21,8 @@
 <!--        insert into post(user_id, post_title, post_content, post_like, post_view, post_time, post_comment_count)-->
 <!--        values (#{post.userId}, #{post.postTitle}, #{post.postContent}, #{post.postLike}, #{post.postView}, #{post.postTime}, #{post.postCommentCount})-->
 <!--    </select>-->
+    <select id="selectPost" resultMap="resultPosts">
+        select <include refid="Base_Post_Info"></include> from post
+        limit #{offset }, #{pageSize}
+    </select>
 </mapper>

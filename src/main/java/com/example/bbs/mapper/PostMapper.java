@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PostMapper extends BaseMapper<Post> {
+
+
+    List<Post> selectPost(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
 
 //    Post addPost(@Param("post") Post post);
 }
