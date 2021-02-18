@@ -9,8 +9,10 @@ import java.io.Serializable;
 @Data
 public class Category implements Serializable {
 
-    @TableId(value = "category", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    private String categoryName;
 
     private String categoryExplanation;
 }

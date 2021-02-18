@@ -43,5 +43,5 @@ public class Post implements Serializable {
 
     private Integer postCommentCount;
 
-
+    private Integer postTop;
 }

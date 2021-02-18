@@ -3,13 +3,21 @@ package com.example.bbs.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostDTO;
+import com.example.bbs.dto.PostQueryCondition;
+import com.example.bbs.entity.Category;
+import com.example.bbs.entity.CategoryPostRef;
 import com.example.bbs.entity.Post;
+import com.example.bbs.entity.User;
+import com.example.bbs.mapper.CategoryPostRefMapper;
 import com.example.bbs.mapper.PostMapper;
+import com.example.bbs.mapper.UserMapper;
 import com.example.bbs.service.PostService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +33,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private CategoryPostRefMapper categoryPostRefMapper;
 
 //    @Override
 //    public void addPost(Post post) {
@@ -44,7 +56,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
-    public PaginationDTO listPost(Integer pageIndex, Integer pageSize, String search, String tag, String category) {
+    public PaginationDTO listPost(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
@@ -70,6 +82,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Integer offset = pageIndex < 1 ? 0 : pageSize * (pageIndex - 1);
 
         List<Post> list = postMapper.selectPost(offset, pageSize);
+        List<PostDTO> listPostDTO = new ArrayList<>(list.size());
+
+        for (Post post : list){
+            User user = userMapper.selectById(post.getUserId());
+            CategoryPostRef categoryPostRef = categoryPostRefMapper.selectById(post.getPostId());
+            Category postCategory = categoryMapper
+        }
         paginationDTO.setData(list);
         return paginationDTO;
     }

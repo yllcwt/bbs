@@ -1,6 +1,7 @@
 package com.example.bbs.controller;
 
 import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.Post;
 import com.example.bbs.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,13 @@ public class IndexController {
                             @RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                             @RequestParam(value = "search", required = false) String search,
-                            @RequestParam(value = "tag", required = false) String tag,
-                            @RequestParam(value = "category", required = false) String category) {
-        PaginationDTO paginationDTO = postService.listPost(pageIndex, pageSize, search, tag, category);
+                            @RequestParam(value = "tag", required = false) Integer tag,
+                            @RequestParam(value = "category", required = false) Integer category) {
+        PostQueryCondition postQueryCondition = new PostQueryCondition();
+        postQueryCondition.setKeywords(search);
+        postQueryCondition.setCategoryId(category);
+        postQueryCondition.setTagId(tag);
+        PaginationDTO paginationDTO = postService.listPost(pageIndex, pageSize, postQueryCondition);
         model.addAttribute("paginationDTO", paginationDTO);
         model.addAttribute("search", search);
         model.addAttribute("tag", tag);

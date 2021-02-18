@@ -10,11 +10,12 @@
         <result column="post_view" property="postView"/>
         <result column="post_time" property="postTime"/>
         <result column="post_comment_count" property="postCommentCount"/>
+        <result column="post_top" property="postTop"/>
     </resultMap>
 
     <sql id="Base_Post_Info">
         user_id,post_id,post_title,post_content,post_like,post_view
-        ,post_time,post_comment_count
+        ,post_time,post_comment_count,post_top
     </sql>
 
 <!--    <select id="addPost" resultMap="resultPosts" parameterType="com.example.bbs.entity.Post">-->
@@ -23,6 +24,7 @@
 <!--    </select>-->
     <select id="selectPost" resultMap="resultPosts">
         select <include refid="Base_Post_Info"></include> from post
+        order by post_top desc , post_time desc
         limit #{offset }, #{pageSize}
     </select>
 </mapper>
