@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PostService extends IService<Post> {
 
-//    void addPost(Post post);
+    void addPost(Post post);
 
     void insertOrUpdatePost(Post post);
 

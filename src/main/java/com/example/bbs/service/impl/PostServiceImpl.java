@@ -5,12 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostDTO;
 import com.example.bbs.dto.PostQueryCondition;
-import com.example.bbs.entity.Category;
-import com.example.bbs.entity.CategoryPostRef;
-import com.example.bbs.entity.Post;
-import com.example.bbs.entity.User;
+import com.example.bbs.entity.*;
 import com.example.bbs.mapper.CategoryPostRefMapper;
 import com.example.bbs.mapper.PostMapper;
+import com.example.bbs.mapper.TagMapper;
 import com.example.bbs.mapper.UserMapper;
 import com.example.bbs.service.PostService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -36,12 +34,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private CategoryPostRefMapper categoryPostRefMapper;
+    private TagMapper tagMapper;
 
-//    @Override
-//    public void addPost(Post post) {
-//        postMapper.insert(post);
-//    }
+    @Override
+    public void addPost(Post post) {
+        postMapper.insert(post);
+    }
     @Override
     public void insertOrUpdatePost(Post post) {
         if (post.getPostId() == null) {
@@ -81,13 +79,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         paginationDTO.setPagination(totalPage, pageIndex);
         Integer offset = pageIndex < 1 ? 0 : pageSize * (pageIndex - 1);
 
-        List<Post> list = postMapper.selectPost(offset, pageSize);
-        List<PostDTO> listPostDTO = new ArrayList<>(list.size());
-
-        for (Post post : list){
-            User user = userMapper.selectById(post.getUserId());
-            CategoryPostRef categoryPostRef = categoryPostRefMapper.selectById(post.getPostId());
-            Category postCategory = categoryMapper
+        List<PostDTO> list = postMapper.selectPost(offset, pageSize);
+        System.err.println(list);
+//        List<PostDTO> listPostDTO = new ArrayList<>(list.size());
+//
+        for (PostDTO postDTO : list){
+            List<Tag> tagList = tagMapper.findByPostId(postDTO.getPostId());
+            postDTO.setTagList(tagList);
         }
         paginationDTO.setData(list);
         return paginationDTO;

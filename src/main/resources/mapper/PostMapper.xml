@@ -13,6 +13,28 @@
         <result column="post_top" property="postTop"/>
     </resultMap>
 
+    <resultMap id="resultPostDTO" type="com.example.bbs.dto.PostDTO">
+        <id column="post_id" property="postId"/>
+        <result column="user_id" property="userId"/>
+        <result column="post_title" property="postTitle"/>
+        <result column="post_content" property="postContent"/>
+        <result column="post_like" property="postLike"/>
+        <result column="post_view" property="postView"/>
+        <result column="post_time" property="postTime"/>
+        <result column="post_comment_count" property="postCommentCount"/>
+        <result column="post_top" property="postTop"/>
+        <association property="user" javaType="com.example.bbs.entity.User">
+            <id column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+            <result column="user_image" property="userImage"/>
+        </association>
+        <association property="category" javaType="com.example.bbs.entity.Category">
+            <id column="id" property="id"/>
+            <result column="category_name" property="categoryName"/>
+            <result column="category_explanation" property="categoryExplanation"/>
+        </association>
+    </resultMap>
+
     <sql id="Base_Post_Info">
         user_id,post_id,post_title,post_content,post_like,post_view
         ,post_time,post_comment_count,post_top
@@ -22,9 +44,29 @@
 <!--        insert into post(user_id, post_title, post_content, post_like, post_view, post_time, post_comment_count)-->
 <!--        values (#{post.userId}, #{post.postTitle}, #{post.postContent}, #{post.postLike}, #{post.postView}, #{post.postTime}, #{post.postCommentCount})-->
 <!--    </select>-->
-    <select id="selectPost" resultMap="resultPosts">
-        select <include refid="Base_Post_Info"></include> from post
+    <select id="selectPost" resultMap="resultPostDTO">
+        SELECT  a.user_id,
+                a.post_id,
+                a.post_title,
+                a.post_content,
+                a.post_like,
+                a.post_view,
+                a.post_time,
+                a.post_comment_count,
+                a.post_top,
+				d.id,
+				c.user_name,
+				c.user_image,
+				d.category_name,
+				d.category_explanation
+        from post a
+        LEFT JOIN category_post_ref b ON a.post_id = b.post_id
+        LEFT JOIN user c ON a.user_id = c.user_id
+        LEFT JOIN category d ON d.id = b.category_id
         order by post_top desc , post_time desc
         limit #{offset }, #{pageSize}
+    </select>
+    <select id="collectCount" resultType="Integer">
+        select count(1) from post
     </select>
 </mapper>

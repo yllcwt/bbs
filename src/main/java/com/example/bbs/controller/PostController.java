@@ -68,12 +68,14 @@ public class PostController {
             post.setPostTime(originPost.getPostTime());
             post.setPostView(originPost.getPostView());
             post.setPostId(originPost.getPostId());
+            post.setPostTop(originPost.getPostTop());
         } else {
             post.setPostCommentCount(0);
             post.setPostLike(0);
             post.setPostTime(new Date());
             post.setPostView(0);
             post.setUserId(user.getUserId());
+            post.setPostTop(0);
         }
 
         postService.insertOrUpdatePost(post);

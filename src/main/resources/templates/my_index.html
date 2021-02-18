@@ -13,8 +13,8 @@
         /*.nav-item.active{*/
         /*    background-color: #2172cd;*/
         /*}*/
-        .tt-tab-wrapper .nav-tabs .nav-item.active a span:after{
-            background-color: #2172cd;
+        .tt-topic-list .tt-list-badge{
+            margin-left: 2px;
         }
     </style>
 </head>
@@ -56,50 +56,22 @@
                             <div class="tt-col-value hide-mobile">点击数</div>
                             <div class="tt-col-value">发布</div>
                         </div>
-                        <div id="tt-item-wrapper" th:each="pagination : ${paginationDTO.getData()}">
-                            <div class="tt-item tt-itemselect">
+                        <div id="tt-item-wrapper" th:each="pagination,loopStatus : ${paginationDTO.getData()}">
+                            <div th:class="tt-item+(${pagination.postTop} ? ' '+tt-itemselect : '')" th:style="(${pagination.postTop} ? '': (${loopStatus.odd} ? 'background-color: #f2f4f6' : ''))">
                                 <div class="tt-col-avatar">
                                     <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/17.jpeg" class="avatar" alt="">
                                 </div>
                                 <div class="tt-col-description">
                                     <h6 class="tt-title">
-                                        <a href="/post/35">
-                                            <span class="font-success"><svg class="tt-icon"><use xlink:href="#icon-pinned"></use></svg></span>
-
-                                            Twitter 如何应用 Druid 分析 ZB 级实时数据？
+                                        <a href="/post/24" >
+                                            <span  class="font-success" ><svg th:if="${pagination.postTop}" class="tt-icon" ><use xlink:href="#icon-pinned"></use></svg></span>
+                                            <span th:text="${pagination.postTitle}"></span>
                                         </a></h6>
                                     <div class="row align-items-center no-gutters">
                                         <div class="col-11">
-                                            <ul class="tt-list-badge">
-                                                <li><a href="/tag/60"><span class="tt-badge">CPU</span></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-1 ml-auto show-mobile">
-                                            <div class="tt-value">10月前</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tt-col-category"><a href="/category/10"><span class="tt-color04 tt-badge">大数据</span></a>
-                                </div>
-                                <div class="tt-col-value  hide-mobile">1</div>
-                                <div class="tt-col-value tt-color-select  hide-mobile">0</div>
-                                <div class="tt-col-value  hide-mobile">16</div>
-                                <div class="tt-col-value hide-mobile">10月前</div>
-                            </div>
-                            <div class="tt-item">
-                                <div class="tt-col-avatar">
-                                    <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/17.jpeg" class="avatar" alt="">
-                                </div>
-                                <div class="tt-col-description">
-                                    <h6 class="tt-title">
-                                        <a href="/post/24">
-                                            <div th:text="${pagination.postTitle}"></div>
-                                        </a></h6>
-                                    <div class="row align-items-center no-gutters">
-                                        <div class="col-11">
-                                            <ul class="tt-list-badge">
-                                                <li><a href="/tag/60"><span class="tt-badge">CPU</span></a></li>
-                                                <li><a href="/tag/61"><span class="tt-badge">GPU</span></a></li>
+                                            作者：<span th:text="${pagination.user.userName}"/>&nbsp;
+                                            <ul class="tt-list-badge" th:each="postTag : ${pagination.tagList}">
+                                                <li><a href="/tag/60"><span class="tt-badge" th:text="${postTag.tagExplanation}"></span></a></li>
                                             </ul>
                                         </div>
 <!--                                        <div class="col-1 ml-auto show-mobile">-->
@@ -107,12 +79,13 @@
 <!--                                        </div>-->
                                     </div>
                                 </div>
-                                <div class="tt-col-category"><a href="/category/13"><span class="tt-color06 tt-badge">计算机原理</span></a>
+                                <div class="tt-col-category"><a href="/category/13">
+                                        <span th:class="tt-color+((${pagination.category.id/10} == 0) ? '0'+${pagination.category.id} : ${pagination.category.id})+' '+tt-badge" th:text="${pagination.category.categoryName}"></span></a>
                                 </div>
                                 <div class="tt-col-value  hide-mobile" th:text="${pagination.postLike}"></div>
                                 <div class="tt-col-value tt-color-select  hide-mobile" th:text="${pagination.postCommentCount}"></div>
                                 <div class="tt-col-value  hide-mobile">50</div>
-                                <div class="tt-col-value hide-mobile">10月前</div>
+                                <div class="tt-col-value hide-mobile" th:text="${#dates.format(pagination.postTime,'yyyy-MM-dd HH:mm')}"></div>
                             </div>
                         </div>
                     </div>
@@ -152,7 +125,7 @@
                     </li>
 
                     <li th:each="page : ${paginationDTO.pages}" th:class="${paginationDTO.page == page}? 'active' : ''">
-                        <a th:href="@{/homepage(pageIndex=${page},search=${search},tag=${tag},pageSize=1)}" th:text="${page}"></a>
+                        <a th:href="@{/homepage(pageIndex=${page},search=${search},tag=${tag},pageSize=3)}" th:text="${page}"></a>
                     </li>
 
                     <li th:if="${paginationDTO.showNext}">

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bbs.mapper.TagMapper">
+
+    <select id="findByPostId" resultType="com.example.bbs.entity.Tag">
+        select  a.id,
+                a.tag_explanation,
+                b.post_id,
+                c.post_id
+        from tag a
+        LEFT JOIN tag_post_ref b ON a.id = b.tag_id
+        LEFT JOIN post c ON b.post_id = c.post_id
+        <where>
+            <if test="postId != null">
+                c.post_id = #{postId}
+            </if>
+        </where>
+    </select>
+</mapper>

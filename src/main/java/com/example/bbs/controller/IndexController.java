@@ -22,7 +22,7 @@ public class IndexController {
     @GetMapping("/homepage")
     public String index(Model model,
                             @RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
-                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                            @RequestParam(value = "pageSize", defaultValue = "3") Integer pageSize,
                             @RequestParam(value = "search", required = false) String search,
                             @RequestParam(value = "tag", required = false) Integer tag,
                             @RequestParam(value = "category", required = false) Integer category) {
