@@ -1,6 +1,7 @@
 package com.example.bbs.mapper;
 
 import com.example.bbs.dto.PostDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.Post;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,7 +21,7 @@ import java.util.List;
 public interface PostMapper extends BaseMapper<Post> {
 
 
-    List<PostDTO> selectPost(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
+    List<PostDTO> selectPost(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize, @Param("postQueryCondition")PostQueryCondition postQueryCondition);
 
 //    Post addPost(@Param("post") Post post);
 }

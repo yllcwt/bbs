@@ -58,11 +58,27 @@
 				c.user_name,
 				c.user_image,
 				d.category_name,
-				d.category_explanation
+				d.category_explanation,
+				e.tag_id
         from post a
         LEFT JOIN category_post_ref b ON a.post_id = b.post_id
         LEFT JOIN user c ON a.user_id = c.user_id
         LEFT JOIN category d ON d.id = b.category_id
+        LEFT JOIN tag_post_ref e ON a.post_id = e.post_id
+        <where>
+            <if test="postQueryCondition.userId != null">
+                a.user_id = #{postQueryCondition.userId}  AND
+            </if>
+            <if test="postQueryCondition.categoryId != null">
+                d.id = #{postQueryCondition.categoryId} AND
+            </if>
+            <if test="postQueryCondition.keywords != null and postQueryCondition.keywords != ''">
+                a.post_title LIKE CONCAT('%', #{postQueryCondition.keywords} ,'%')  AND
+            </if>
+            <if test="postQueryCondition.tagId != null">
+                e.tag_id = #{postQueryCondition.tagId}
+            </if>
+        </where>
         order by post_top desc , post_time desc
         limit #{offset }, #{pageSize}
     </select>
