@@ -46,17 +46,17 @@
         </div>
         <div class="tt-categories-list">
             <div class="row">
-                <div class="col-md-3 col-lg-3" th:each="tag : ${tagList}">
+                <div class="col-md-3 col-lg-3" th:each="tag : ${tagDTOList}">
                     <div class="tt-item">
                         <div class="tt-item-header">
                             <ul class="tt-list-badge">
-                                <li><a th:href="@{/homepage(tag=${tag.id})}"></a><span th:class="tt-color+((${tag.id/10} == 0) ? '0'+${tag.id} : ${tag.id})+' '+tt-badge" th:text="${tag.tagExplanation}"></span></li>
+                                <li><a th:href="@{/homepage(tag=${tag.id})}"><span th:class="tt-color+((${tag.id/10} == 0) ? '0'+${tag.id} : ${tag.id})+' '+tt-badge" th:text="${tag.tagExplanation}"></span></a></li>
                             </ul>
                             <!--                            <h6 class="tt-title"><a href="page-categories-single.html">Threads - 1,245</a></h6>-->
                         </div>
                         <div class="tt-item-layout">
                             <div class="tt-innerwrapper">
-                                <b>12</b> 个相关文章
+                                <b th:text="${tag.getPostCount()}"></b> 个相关文章
                             </div>
                         </div>
                     </div>

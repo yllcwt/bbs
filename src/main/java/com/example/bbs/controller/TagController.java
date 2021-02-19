@@ -1,11 +1,22 @@
 package com.example.bbs.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.bbs.dto.TagDTO;
 import com.example.bbs.entity.Tag;
+import com.example.bbs.entity.TagPostRef;
+import com.example.bbs.service.TagPostRefService;
+import com.example.bbs.service.TagService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -19,10 +30,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TagController {
 
+    @Autowired
+    private TagService tagService;
+    @Autowired
+    private TagPostRefService tagPostRefService;
+
     @GetMapping("/post_tag")
     public String tagList(Model model){
-        QueryWrapper<Tag> tagQueryWrapper = new QueryWrapper<>();
 
+        List<Tag> tagList = tagService.list();
+        List<TagDTO> tagDTOList = new ArrayList<>();
+
+        for(Tag tag : tagList){
+            LambdaQueryWrapper<TagPostRef> wrappers = Wrappers.lambdaQuery();
+            wrappers.eq(TagPostRef::getTagId, tag.getId());
+            Integer tagCount = tagPostRefService.count(wrappers);
+            TagDTO tagDTO = new TagDTO();
+            BeanUtils.copyProperties(tag, tagDTO);
+            tagDTO.setPostCount(tagCount);
+            tagDTOList.add(tagDTO);
+        }
+
+        model.addAttribute("tagDTOList", tagDTOList);
+        return "post_tag";
     }
 }
 
