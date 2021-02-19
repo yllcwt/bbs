@@ -1,9 +1,12 @@
 package com.example.bbs.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.bbs.entity.Tag;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yl
  * @since 2021-02-07
  */
-@RestController
-@RequestMapping("/bbs/tag")
+@Controller
 public class TagController {
 
+    @GetMapping("/post_tag")
+    public String tagList(Model model){
+        QueryWrapper<Tag> tagQueryWrapper = new QueryWrapper<>();
+
+    }
 }
 

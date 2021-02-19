@@ -39,14 +39,14 @@ public class CategoryController {
         model.addAttribute("categoryList", categoryList);
         return "post_category";
     }
-    @GetMapping("/category/{id}")
-    public String categoryPost(@PathVariable("id") Integer id,
-                               Model model){
-        PostQueryCondition postQueryCondition = new PostQueryCondition();
-        postQueryCondition.setCategoryId(id);
-        PaginationDTO paginationDTO = postService.listPost(1, 10, postQueryCondition);
-        model.addAttribute("paginationDTO", paginationDTO);
-        model.addAttribute("category", id);
-        return "redirect:/my_index";
-    }
+//    @GetMapping("/category/{id}")
+//    public String categoryPost(@PathVariable("id") Integer id,
+//                               Model model){
+//        PostQueryCondition postQueryCondition = new PostQueryCondition();
+//        postQueryCondition.setCategoryId(id);
+//        PaginationDTO paginationDTO = postService.listPost(1, 10, postQueryCondition);
+//        model.addAttribute("paginationDTO", paginationDTO);
+//        model.addAttribute("category", id);
+//        return "redirect:/homepage";
+//    }
 }
