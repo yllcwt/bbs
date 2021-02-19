@@ -45,17 +45,15 @@
         </div>
         <div class="tt-categories-list">
             <div class="row">
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4" th:each="category : ${categoryList}">
                     <div class="tt-item">
                         <div class="tt-item-header">
                             <ul class="tt-list-badge">
-                                <li><a href="/category/12"><span class="tt-color02 tt-badge">程序人生</span></a></li>
+                                <li><a th:href="@{'/category/'+${category.id}}"><span th:class="tt-color+((${category.id/10} == 0) ? '0'+${category.id} : ${category.id})+' '+tt-badge" th:text="${category.categoryName}"></span></a></li>
                             </ul>
                         </div>
                         <div class="tt-item-layout">
-                            <div class="tt-innerwrapper">
-                                分享程序人生的酸甜苦辣
-                            </div>
+                            <div class="tt-innerwrapper" th:text="${category.categoryExplanation}"></div>
                         </div>
                     </div>
                 </div>

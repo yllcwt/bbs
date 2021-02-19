@@ -2,8 +2,11 @@ package com.example.bbs.service;
 
 import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostQueryCondition;
+import com.example.bbs.entity.Category;
 import com.example.bbs.entity.Post;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>

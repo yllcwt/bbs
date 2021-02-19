@@ -64,14 +64,14 @@
                     <div class="tt-desktop-menu">
                         <nav>
                             <ul>
-                                <li th:class="${activeUri == post_category ? 'active' : ''}">
+                                <li th:class="${activeUri == 'post_category'} ? 'active' : ''">
                                     <a th:href="@{/post_category}"><span>分类</span></a>
                                 </li>
                                 <!--                                    <li><a href="/user"><span>活跃用户</span></a></li>-->
-                                <li th:class="${activeUri == post_tag ? 'active' : ''}">
+                                <li th:class="${activeUri == 'post_tag'} ? 'active' : ''">
                                     <a th:href="@{/post_tag}"><span>热门标签</span></a>
                                 </li>
-                                <li><a href="/admin/post/new" class=""><span>发布文章</span></a></li>
+                                <li><a th:href="@{/post_publish}" class=""><span>发布文章</span></a></li>
                             </ul>
                         </nav>
                     </div>
@@ -87,7 +87,7 @@
                             </svg>
                         </button>
                         <!-- /toggle -->
-                        <form class="search-wrapper" action="/">
+                        <form class="search-wrapper" action="/homepage" method="get">
                             <div class="search-form">
                                 <input type="text" name="keywords" id="keywords" class="tt-search__input" placeholder="搜索">
                                 <button class="tt-search__btn" type="submit">

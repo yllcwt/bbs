@@ -71,7 +71,7 @@
                                         <div class="col-11">
                                             作者：<span th:text="${pagination.user.userName}"/>&nbsp;
                                             <ul class="tt-list-badge" th:each="postTag : ${pagination.tagList}">
-                                                <li><a href="/tag/60"><span class="tt-badge" th:text="${postTag.tagExplanation}"></span></a></li>
+                                                <li><a th:href="@{/homepage(tag=${postTag.id})}"><span class="tt-badge" th:text="${postTag.tagExplanation}"></span></a></li>
                                             </ul>
                                         </div>
 <!--                                        <div class="col-1 ml-auto show-mobile">-->
@@ -79,7 +79,7 @@
 <!--                                        </div>-->
                                     </div>
                                 </div>
-                                <div class="tt-col-category"><a href="/category/13">
+                                <div class="tt-col-category"><a th:href="@{/homepage(category=${pagination.category.id})}">
                                         <span th:class="tt-color+((${pagination.category.id/10} == 0) ? '0'+${pagination.category.id} : ${pagination.category.id})+' '+tt-badge" th:text="${pagination.category.categoryName}"></span></a>
                                 </div>
                                 <div class="tt-col-value  hide-mobile" th:text="${pagination.postLike}"></div>
@@ -113,29 +113,29 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li th:if="${paginationDTO.showFirstPage}">
-                        <a th:href="@{/homepage(pageIndex=1,search=${search},tag=${tag},pageSize=1)}" aria-label="Previous">
+                        <a th:href="@{/homepage(pageIndex=1,keywords=${keywords},tag=${tag},category=${category},pageSize=3)}" aria-label="Previous">
                             <span aria-hidden="true">首页</span>
                         </a>
                     </li>
                     <li th:if="${paginationDTO.showPrevious}">
-                        <a th:href="@{/homepage(pageIndex=${paginationDTO.page - 1},search=${search},tag=${tag},pageSize=1)}"
+                        <a th:href="@{/homepage(pageIndex=${paginationDTO.page - 1},keywords=${keywords},tag=${tag},category=${category},pageSize=3)}"
                            aria-label="Previous">
                             <span aria-hidden="true">上一页</span>
                         </a>
                     </li>
 
                     <li th:each="page : ${paginationDTO.pages}" th:class="${paginationDTO.page == page}? 'active' : ''">
-                        <a th:href="@{/homepage(pageIndex=${page},search=${search},tag=${tag},pageSize=3)}" th:text="${page}"></a>
+                        <a th:href="@{/homepage(pageIndex=${page},keywords=${keywords},tag=${tag},category=${category},pageSize=3)}" th:text="${page}"></a>
                     </li>
 
                     <li th:if="${paginationDTO.showNext}">
-                        <a th:href="@{/homepage(pageIndex=${paginationDTO.page +1 },search=${search},tag=${tag},pageSize=1)}"
+                        <a th:href="@{/homepage(pageIndex=${paginationDTO.page +1 },keywords=${keywords},tag=${tag},category=${category},pageSize=3)}"
                            aria-label="Previous">
                             <span aria-hidden="true">下一页</span>
                         </a>
                     </li>
                     <li th:if="${paginationDTO.showEndPage}">
-                        <a th:href="@{/homepage(pageIndex=${paginationDTO.totalPage},search=${search},tag=${tag},pageSize=1)}"
+                        <a th:href="@{/homepage(pageIndex=${paginationDTO.totalPage},keywords=${keywords},tag=${tag},category=${category},pageSize=3)}"
                            aria-label="Previous">
                             <span aria-hidden="true">末页</span>
                         </a>

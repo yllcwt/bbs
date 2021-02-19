@@ -29,6 +29,8 @@ public class PostController {
     private CategoryPostRefService categoryPostRefService;
     @Autowired
     private TagPostRefService tagPostRefService;
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("test")
     public String testUser(Model model){
@@ -93,6 +95,13 @@ public class PostController {
         }
 
         return JsonResult.success("发布成功！");
+    }
+
+    @GetMapping("/post_publish")
+    public String postPublish(Model model){
+        List<Category> categoryList = categoryService.list();
+        model.addAttribute("categoryList", categoryList);
+        return "post_publish";
     }
 
 }

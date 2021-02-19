@@ -60,8 +60,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Integer totalPage;
 
 
-        QueryWrapper<Post> postQueryWrapper = new QueryWrapper<>();
-        Integer totalCount = postMapper.selectCount(postQueryWrapper);
+//        QueryWrapper<Post> postQueryWrapper = new QueryWrapper<>();
+//        Integer totalCount = postMapper.selectCount(postQueryWrapper);
+        Integer totalCount = postMapper.calculateCount(postQueryCondition);
 
         if (totalCount % pageSize == 0) {
             totalPage = totalCount / pageSize;

@@ -23,16 +23,16 @@ public class IndexController {
     public String index(Model model,
                             @RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
                             @RequestParam(value = "pageSize", defaultValue = "3") Integer pageSize,
-                            @RequestParam(value = "search", required = false) String search,
+                            @RequestParam(value = "keywords", required = false) String keywords,
                             @RequestParam(value = "tag", required = false) Integer tag,
                             @RequestParam(value = "category", required = false) Integer category) {
         PostQueryCondition postQueryCondition = new PostQueryCondition();
-        postQueryCondition.setKeywords(search);
+        postQueryCondition.setKeywords(keywords);
         postQueryCondition.setCategoryId(category);
         postQueryCondition.setTagId(tag);
         PaginationDTO paginationDTO = postService.listPost(pageIndex, pageSize, postQueryCondition);
         model.addAttribute("paginationDTO", paginationDTO);
-        model.addAttribute("search", search);
+        model.addAttribute("keywords", keywords);
         model.addAttribute("tag", tag);
         model.addAttribute("category", category);
         return "my_index";

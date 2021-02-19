@@ -24,14 +24,11 @@ public class MyConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry){
                 registry.addViewController("/register").setViewName("registration");
                 registry.addViewController("/main").setViewName("index");
-                registry.addViewController("/post_publish").setViewName("post_publish");
                 registry.addViewController("/login").setViewName("login");
                 registry.addViewController("/menu").setViewName("menu_manage");
                 registry.addViewController("/user_manage").setViewName("user_manage");//后台管理
                 registry.addViewController("/post_list").setViewName("post_list");//文章列表
                 registry.addViewController("/post_tag").setViewName("post_tag");//
-                registry.addViewController("/post_category").setViewName("post_category");//
-                registry.addViewController("/my_index").setViewName("my_index");//
             }
         };
         return webMvcConfigurer;

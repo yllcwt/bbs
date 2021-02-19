@@ -23,5 +23,7 @@ public interface PostMapper extends BaseMapper<Post> {
 
     List<PostDTO> selectPost(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize, @Param("postQueryCondition")PostQueryCondition postQueryCondition);
 
+    Integer calculateCount(@Param("postQueryCondition") PostQueryCondition postQueryCondition);
+
 //    Post addPost(@Param("post") Post post);
 }

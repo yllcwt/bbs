@@ -95,14 +95,8 @@
                             </script>
                             <br>
                             <div class="form-group">
-                                <select class="form-control  input-lg" id="cateId">
-                                    <option value="8">前端开发</option>
-                                    <option value="9">后端开发</option>
-                                    <option value="10">大数据</option>
-                                    <option value="11">人工智能</option>
-                                    <option value="12">程序人生</option>
-                                    <option value="13">计算机原理</option>
-                                    <option value="14">算法</option>
+                                <select class="form-control  input-lg" id="cateId" >
+                                    <option th:each="cate:${categoryList}" th:value="${cate.id}" th:text="${cate.categoryName}"></option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -133,10 +127,14 @@
             showMsg("请输入文章标题", "info", 2000);
             return;
         }
-        // if(cateId == null || cateId == '' || cateId == -1) {
-        //     showMsg("请输入选择分类", "info", 2000);
-        //     return;
-        // }
+        if(tags == null || tags == '') {
+            showMsg("请输入标签", "info", 2000);
+            return;
+        }
+        if(content == null || content == '' ) {
+            showMsg("请输入内容", "info", 2000);
+            return;
+        }
 
         $.ajax({
             type: 'POST',

@@ -58,31 +58,58 @@
 				c.user_name,
 				c.user_image,
 				d.category_name,
-				d.category_explanation,
-				e.tag_id
+				d.category_explanation
         from post a
         LEFT JOIN category_post_ref b ON a.post_id = b.post_id
         LEFT JOIN user c ON a.user_id = c.user_id
         LEFT JOIN category d ON d.id = b.category_id
+        <if test="postQueryCondition.tagId != null">
         LEFT JOIN tag_post_ref e ON a.post_id = e.post_id
+        </if>
         <where>
             <if test="postQueryCondition.userId != null">
-                a.user_id = #{postQueryCondition.userId}  AND
+                a.user_id = #{postQueryCondition.userId}
             </if>
             <if test="postQueryCondition.categoryId != null">
-                d.id = #{postQueryCondition.categoryId} AND
+                AND d.id = #{postQueryCondition.categoryId}
             </if>
             <if test="postQueryCondition.keywords != null and postQueryCondition.keywords != ''">
-                a.post_title LIKE CONCAT('%', #{postQueryCondition.keywords} ,'%')  AND
+                AND a.post_title LIKE CONCAT('%', #{postQueryCondition.keywords} ,'%')
             </if>
             <if test="postQueryCondition.tagId != null">
-                e.tag_id = #{postQueryCondition.tagId}
+                AND e.tag_id = #{postQueryCondition.tagId}
             </if>
         </where>
         order by post_top desc , post_time desc
         limit #{offset }, #{pageSize}
     </select>
+    
     <select id="collectCount" resultType="Integer">
         select count(1) from post
+    </select>
+    
+    <select id="calculateCount" resultType="java.lang.Integer">
+        SELECT  count(*)
+        from post a
+        LEFT JOIN category_post_ref b ON a.post_id = b.post_id
+        LEFT JOIN user c ON a.user_id = c.user_id
+        LEFT JOIN category d ON d.id = b.category_id
+        <if test="postQueryCondition.tagId != null">
+            LEFT JOIN tag_post_ref e ON a.post_id = e.post_id
+        </if>
+        <where>
+            <if test="postQueryCondition.userId != null">
+                a.user_id = #{postQueryCondition.userId}
+            </if>
+            <if test="postQueryCondition.categoryId != null">
+                AND d.id = #{postQueryCondition.categoryId}
+            </if>
+            <if test="postQueryCondition.keywords != null and postQueryCondition.keywords != ''">
+                AND a.post_title LIKE CONCAT('%', #{postQueryCondition.keywords} ,'%')
+            </if>
+            <if test="postQueryCondition.tagId != null">
+                AND e.tag_id = #{postQueryCondition.tagId}
+            </if>
+        </where> 
     </select>
 </mapper>
