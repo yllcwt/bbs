@@ -92,4 +92,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return paginationDTO;
     }
 
+    @Override
+    public PostDTO findPostByPostId(Integer postId) {
+        PostDTO postDTO = postMapper.findPostByPostId(postId);
+        List<Tag> tagList = tagMapper.findByPostId(postDTO.getPostId());
+        postDTO.setTagList(tagList);
+        return postDTO;
+    }
+
 }

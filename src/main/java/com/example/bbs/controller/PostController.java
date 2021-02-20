@@ -1,16 +1,14 @@
 package com.example.bbs.controller;
 
 import com.example.bbs.dto.JsonResult;
+import com.example.bbs.dto.PostDTO;
 import com.example.bbs.entity.*;
 import com.example.bbs.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -34,7 +32,7 @@ public class PostController {
 
     @GetMapping("test")
     public String testUser(Model model){
-        Post post = postService.getById(20);
+        Post post = postService.getById(19);
         model.addAttribute("post", post);
         return "test";
     }
@@ -104,4 +102,11 @@ public class PostController {
         return "post_publish";
     }
 
+    @GetMapping("/post/{id}")
+    public String postView(@PathVariable("id") Integer postId,
+                           Model model){
+        PostDTO postDTO = postService.findPostByPostId(postId);
+        model.addAttribute("postDTO", postDTO);
+        return "post_view";
+    }
 }

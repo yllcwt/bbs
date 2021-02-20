@@ -25,5 +25,7 @@ public interface PostMapper extends BaseMapper<Post> {
 
     Integer calculateCount(@Param("postQueryCondition") PostQueryCondition postQueryCondition);
 
+    PostDTO findPostByPostId(@Param("postId") Integer postId);
+
 //    Post addPost(@Param("post") Post post);
 }

@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="tt-col-description">
                                     <h6 class="tt-title">
-                                        <a href="/post/24" >
+                                        <a th:href="@{'/post/'+${pagination.getPostId()}}" >
                                             <span  class="font-success" ><svg th:if="${pagination.postTop}" class="tt-icon" ><use xlink:href="#icon-pinned"></use></svg></span>
                                             <span th:text="${pagination.postTitle}"></span>
                                         </a></h6>

@@ -1,6 +1,7 @@
 package com.example.bbs.service;
 
 import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostDTO;
 import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.Category;
 import com.example.bbs.entity.Post;
@@ -23,4 +24,6 @@ public interface PostService extends IService<Post> {
     void insertOrUpdatePost(Post post);
 
     PaginationDTO listPost(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition);
+
+    PostDTO findPostByPostId(Integer postId);
 }

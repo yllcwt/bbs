@@ -112,4 +112,26 @@
             </if>
         </where> 
     </select>
+
+    <select id="findPostByPostId" resultMap="resultPostDTO">
+        SELECT  a.user_id,
+                a.post_id,
+                a.post_title,
+                a.post_content,
+                a.post_like,
+                a.post_view,
+                a.post_time,
+                a.post_comment_count,
+                a.post_top,
+				d.id,
+				c.user_name,
+				c.user_image,
+				d.category_name,
+				d.category_explanation
+		from post a
+        LEFT JOIN category_post_ref b ON a.post_id = b.post_id
+        LEFT JOIN user c ON a.user_id = c.user_id
+        LEFT JOIN category d ON d.id = b.category_id
+        where a.post_id = #{postId}
+    </select>
 </mapper>
