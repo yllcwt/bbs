@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,22 @@ public class TagController {
     public String tagList(Model model){
 
         List<Tag> tagList = tagService.list();
+        model.addAttribute("tagDTOList", search(tagList));
+        return "post_tag";
+    }
+
+    @GetMapping("/tag")
+    public String searchTag(Model model,
+                            @RequestParam(value = "keywords",defaultValue = "") String keywords ){
+        LambdaQueryWrapper<Tag> wrapper = Wrappers.lambdaQuery();
+        wrapper.like(Tag::getTagExplanation, keywords);
+        List<Tag> tagList = tagService.list(wrapper);
+
+        model.addAttribute("tagDTOList", search(tagList));
+        return "post_tag";
+    }
+
+    private List<TagDTO> search(List<Tag> tagList){
         List<TagDTO> tagDTOList = new ArrayList<>();
 
         for(Tag tag : tagList){
@@ -50,9 +67,7 @@ public class TagController {
             tagDTO.setPostCount(tagCount);
             tagDTOList.add(tagDTO);
         }
-
-        model.addAttribute("tagDTOList", tagDTOList);
-        return "post_tag";
+        return tagDTOList;
     }
 }
 
