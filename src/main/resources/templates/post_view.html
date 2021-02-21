@@ -126,14 +126,14 @@
                 <form id="commentForm" itemid="comment-form">
                     <h6 class="pt-title">发表回复</h6>
                     <div class="form-group">
-                        <input type="hidden" name="id" id="postId" value="14">
+                        <input type="hidden" name="id" id="postId" th:value="${postDTO.postId}">
                         <input type="hidden" name="commentId" id="commentId">
                         <textarea name="commentContent" id="commentContent" class="form-control" rows="5"
                                   placeholder="发表你的看法"></textarea>
                     </div>
                     <div class="pt-row">
                         <div class="col-auto">
-                            <a href="javascript:void(0)" id="comment-btn" class="btn btn-secondary btn-width-lg">回复</a>
+                            <button type="button" id="comment-btn" class="btn btn-secondary btn-width-lg">回复</button>
                             <a href="javascript:void(0)" id="comment-cancel-btn" style="display: none;" class="btn btn btn-primary btn-width-lg">取消回复</a>
                         </div>
                     </div>
@@ -217,7 +217,14 @@
 
     </div>
 </main>
+<script type="text/javascript">
+    $('#comment-btn').click(function () {
+        alert("dddd");
+        showMsg("请输入内容", "info", 2000);
 
+    });
+
+</script>
 <div th:replace="import :: footer_js"></div>
 <!--Calendar-->
 <script src="/static/css/front/js/bundle.js"></script>

@@ -170,27 +170,28 @@ function loadPostList(page, type, isAppend) {
  * 回帖
  */
 $('#comment-btn').click(function () {
-    const content = $('#commentContent').val();
-    if (content.length < 3) {
-        showMsg('多写一点吧', "error", 1000);
-        return;
-    }
-    $.ajax({
-        type: 'POST',
-        url: '/comment',
-        async: false,
-        data: {
-            'id': $('#postId').val(),
-            'commentContent': content
-        },
-        success: function (data) {
-            if (data.code == 1) {
-                showMsgAndReload(data.msg, "success", 1000);
-            } else {
-                showMsg(data.msg, "error", 1000);
-            }
-        }
-    });
+    showMsg("111","success", 1000);
+    // const content = $('#commentContent').val();
+    // if (content.length < 3) {
+    //     showMsg('多写一点吧', "error", 1000);
+    //     return;
+    // }
+    // $.ajax({
+    //     type: 'POST',
+    //     url: '/comment',
+    //     async: false,
+    //     data: {
+    //         'postId': $('#postId').val(),
+    //         'commentContent': content
+    //     },
+    //     success: function (data) {
+    //         if (data.code == 1) {
+    //             showMsgAndReload(data.msg, "success", 1000);
+    //         } else {
+    //             showMsg(data.msg, "error", 1000);
+    //         }
+    //     }
+    // });
 });
 
 
@@ -339,27 +340,27 @@ $('.post-like').click(function () {
     });
 });
 
-/**
- * 加载未读数量
- */
-function loadNotReadCommentCount() {
-    $.ajax({
-        type: 'GET',
-        url: '/comment/notReadCount',
-        async: false,
-        success: function (data) {
-            if (data.code == 1) {
-                const count = data.result;
-                if (count != 0) {
-                    $('#notReadCount').text(count);
-                }
-            } else {
-                showMsg(data.msg, "error", 1000);
-            }
-        }
-    });
-}
-loadNotReadCommentCount();
+// /**
+//  * 加载未读数量
+//  */
+// function loadNotReadCommentCount() {
+//     $.ajax({
+//         type: 'GET',
+//         url: '/comment/notReadCount',
+//         async: false,
+//         success: function (data) {
+//             if (data.code == 1) {
+//                 const count = data.result;
+//                 if (count != 0) {
+//                     $('#notReadCount').text(count);
+//                 }
+//             } else {
+//                 showMsg(data.msg, "error", 1000);
+//             }
+//         }
+//     });
+// }
+// loadNotReadCommentCount();
 
 
 
