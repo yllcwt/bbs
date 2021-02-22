@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="import :: head_js"></div>
-    <div th:replace="import :: markdown"></div>
+    <div th:insert="import :: markdown"></div>
     <link rel="stylesheet" href="/static/css/front/css/style.css?version=2.0">
     <link rel="stylesheet" href="/static/css/front/css/main.css">
-    <link rel="stylesheet" href="/static/css/front/css/jsmodern-1.1.1.min.css">
+<!--    <link rel="stylesheet" href="/static/css/front/css/jsmodern-1.1.1.min.css">-->
     <style>
         .tt-tab-wrapper .nav-tabs .nav-item:first-child a {
             padding-left: 13px; }
@@ -217,18 +217,11 @@
 
     </div>
 </main>
-<script type="text/javascript">
-    $('#comment-btn').click(function () {
-        alert("dddd");
-        showMsg("请输入内容", "info", 2000);
 
-    });
-
-</script>
 <div th:replace="import :: footer_js"></div>
 <!--Calendar-->
-<script src="/static/css/front/js/bundle.js"></script>
-<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>
+<!--<script src="/static/css/front/js/bundle.js"></script>-->
+<!--<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>-->
 <!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/highlight.css">-->
 <!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/prettify.css">-->
 <!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/highlight.js"></script>-->
@@ -243,5 +236,6 @@
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 126" id="icon-time"><path d="M63 0C28.21 0 0 28.21 0 63s28.21 63 63 63 63-28.21 63-63S97.79 0 63 0zm31.6 94.6a6.471 6.471 0 0 1-4.6 1.9c-1.66 0-3.33-.63-4.6-1.9l-27-27a6.507 6.507 0 0 1-1.55-6.72l10-29a6.499 6.499 0 1 1 12.29 4.23l-8.67 25.16L94.6 85.4a6.525 6.525 0 0 1 0 9.2z" fill="#666f75"></path></symbol>
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 90" id="icon-view"><path d="M72 0C32.24 0 0 36 0 45s32.24 45 72 45 72-36 72-45S111.76 0 72 0zm0 72c-14.91 0-27-12.09-27-27s12.09-27 27-27 27 12.09 27 27-12.09 27-27 27z"></path></symbol>
 </svg>
+
 </body>
 </html>

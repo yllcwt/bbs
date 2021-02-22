@@ -1,26 +1,109 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--&lt;!&ndash;    <div th:replace="import :: head_js"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div th:replace="import :: markdown"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="/static/css/front/css/style.css?version=2.0">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="/static/css/front/css/main.css">&ndash;&gt;-->
+<!--    <link href="/static/js/plugins/toast/css/jquery.toast.min.css" rel="stylesheet">-->
+<!--    <script src="/static/js/jquery-1.10.2.min.js"></script>-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="/static/css/front/css/jsmodern-1.1.1.min.css">&ndash;&gt;-->
+
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash;<div id="question-view">&ndash;&gt;-->
+<!--&lt;!&ndash;    <textarea style="display:none;" th:text="${post.getPostContent()}"></textarea>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<script type="text/javascript">&ndash;&gt;-->
+<!--&lt;!&ndash;    $(function () {&ndash;&gt;-->
+<!--&lt;!&ndash;        editormd.markdownToHTML("question-view", {});&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+<!--<button type="button" id="myTest">ceshi</button>-->
+<!--&lt;!&ndash;<div th:replace="import :: footer_js"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;Calendar&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="/static/css/front/js/bundle.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/highlight.css">&ndash;&gt;-->
+<!--&lt;!&ndash;<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/prettify.css">&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/highlight.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/prettify.js"></script>&ndash;&gt;-->
+<!--<script type="text/javascript">-->
+<!--        function showMsg(text, icon, hideAfter) {-->
+<!--            if (heading == undefined) {-->
+<!--                var heading = "提示";-->
+<!--            }-->
+<!--            $.toast({-->
+<!--                text: text,-->
+<!--                heading: heading,-->
+<!--                icon: icon,-->
+<!--                showHideTransition: 'fade',-->
+<!--                allowToastClose: true,-->
+<!--                hideAfter: hideAfter,-->
+<!--                stack: 1,-->
+<!--                position: 'top-center',-->
+<!--                textAlign: 'left',-->
+<!--                loader: true,-->
+<!--                loaderBg: '#ffffff'-->
+<!--            });-->
+<!--        }-->
+<!--    $('#myTest').click(function () {-->
+<!--        showMsg("请输入内容", "info", 2000);-->
+
+<!--    });-->
+
+<!--</script>-->
+<!--<script src="/static/js/plugins/toast/js/jquery.toast.min.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="import :: head_js"></div>
-    <div th:replace="import :: markdown"></div>
+    <!--    <div th:insert="import :: markdown"></div>-->
     <link rel="stylesheet" href="/static/css/front/css/style.css?version=2.0">
-<!--    <link rel="stylesheet" href="/static/css/front/css/main.css">-->
-<!--    <link rel="stylesheet" href="/static/css/front/css/jsmodern-1.1.1.min.css">-->
-
+    <link rel="stylesheet" href="/static/css/front/css/main.css">
+    <link rel="stylesheet" href="/static/css/front/css/jsmodern-1.1.1.min.css">
 </head>
 <body>
-<div id="question-view">
-    <textarea style="display:none;" th:text="${post.getPostContent()}"></textarea>
-</div>
+<button type="button" id="myTest">dfd</button>
 <script type="text/javascript">
-    $(function () {
-        editormd.markdownToHTML("question-view", {});
+    function showMsg(text, icon, hideAfter) {
+        if (heading == undefined) {
+            var heading = "提示";
+        }
+        $.toast({
+            text: text,
+            heading: heading,
+            icon: icon,
+            showHideTransition: 'fade',
+            allowToastClose: true,
+            hideAfter: hideAfter,
+            stack: 1,
+            position: 'top-center',
+            textAlign: 'left',
+            loader: true,
+            loaderBg: '#ffffff'
+        });
+    }
+    $('#comment-btn').click(function () {
+        showMsg("请输入内容", "info", 2000);
+
     });
+    $('#myTest').click(function () {
+        showMsg("请输入内容", "info", 2000);
+
+    });
+
 </script>
 <div th:replace="import :: footer_js"></div>
 <!--Calendar-->
 <!--<script src="/static/css/front/js/bundle.js"></script>-->
-<!--<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>-->
+<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>
 <!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/highlight.css">-->
 <!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/prettify.css">-->
 <!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/highlight.js"></script>-->
