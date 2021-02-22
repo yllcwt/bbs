@@ -8,12 +8,14 @@ import com.example.bbs.entity.Post;
 import com.example.bbs.entity.User;
 import com.example.bbs.service.CommentService;
 import com.example.bbs.service.PostService;
+import com.example.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Objects;
 
 
 /**
@@ -31,6 +33,8 @@ public class CommentController {
     private PostService postService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/comment")
     @ResponseBody
@@ -50,7 +54,18 @@ public class CommentController {
 
         Comment comment = new Comment();
         if (commentId != null) {
-
+            //回复回帖
+            Comment parentComment = commentService.getById(commentId);
+            if (parentComment == null || !Objects.equals(parentComment.getPostId(), postId)) {
+                return JsonResult.error("回帖不存在！");
+            }
+            User parentUser = userService.getById(parentComment.getUserId());
+            if (parentUser != null) {
+                String lastContent = "<a href='#comment-id-"+parentComment.getCommentId()+"'>@"+parentUser.getUserName()+"</a> ";
+                comment.setCommentContent(lastContent+HtmlUtil.escape(commentContent));
+                comment.setAcceptUserId(parentComment.getUserId());
+                comment.setCommentParentId(parentComment.getCommentId());
+            }
         } else {
             //回复帖子
             comment.setCommentContent(HtmlUtil.escape(commentContent));

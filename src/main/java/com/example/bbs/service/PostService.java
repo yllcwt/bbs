@@ -26,4 +26,6 @@ public interface PostService extends IService<Post> {
     PaginationDTO listPost(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition);
 
     PostDTO findPostByPostId(Integer postId);
+
+    void addPostView(Integer postId);
 }

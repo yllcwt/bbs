@@ -44,14 +44,14 @@
                                 <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="avatar" alt="">
                             </div>
                             <div class="tt-avatar-title">
-                                <a href="/user/1" th:text="${postDTO.user.userName}">管理员</a>
+                                <a href="/user/1" th:text="${postDTO.user.userName}"></a>
                             </div>
-                            <a href="#" class="tt-info-time" th:text="${#dates.format(postDTO.postTime,'yyyy-MM-dd HH:mm')}">
+                            <a href="#" class="tt-info-time">
                                 <i class="tt-icon">
                                     <svg>
                                         <use xlink:href="#icon-time"></use>
                                     </svg>
-                                </i>
+                                </i>&nbsp;<span th:text="${#dates.format(postDTO.postTime,'yyyy-MM-dd HH:mm')}"></span>
                             </a>
                         </div>
                         <h3 class="tt-item-title">
@@ -60,7 +60,7 @@
                         <div class="tt-item-tag">
                             <ul class="tt-list-badge">
                                 <li><a th:href="@{/homepage(category=${postDTO.category.id})}"><span
-                                        class="tt-color03 tt-badge" th:text="${postDTO.category.categoryName}"></span></a>
+                                        th:class="tt-color+((${postDTO.category.id/10} == 0) ? '0'+${postDTO.category.id} : ${postDTO.category.id})+' '+tt-badge" th:text="${postDTO.category.categoryName}"></span></a>
                                 </li>
                                 <li th:each="postTag : ${postDTO.tagList}">
                                     <a th:href="@{/homepage(tag=${postTag.id})}"><span class="tt-badge" th:text="${postTag.tagExplanation}"></span></a>
@@ -140,7 +140,7 @@
                 </form>
             </div>
 
-            <div class="tt-item">
+            <div class="tt-item" th:each="comment : ${commentList}">
                 <div class="tt-single-topic">
                     <div class="tt-item-header pt-noborder">
                         <div class="tt-item-info info-top">
@@ -148,7 +148,7 @@
                                 <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="avatar" alt="">
                             </div>
                             <div class="tt-avatar-title">
-                                <a href="/user/1" id="comment-11-user">管理员</a>
+                                <a href="/user/1" th:id="'comment-'+${comment.commentId}+'-user'" th:text="${comment.user.userName}"></a>
                             </div>
                             <a href="#" class="tt-info-time">
                                 <i class="tt-icon">
@@ -159,31 +159,22 @@
                             </a>
                         </div>
                     </div>
-                    <div class="tt-item-description">
-                        看来要学Kotlin啦！
-                        <div class="topic-inner-list" >
-                            <div class="topic-inner">
+                    <div class="tt-item-description" >
+                        <div th:text="${comment.commentContent}"></div>
+                        <div class="topic-inner-list">
+                            <div class="topic-inner" th:each="childComment : ${comment.childComments}">
                                 <div class="topic-inner-title">
                                     <div class="topic-inner-avatar">
-                                        <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" id="comment-11-user" class="avatar" alt="">
+                                        <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" th:id="'comment-'+${comment.commentId}+'-user'" class="avatar" alt="">
                                     </div>
-                                    <div class="topic-inner-title"><a href="/user/1">管理员</a></div>
+                                    <div class="topic-inner-title"><a href="/user/1" th:text="${childComment.user.userName}"></a></div>
                                 </div>
-                                <div class="topic-inner-description"><a href='#comment-id-11'>@管理员</a> 管理员: 回复测试！</div>
-                            </div>
-                            <div class="topic-inner">
-                                <div class="topic-inner-title">
-                                    <div class="topic-inner-avatar">
-                                        <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" id="comment-11-user" class="avatar" alt="">
-                                    </div>
-                                    <div class="topic-inner-title"><a href="/user/1">管理员</a></div>
-                                </div>
-                                <div class="topic-inner-description"><a href='#comment-id-11'>@管理员</a> 管理员: sdsds</div>
+                                <div class="topic-inner-description" th:utext="${childComment.commentContent}"></div>
                             </div>
                         </div>
                     </div>
                     <div class="tt-item-info info-bottom">
-                        <a href="javascript:void(0)" data-id="11" class="tt-icon-btn comment-like">
+                        <a href="javascript:void(0)" th:data-id="${comment.commentId}" class="tt-icon-btn comment-like">
                             <i class="tt-icon">
                                 <svg>
                                     <use xlink:href="#icon-like"></use>
@@ -191,7 +182,7 @@
                             </i>
                             <span class="tt-text">0</span>
                         </a>
-                        <a href="javascript:void(0)" data-id="11" class="tt-icon-btn comment-dislike">
+                        <a href="javascript:void(0)" th:data-id="${comment.commentId}" class="tt-icon-btn comment-dislike">
                             <i class="tt-icon">
                                 <svg>
                                     <use xlink:href="#icon-dislike"></use>
@@ -200,7 +191,7 @@
                             <span class="tt-text">0</span>
                         </a>
 
-                        <a href="#comment" data-id="11"  class="tt-icon-btn tt-hover-02 tt-small-indent reply-btn">
+                        <a href="#comment" th:data-id="${comment.commentId}"  class="tt-icon-btn tt-hover-02 tt-small-indent reply-btn">
                             <i class="tt-icon">
                                 <svg>
                                     <use xlink:href="#icon-reply"></use>
@@ -217,8 +208,8 @@
 
     </div>
 </main>
-
 <div th:replace="import :: footer_js"></div>
+<script src="/static/css/front/js/main.js"></script>
 <!--Calendar-->
 <!--<script src="/static/css/front/js/bundle.js"></script>-->
 <!--<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>-->

@@ -27,5 +27,7 @@ public interface PostMapper extends BaseMapper<Post> {
 
     PostDTO findPostByPostId(@Param("postId") Integer postId);
 
+    void addPostView(@Param("postId") Integer postId);
+
 //    Post addPost(@Param("post") Post post);
 }

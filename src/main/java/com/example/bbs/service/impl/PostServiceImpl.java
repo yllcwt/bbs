@@ -100,4 +100,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return postDTO;
     }
 
+    @Override
+    public void addPostView(Integer postId) {
+        postMapper.addPostView(postId);
+    }
+
 }

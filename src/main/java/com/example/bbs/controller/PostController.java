@@ -1,9 +1,12 @@
 package com.example.bbs.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.dto.PostDTO;
 import com.example.bbs.entity.*;
 import com.example.bbs.service.*;
+import com.example.bbs.util.CommentUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +33,10 @@ public class PostController {
     private TagPostRefService tagPostRefService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("test")
     public String testUser(Model model){
@@ -107,6 +115,22 @@ public class PostController {
                            Model model){
         PostDTO postDTO = postService.findPostByPostId(postId);
         model.addAttribute("postDTO", postDTO);
+
+        LambdaQueryWrapper<Comment> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(Comment::getPostId, postId);
+        List<Comment> commentList = commentService.list(wrapper);
+
+        for (Comment comment : commentList) {
+            User commentUser = userService.getById(comment.getUserId());
+            comment.setUser(commentUser);
+        }
+
+        commentList = CommentUtil.getComments(commentList);
+        System.err.println(commentList);
+        model.addAttribute("commentList", commentList);
+
+        //增加帖子点击量
+        postService.addPostView(postId);
         return "post_view";
     }
 }

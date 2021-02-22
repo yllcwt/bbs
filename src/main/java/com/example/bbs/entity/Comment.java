@@ -32,6 +32,9 @@ public class Comment implements Serializable {
 
     private Integer postId;
 
+    /**
+     * 评论人的userId
+     */
     private Integer userId;
 
     private String commentContent;

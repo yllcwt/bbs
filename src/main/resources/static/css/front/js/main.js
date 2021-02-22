@@ -169,30 +169,29 @@ function loadPostList(page, type, isAppend) {
 /**
  * 回帖
  */
-$('#comment-btn').click(function () {
-    showMsg("111","success", 1000);
-    // const content = $('#commentContent').val();
-    // if (content.length < 3) {
-    //     showMsg('多写一点吧', "error", 1000);
-    //     return;
-    // }
-    // $.ajax({
-    //     type: 'POST',
-    //     url: '/comment',
-    //     async: false,
-    //     data: {
-    //         'postId': $('#postId').val(),
-    //         'commentContent': content
-    //     },
-    //     success: function (data) {
-    //         if (data.code == 1) {
-    //             showMsgAndReload(data.msg, "success", 1000);
-    //         } else {
-    //             showMsg(data.msg, "error", 1000);
-    //         }
-    //     }
-    // });
-});
+// $('#comment-btn').click(function () {
+//     const content = $('#commentContent').val();
+//     if (content.length < 3) {
+//         showMsg('多写一点吧', "error", 1000);
+//         return;
+//     }
+//     $.ajax({
+//         type: 'POST',
+//         url: '/comment',
+//         async: false,
+//         data: {
+//             'postId': $('#postId').val(),
+//             'commentContent': content
+//         },
+//         success: function (data) {
+//             if (data.code == 1) {
+//                 showMsgAndReload(data.msg, "success", 1000);
+//             } else {
+//                 showMsg(data.msg, "error", 1000);
+//             }
+//         }
+//     });
+// });
 
 
 /**
@@ -203,7 +202,7 @@ $('#comment-btn').click(function () {
     const commentId = $('#commentId').val();
     const postId = $('#postId').val();
     if (content.length < 3) {
-        showMsg(data.msg, "error", '多写一点吧');
+        showMsg('多写一点吧', "error", 1000);
         return;
     }
     $.ajax({
@@ -242,6 +241,7 @@ $('.reply-btn').click(function () {
 $('#comment-cancel-btn').click(function () {
     $('#commentId').val('');
     $('#commentContent').val('');
+    $('#commentContent').attr('placeholder', '发表你的看法');
     $('#comment-cancel-btn').hide();
 });
 
