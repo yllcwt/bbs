@@ -28,4 +28,6 @@ public interface PostService extends IService<Post> {
     PostDTO findPostByPostId(Integer postId);
 
     void addPostView(Integer postId);
+
+    void addPostCommentCount(Integer postId);
 }

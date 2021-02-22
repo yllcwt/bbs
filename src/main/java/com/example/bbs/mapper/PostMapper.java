@@ -29,5 +29,7 @@ public interface PostMapper extends BaseMapper<Post> {
 
     void addPostView(@Param("postId") Integer postId);
 
+    void addPostCommentCount(@Param("postId") Integer postId);
+
 //    Post addPost(@Param("post") Post post);
 }

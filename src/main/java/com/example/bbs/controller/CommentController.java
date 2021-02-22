@@ -77,7 +77,10 @@ public class CommentController {
         comment.setPostId(postId);
 
         commentService.save(comment);
-        return JsonResult.success("回复帖子成功！");
+
+        //修改评论数
+        postService.addPostCommentCount(postId);
+        return JsonResult.success("回复成功！");
     }
 
 }

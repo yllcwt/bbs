@@ -105,4 +105,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         postMapper.addPostView(postId);
     }
 
+    @Override
+    public void addPostCommentCount(Integer postId) {
+        postMapper.addPostCommentCount(postId);
+    }
+
 }

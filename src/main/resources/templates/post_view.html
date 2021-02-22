@@ -41,7 +41,7 @@
                     <div class="tt-item-header">
                         <div class="tt-item-info info-top">
                             <div class="tt-avatar-icon">
-                                <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="avatar" alt="">
+                                <img th:src="${postDTO.user.userImage}" class="avatar" alt="">
                             </div>
                             <div class="tt-avatar-title">
                                 <a href="/user/1" th:text="${postDTO.user.userName}"></a>
@@ -120,7 +120,20 @@
                     </div>
                 </div>
             </div>
-
+            <div class="tt-topic-list" th:if="${session.user} == null">
+                <div class="tt-item tt-item-popup">
+                    <div class="tt-col-avatar">
+                        <img src="/static/images/avatar/notlogin.jpeg" class="avatar" alt="">
+                    </div>
+                    <div class="tt-col-message">
+                        检测到您未登录，需要先登录才能回复哦！
+                    </div>
+                    <div class="tt-col-btn">
+                        <a type="button" href="/login" class="btn btn-primary">登录</a>
+                        <a type="button" href="/register" class="btn btn-secondary">注册</a>
+                    </div>
+                </div>
+            </div>
 
             <div class="pt-editor form-default" id="comment">
                 <form id="commentForm" itemid="comment-form">
@@ -145,7 +158,7 @@
                     <div class="tt-item-header pt-noborder">
                         <div class="tt-item-info info-top">
                             <div class="tt-avatar-icon">
-                                <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="avatar" alt="">
+                                <img th:src="${comment.user.userImage}" class="avatar" alt="">
                             </div>
                             <div class="tt-avatar-title">
                                 <a href="/user/1" th:id="'comment-'+${comment.commentId}+'-user'" th:text="${comment.user.userName}"></a>
@@ -155,7 +168,7 @@
                                     <svg>
                                         <use xlink:href="#icon-time"></use>
                                     </svg>
-                                </i>1年前
+                                </i>&nbsp;<span th:text="${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}"></span>
                             </a>
                         </div>
                     </div>
@@ -165,7 +178,7 @@
                             <div class="topic-inner" th:each="childComment : ${comment.childComments}">
                                 <div class="topic-inner-title">
                                     <div class="topic-inner-avatar">
-                                        <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" th:id="'comment-'+${comment.commentId}+'-user'" class="avatar" alt="">
+                                        <img th:src="${childComment.user.userImage}" th:id="'comment-'+${comment.commentId}+'-user'" class="avatar" alt="">
                                     </div>
                                     <div class="topic-inner-title"><a href="/user/1" th:text="${childComment.user.userName}"></a></div>
                                 </div>

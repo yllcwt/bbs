@@ -57,9 +57,9 @@
                             <div class="tt-col-value">发布</div>
                         </div>
                         <div id="tt-item-wrapper" th:each="pagination,loopStatus : ${paginationDTO.getData()}">
-                            <div th:class="tt-item+(${pagination.postTop} ? ' '+tt-itemselect : '')" th:style="(${pagination.postTop} ? '': (${loopStatus.odd} ? 'background-color: #f2f4f6' : ''))">
+                            <div th:class="tt-item+(${pagination.postTop} ? ' tt-itemselect' : '')" th:style="(${pagination.postTop} ? '': (${loopStatus.odd} ? 'background-color: #f2f4f6' : ''))">
                                 <div class="tt-col-avatar">
-                                    <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/17.jpeg" class="avatar" alt="">
+                                    <img th:src="${pagination.user.userImage}" class="avatar" alt="">
                                 </div>
                                 <div class="tt-col-description">
                                     <h6 class="tt-title">

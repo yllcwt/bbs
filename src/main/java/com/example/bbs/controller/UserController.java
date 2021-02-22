@@ -8,6 +8,7 @@ import com.example.bbs.service.UserService;
 import com.example.bbs.util.RegexUtil;
 import io.github.biezhi.ome.SendMailException;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 import static java.lang.System.*;
@@ -94,6 +96,8 @@ public class UserController {
             user.setUserEmail(userEmail);
             user.setUserStatus(0);
             user.setUserPassword(userPassword);
+            user.setUserImage("/static/images/avatar/" + RandomUtils.nextInt(1, 41) + ".jpeg");
+            user.setUserCreateTime(new Date());
             boolean flag = false;
             flag = userService.save(user);
             if (flag) {
