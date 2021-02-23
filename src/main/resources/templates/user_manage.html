@@ -142,7 +142,7 @@
                                     </div>
                                     <div class="box-footer">
                                         <button type="button" class="btn btn-primary btn-sm "
-                                                onclick="saveUser('profileForm')">保存</button>
+                                                onclick="saveUser()">保存</button>
                                     </div>
                                 </form>
                             </div>
@@ -204,6 +204,65 @@
         });
     }
 
+    function saveUser() {
+        const imageText = $('#imageText').val();
+        const userName = $("#userName").val();
+        const userEmail = $("#userEmail").val();
+        const userDesc = $('#userDesc').val();
+        const userDisplayName = $('#userDisplayName').val();
+        if (userName == "" || userEmail == "" || userDisplayName == "") {
+            showMsg("请输入完整信息！", "error", 1000);
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/userUpdateInfo',
+                async: false,
+                data: {
+                    'userName': userName,
+                    'userEmail': userEmail,
+                    'userImage': imageText,
+                    'userInterest': userDesc,
+                    'userDisplayName': userDisplayName
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        showMsgAndRedirect(data.msg, "success", 2000, "/login");
+                    } else {
+                        showMsg(data.msg, "error", 1000);
+                    }
+                }
+            });
+        }
+    }
+
+    function changPass() {
+        const beforePassword = $('#beforePass').val();
+        const newPassword = $("#newPass").val();
+        const reNewPassword = $("#reNewPass").val();
+        if (beforePassword == "" || newPassword == "" || reNewPassword == "") {
+            showMsg("请输入完整信息！", "error", 1000);
+        } if(newPassword!=reNewPassword){
+            showMsg("输入的新密码不一致！", "error", 1000);
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/userUpdatePassword',
+                async: false,
+                data: {
+                    'beforePassword': beforePassword,
+                    'newPassword': newPassword,
+                    'reNewPassword': reNewPassword
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        showMsgAndRedirect(data.msg, "success", 2000, "/login");
+                    } else {
+                        showMsg(data.msg, "error", 1000);
+                    }
+                }
+            });
+        }
+    }
 </script>
 <div th:replace="import :: footer_js"></div>
 </body>

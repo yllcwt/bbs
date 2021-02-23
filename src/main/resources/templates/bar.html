@@ -122,11 +122,14 @@
                 </div>
                 <div class="col-auto ml-auto">
 
-                    　
+                    <div class="tt-col-btn" th:if="${session.user==null}">
+                        <a href="/login" class="btn btn-primary">登录</a>
+                        <a href="/register" class="btn btn-secondary">注册</a>
+                    </div>
                     　　
-                    <div class="tt-user-info d-flex justify-content-center">
+                    <div class="tt-user-info d-flex justify-content-center" th:if="${session.user!=null}">
                         <a href="/logout" class="btn btn-primary">退出</a>
-                        <a href="/admin" class="btn btn-secondary">后台</a>
+                        <a href="/user_manage" class="btn btn-secondary">后台</a>
                     </div>
 
 

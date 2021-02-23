@@ -19,6 +19,39 @@ public class PaginationDTO<T> {
     private List<Integer> pages = new ArrayList<>();
     private Integer totalPage;
 
+    public void mySetPagination(Integer pageIndex, Integer pageSize, Integer totalCount) {
+        if (totalCount % pageSize == 0) {
+            this.totalPage = totalCount / pageSize;
+        } else {
+            this.totalPage = totalCount / pageSize + 1;
+        }
+
+        if (pageIndex < 1) {
+            pageIndex = 1;
+        }
+        if (pageIndex > this.totalPage) {
+            pageIndex = this.totalPage;
+        }
+        this.setPage(pageIndex);
+
+        // 是否展示上一页
+        if (page == 1) {
+            this.showPrevious = false;
+        } else {
+            this.showPrevious = true;
+        }
+
+        // 是否展示下一页
+        if (page == totalPage) {
+            this.showNext = false;
+        } else {
+            this.showNext = true;
+        }
+
+        this.showFirstPage = this.page != 1;
+        this.showEndPage = this.page != this.totalPage;
+    }
+
     public void setPagination(Integer totalPage, Integer page) {
         this.totalPage = totalPage;
         this.page = page;

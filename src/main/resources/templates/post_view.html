@@ -44,7 +44,7 @@
                                 <img th:src="${postDTO.user.userImage}" class="avatar" alt="">
                             </div>
                             <div class="tt-avatar-title">
-                                <a href="/user/1" th:text="${postDTO.user.userName}"></a>
+                                <a href="/user/1" th:text="${postDTO.user.userDisplayName}"></a>
                             </div>
                             <a href="#" class="tt-info-time">
                                 <i class="tt-icon">
@@ -161,7 +161,7 @@
                                 <img th:src="${comment.user.userImage}" class="avatar" alt="">
                             </div>
                             <div class="tt-avatar-title">
-                                <a href="/user/1" th:id="'comment-'+${comment.commentId}+'-user'" th:text="${comment.user.userName}"></a>
+                                <a href="/user/1" th:id="'comment-'+${comment.commentId}+'-user'" th:text="${comment.user.userDisplayName}"></a>
                             </div>
                             <a href="#" class="tt-info-time">
                                 <i class="tt-icon">
@@ -180,7 +180,7 @@
                                     <div class="topic-inner-avatar">
                                         <img th:src="${childComment.user.userImage}" th:id="'comment-'+${comment.commentId}+'-user'" class="avatar" alt="">
                                     </div>
-                                    <div class="topic-inner-title"><a href="/user/1" th:text="${childComment.user.userName}"></a></div>
+                                    <div class="topic-inner-title"><a href="/user/1" th:text="${childComment.user.userDisplayName}"></a></div>
                                 </div>
                                 <div class="topic-inner-description" th:utext="${childComment.commentContent}"></div>
                             </div>

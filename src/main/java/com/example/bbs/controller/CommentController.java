@@ -61,7 +61,7 @@ public class CommentController {
             }
             User parentUser = userService.getById(parentComment.getUserId());
             if (parentUser != null) {
-                String lastContent = "<a href='#comment-id-"+parentComment.getCommentId()+"'>@"+parentUser.getUserName()+"</a> ";
+                String lastContent = "<a href='#comment-id-"+parentComment.getCommentId()+"'>@"+parentUser.getUserDisplayName()+"</a> ";
                 comment.setCommentContent(lastContent+HtmlUtil.escape(commentContent));
                 comment.setAcceptUserId(parentComment.getUserId());
                 comment.setCommentParentId(parentComment.getCommentId());

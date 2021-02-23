@@ -127,27 +127,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr id="post-41">
-                                <td><input type="checkbox" name="ids" value="41"></td>
+                            <tr th:each="post : ${paginationDTO.getData()}" th:id="'post-'+${post.postId}">
+                                <td><input type="checkbox" name="ids" th:value="${post.postId}"></td>
                                 <td>
                                     <label>
-                                        <a href="/post/41" target="_blank">
-
-
-                                            sdsd
+                                        <a href="/post/41" target="_blank" th:text="${post.postTitle}">
                                         </a>
                                     </label>
                                 </td>
                                 <td>
-                                    <span class="label" >0</span>
+                                    <span class="label" th:text="${post.postCommentCount}"></span>
                                 </td>
                                 <td>
-                                    <span class="label" >0</span>
+                                    <span class="label" th:text="${post.postLike}"></span>
                                 </td>
                                 <td>
-                                    <span class="label" >0</span>
+                                    <span class="label" th:text="${post.postView}"></span>
                                 </td>
-                                <td>2021-02-02 20:18</td>
+                                <td th:text="${#dates.format(post.postTime, 'yyyy-MM-dd HH:mm')}"></td>
 
                                 <td>
                                     <a href="/post/41" class="btn btn-primary btn-xs" target="_blank">查看</a>
@@ -162,7 +159,12 @@
                                         丢弃
                                     </button>
                                 </td>
+<!--                                <script th:inline="javascript">-->
 
+<!--                                    var test= [[${test}]];-->
+<!--                                    console.log(test);-->
+
+<!--                                </script>-->
 
 
                             </tr>
@@ -170,26 +172,26 @@
                         </table>
                     </div>
                     <div class="box-footer clearfix">
-                        <div class="no-margin pull-left">
-                            第 1 / 1 页
+                        <div class="no-margin pull-left" th:text="'第 '+${paginationDTO.page}+' / '+${paginationDTO.totalPage}+' 页'">
                         </div>
                         <ul class="pagination no-margin pull-right">
-                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showFirstPage==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=1,pageSize=3)}">
                                 首页
                             </a>
                             </li>
-                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;page=0&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showPrevious==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.page-1},pageSize=3)}">
                                 上一页
                             </a>
                             </li>
-                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;page=2&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showNext==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.page+1},pageSize=3)}">
                                 下一页
                             </a>
                             </li>
-                            <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/post?status=0&amp;page=1&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc">
+                            <li><a data-pjax="true" th:class="'btn btn-sm'+(${paginationDTO.showEndPage==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.page+1},pageSize=3)}">
                                 尾页
                             </a>
                             </li>
+<!--                            class="btn btn-sm disabled" href="/admin/post?status=0&amp;page=1&amp;searchType=&amp;keywords=&amp;sort=isSticky desc, createTime&amp;order=desc"-->
                         </ul>
                     </div>
 

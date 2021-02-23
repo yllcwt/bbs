@@ -31,5 +31,9 @@ public interface PostMapper extends BaseMapper<Post> {
 
     void addPostCommentCount(@Param("postId") Integer postId);
 
+    Integer calculateAmount();
+
+    List<Post> listPostManage(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
+
 //    Post addPost(@Param("post") Post post);
 }

@@ -1,6 +1,8 @@
 package com.example.bbs.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.entity.User;
 import com.example.bbs.service.MailService;
@@ -98,6 +100,7 @@ public class UserController {
             user.setUserPassword(userPassword);
             user.setUserImage("/static/images/avatar/" + RandomUtils.nextInt(1, 41) + ".jpeg");
             user.setUserCreateTime(new Date());
+            user.setUserDisplayName(userName);
             boolean flag = false;
             flag = userService.save(user);
             if (flag) {
@@ -129,6 +132,77 @@ public class UserController {
         return JsonResult.success("密码已发送到你的邮箱！");
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        if(request.getSession().getAttribute("user")!=null)
+        {
+            request.getSession().removeAttribute("user");
+        }
+        return "redirect:/login";
+    }
+
+    @PostMapping("/userUpdateInfo")
+    @ResponseBody
+    public JsonResult userUpdateInfo (@RequestParam(value = "userImage",required = false) String userImage,
+                                      @RequestParam("userName") String userName,
+                                      @RequestParam("userDisplayName") String userDisplayName,
+                                      @RequestParam("userEmail") String userEmail,
+                                      @RequestParam(value = "userInterest",required = false) String userInterest,
+                                      HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        if(user == null){
+            return JsonResult.error("请先登录！");
+        }
+        if(!RegexUtil.isEmail(userEmail)) {
+            return JsonResult.error("邮箱格式错误！");
+        }
+        if(userService.selectByUserName(userName)!=null) {
+            return JsonResult.error("用户名已存在！");
+        }
+        if(StringUtils.isNotEmpty(userImage)) {
+            user.setUserImage(userImage);
+        }
+        user.setUserDisplayName(userDisplayName);
+        user.setUserName(userName);
+        user.setUserEmail(userEmail);
+        user.setUserInterest(userInterest);
+        LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(User::getUserId, user.getUserId());
+        if(userService.update(user, wrapper)) {
+            request.getSession().setAttribute("user", user);
+            return JsonResult.success("更新成功！");
+        }
+        return JsonResult.error("更新失败！");
+    }
+
+    @PostMapping("/userUpdatePassword")
+    @ResponseBody
+    public JsonResult userUpdatePassword(@RequestParam("beforePassword") String beforePassword,
+                                         @RequestParam("newPassword") String newPassword,
+                                         HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        if(user == null){
+            return JsonResult.error("请先登录！");
+        }
+        if(!user.getUserPassword().equals(beforePassword)) {
+            return JsonResult.error("旧密码错误！");
+        }
+        if(!RegexUtil.isPassword(newPassword)){
+            if(newPassword.length() < 6 || newPassword.length()>16)
+            {
+                return JsonResult.error("密码长度不够！");
+            }
+            return JsonResult.error("密码必须由字母和数字组成！");
+        }
+        user.setUserPassword(newPassword);
+        LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(User::getUserId, user.getUserId());
+        if(userService.update(user, wrapper)) {
+            request.getSession().setAttribute("user", user);
+            return JsonResult.success("密码更新成功！");
+        }
+        return JsonResult.error("密码更新失败！");
+    }
 
 }
 

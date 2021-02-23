@@ -14,11 +14,12 @@
         <result column="user_status" property="userStatus"/>
         <result column="user_email" property="userEmail"/>
         <result column="user_create_time" property="userCreateTime"/>
+        <result column="user_display_name" property="userDisplayName"/>
     </resultMap>
 
     <sql id="Base_User_Info">
         user_id,user_name,user_password,user_age,user_sex,user_interest
-        ,user_birthday,user_image,user_status,user_email,user_create_time
+        ,user_birthday,user_image,user_status,user_email,user_create_time,user_display_name
     </sql>
 
     <select id="listUsers" resultMap="resultUsers" >

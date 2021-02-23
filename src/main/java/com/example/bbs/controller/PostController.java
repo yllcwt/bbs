@@ -3,6 +3,7 @@ package com.example.bbs.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
+import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostDTO;
 import com.example.bbs.entity.*;
 import com.example.bbs.service.*;
@@ -132,5 +133,16 @@ public class PostController {
         //增加帖子点击量
         postService.addPostView(postId);
         return "post_view";
+    }
+
+    @GetMapping("/postManage")
+    public String postManage(Model model,
+                             @RequestParam("pageIndex") Integer pageIndex,
+                             @RequestParam("pageSize") Integer pageSize) {
+        PaginationDTO paginationDTO = null;
+        paginationDTO = postService.listPostManage(pageIndex, pageSize);
+        System.err.println(paginationDTO.getData());
+        model.addAttribute("paginationDTO", paginationDTO);
+        return "post_list";
     }
 }

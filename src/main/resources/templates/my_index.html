@@ -69,7 +69,7 @@
                                         </a></h6>
                                     <div class="row align-items-center no-gutters">
                                         <div class="col-11">
-                                            作者：<span th:text="${pagination.user.userName}"/>&nbsp;
+                                            作者：<span th:text="${pagination.user.userDisplayName}"></span>&nbsp;
                                             <ul class="tt-list-badge" th:each="postTag : ${pagination.tagList}">
                                                 <li><a th:href="@{/homepage(tag=${postTag.id})}"><span class="tt-badge" th:text="${postTag.tagExplanation}"></span></a></li>
                                             </ul>

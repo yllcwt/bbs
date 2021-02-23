@@ -25,4 +25,19 @@ public class RegexUtil {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
+    /**
+     * 密码由字母数字下划线组成 8到16位
+     * @param password
+     * @return
+     */
+    public static boolean isPassword(String password) {
+        if (password==null) {
+            return false;
+        }
+        String rule = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$";
+        Pattern pattern = Pattern.compile(rule);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
 }
