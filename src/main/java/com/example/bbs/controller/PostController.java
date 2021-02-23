@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.*;
 import com.example.bbs.service.*;
 import com.example.bbs.util.CommentUtil;
@@ -137,12 +138,27 @@ public class PostController {
 
     @GetMapping("/postManage")
     public String postManage(Model model,
-                             @RequestParam("pageIndex") Integer pageIndex,
-                             @RequestParam("pageSize") Integer pageSize) {
-        PaginationDTO paginationDTO = null;
-        paginationDTO = postService.listPostManage(pageIndex, pageSize);
+                             @RequestParam(value = "pageIndex",defaultValue = "1") Integer pageIndex,
+                             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                             @RequestParam(value = "keywords", defaultValue = "") String keywords,
+                             @RequestParam(value = "sort", defaultValue = "post_top") String sort,
+                             @RequestParam(value = "order", defaultValue = "desc") String order,
+                             @RequestParam(value = "searchType", defaultValue = "post_title") String searchType) {
+        PostQueryCondition postQueryCondition = new PostQueryCondition();
+        postQueryCondition.setKeywords(keywords);
+        postQueryCondition.setOrder(order);
+        postQueryCondition.setSearchType(searchType);
+        postQueryCondition.setSort(sort);
+        PaginationDTO paginationDTO = postService.listPostManage(pageIndex, pageSize, postQueryCondition);
         System.err.println(paginationDTO.getData());
         model.addAttribute("paginationDTO", paginationDTO);
         return "post_list";
+    }
+
+    @GetMapping("/postBatchDelete")
+    @ResponseBody
+    public JsonResult postBatchDelete(@RequestParam("ids") String ids){
+        System.err.println(ids);
+        return JsonResult.success("111");
     }
 }

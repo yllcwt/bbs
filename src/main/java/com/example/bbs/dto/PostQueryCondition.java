@@ -12,4 +12,10 @@ public class PostQueryCondition {
     private String keywords;
 
     private Integer userId;
+
+    private String sort;
+
+    private String order;
+
+    private String searchType;
 }

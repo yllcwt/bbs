@@ -149,10 +149,23 @@
 
     <select id="calculateAmount" resultType="java.lang.Integer">
         select count(*) from post
+        <where>
+            <if test="postQueryCondition.keywords != null and postQueryCondition.keywords != ''">
+                ${postQueryCondition.searchType} LIKE CONCAT ('%', #{postQueryCondition.keywords}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="listPostManage" resultMap="resultPosts">
         select <include refid="Base_Post_Info"></include> from post
+        <where>
+            <if test="postQueryCondition.keywords != null ">
+                ${postQueryCondition.searchType} LIKE CONCAT ('%', #{postQueryCondition.keywords}, '%')
+            </if>
+            <if test="postQueryCondition.sort != null">
+                order by ${postQueryCondition.sort} ${postQueryCondition.order}
+            </if>
+        </where>
         limit #{offset }, #{pageSize}
     </select>
 </mapper>

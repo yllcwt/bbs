@@ -31,5 +31,5 @@ public interface PostService extends IService<Post> {
 
     void addPostCommentCount(Integer postId);
 
-    PaginationDTO listPostManage(Integer pageIndex, Integer pageSize);
+    PaginationDTO listPostManage(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition);
 }

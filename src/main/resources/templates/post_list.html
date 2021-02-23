@@ -70,34 +70,25 @@
                     </button>
                 </div>
                 <div class="col-md-8 col-xs-12" style="margin-bottom: 10px; text-align:right;padding-left: 0; padding-right: 0;">
-                    <form class="form-inline" action="/admin/post">
+                    <form class="form-inline" action="/postManage">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="keywords" name="keywords" value="" placeholder="请输入关键字">
+                            <input type="text" class="form-control" id="keywords" name="keywords"  placeholder="请输入关键字">
                         </div>
                         <div class="form-group">
                             <select class="form-control" name="searchType">
-                                <option value="title" disabled="">搜索范围</option>
-                                <option value="title">标题</option>
-                                <option value="content">内容</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" name="status">
-                                <option value="0" disabled="">状态</option>
-                                <option value="0" selected="selected">已发布</option>
-                                <option value="1">草稿</option>
-                                <option value="2">回收站</option>
+                                <option value="post_title" disabled="">搜索范围</option>
+                                <option value="post_title">标题</option>
+                                <option value="post_content">内容</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <select class="form-control" name="sort">
-                                <option value="createTime" disabled="">排序字段</option>
-                                <option value="createTime">发布时间</option>
-                                <option value="postViews">访问量</option>
-                                <option value="commentSize">回复数</option>
-                                <option value="postLikes">点赞数</option>
-                                <option value="isSticky">是否置顶</option>
-                                <option value="isRecommend">是否推荐</option>
+                                <option value="post_time" disabled="">排序字段</option>
+                                <option value="post_time">发布时间</option>
+                                <option value="post_view">访问量</option>
+                                <option value="post_comment_count">回复数</option>
+                                <option value="post_like">点赞数</option>
+                                <option value="post_top">是否置顶</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -131,7 +122,8 @@
                                 <td><input type="checkbox" name="ids" th:value="${post.postId}"></td>
                                 <td>
                                     <label>
-                                        <a href="/post/41" target="_blank" th:text="${post.postTitle}">
+                                        <span style="color: #087623" th:if="${post.postTop}">【置顶】</span>
+                                        <a th:href="@{'/post/'+${post.postId}}" target="_blank" th:text="${post.postTitle}">
                                         </a>
                                     </label>
                                 </td>
@@ -147,12 +139,10 @@
                                 <td th:text="${#dates.format(post.postTime, 'yyyy-MM-dd HH:mm')}"></td>
 
                                 <td>
-                                    <a href="/post/41" class="btn btn-primary btn-xs" target="_blank">查看</a>
+                                    <a th:href="@{'/post/'+${post.postId}}" class="btn btn-primary btn-xs" target="_blank">查看</a>
                                     <button class="btn btn-success btn-xs " onclick="stickIt(41)">置顶
                                     </button>
 
-                                    <button class="btn btn-warning btn-xs " onclick="recommendIt(41)">推荐
-                                    </button>
 
                                     <a href="/admin/post/edit?id=41" class="btn btn-info btn-xs ">编辑</a>
                                     <button class="btn btn-danger btn-xs " onclick="throwIt(41)">
@@ -187,7 +177,7 @@
                                 下一页
                             </a>
                             </li>
-                            <li><a data-pjax="true" th:class="'btn btn-sm'+(${paginationDTO.showEndPage==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.page+1},pageSize=3)}">
+                            <li><a data-pjax="true" th:class="'btn btn-sm'+(${paginationDTO.showEndPage==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.totalPage},pageSize=3)}">
                                 尾页
                             </a>
                             </li>
@@ -200,6 +190,72 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    /**
+     * 全选和反选
+     * @constructor
+     */
+    function doCheck() {
+        var ch = document.getElementsByName("ids");
+        if (document.getElementById("allSelect").checked == true) {
+            for (var i = 0; i < ch.length; i++) {
+                ch[i].checked = true;
+            }
+        } else {
+            for (var i = 0; i < ch.length; i++) {
+                ch[i].checked = false;
+            }
+        }
+    }
+    function showMsgAndReload(text, icon, hideAfter) {
+        if (heading == undefined) {
+            var heading = "提示";
+        }
+        $.toast({
+            text: text,
+            heading: heading,
+            icon: icon,
+            showHideTransition: 'fade',
+            allowToastClose: true,
+            hideAfter: hideAfter,
+            stack: 1,
+            position: 'top-center',
+            textAlign: 'left',
+            loader: true,
+            loaderBg: '#ffffff',
+            afterHidden: function () {
+                window.location.reload();
+            }
+        });
+    }
+    function batchDelete() {
+        var arr = [];
+        $('input[name="ids"]:checked').each(function () {
+            arr.push($(this).val());
+        });
+        if (arr.length <= 0) {
+            showMsg('请选择需要删除的数据', "error", 1000);
+        } else {
+            layer.confirm('请确认是否删除', function (index) {
+                $.ajax({
+                    url: "/postBatchDelete?ids=" + arr,
+                    type: "Get",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            showMsg(data.msg, "error", 1000);
+                        } else {
+                            showMsgAndReload(data.msg, "success", 2000);
+                        }
+                    }
+                });
+                layer.close(index);
+            });
+        }
+    }
+
+</script>
 <div th:replace="import :: footer_js"></div>
+<script src="/static/js/plugins/layer/layer.js" ></script>
+
 </body>
 </html>
