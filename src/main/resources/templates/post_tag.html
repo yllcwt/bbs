@@ -50,7 +50,7 @@
                     <div class="tt-item">
                         <div class="tt-item-header">
                             <ul class="tt-list-badge">
-                                <li><a th:href="@{/homepage(tag=${tag.id})}"><span th:class="tt-color+((${tag.id/10} == 0) ? '0'+${tag.id} : ${tag.id})+' '+tt-badge" th:text="${tag.tagExplanation}"></span></a></li>
+                                <li><a th:href="@{/homepage(tag=${tag.id})}"><span th:class="tt-color+(${tag.id%20 < 10} ? '0'+${tag.id%20} : ${tag.id})+' '+tt-badge" th:text="${tag.tagExplanation}"></span></a></li>
                             </ul>
                             <!--                            <h6 class="tt-title"><a href="page-categories-single.html">Threads - 1,245</a></h6>-->
                         </div>

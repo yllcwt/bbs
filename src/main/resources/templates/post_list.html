@@ -140,21 +140,16 @@
 
                                 <td>
                                     <a th:href="@{'/post/'+${post.postId}}" class="btn btn-primary btn-xs" target="_blank">查看</a>
-                                    <button class="btn btn-success btn-xs " onclick="stickIt(41)">置顶
+                                    <button class="btn btn-success btn-xs " th:if="${post.postTop==0}" th:onclick="stickIt([[${post.postId}]])">置顶
+                                    </button>
+                                    <button class="btn btn-success btn-xs " th:if="${post.postTop==1}" th:onclick="unStickIt([[${post.postId}]])">取消置顶
                                     </button>
 
-
-                                    <a href="/admin/post/edit?id=41" class="btn btn-info btn-xs ">编辑</a>
-                                    <button class="btn btn-danger btn-xs " onclick="throwIt(41)">
-                                        丢弃
+                                    <a th:href="@{/postEdit(postId=${post.postId})}" class="btn btn-info btn-xs ">编辑</a>
+                                    <button class="btn btn-danger btn-xs " th:onclick="throwIt([[${post.postId}]])">
+                                        删除
                                     </button>
                                 </td>
-<!--                                <script th:inline="javascript">-->
-
-<!--                                    var test= [[${test}]];-->
-<!--                                    console.log(test);-->
-
-<!--                                </script>-->
 
 
                             </tr>
@@ -251,6 +246,65 @@
                 layer.close(index);
             });
         }
+    }
+    function stickIt(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/postStickIt',
+            async: false,
+            data: {
+                'postId': id
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    showMsg(data.msg, "error", 1000);
+                } else {
+                    showMsgAndReload(data.msg, "success", 1500);
+
+                }
+            }
+        });
+    }
+
+    function unStickIt(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/postUnStickIt',
+            async: false,
+            data: {
+                'postId': id
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    showMsg(data.msg, "error", 1000);
+                } else {
+                    showMsgAndReload(data.msg, "success", 1500);
+
+                }
+            }
+        });
+    }
+
+    function throwIt(id) {
+        layer.confirm('请确认是否删除', function (index) {
+            $.ajax({
+                type: 'POST',
+                url: '/postThrowIt',
+                async: false,
+                data: {
+                    'postId': id
+                },
+                success: function (data) {
+                    if (data.code == 0) {
+                        showMsg(data.msg, "error", 1000);
+                    } else {
+                        showMsgAndReload(data.msg, "success", 1500);
+
+                    }
+                }
+            });
+            layer.close(index);
+        });
     }
 
 </script>

@@ -5801,6 +5801,8 @@ hr + .row-object-inline {
   color: #d7dadc;
   background-color: #d7dadc;
   color: #182730; }
+.tt-badge.tt-color00 {
+  background-color: #63b376; }
 .tt-badge.tt-color01 {
   background-color: #2e3192; }
 .tt-badge.tt-color02 {

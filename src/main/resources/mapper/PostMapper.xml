@@ -128,6 +128,7 @@
 				d.id,
 				c.user_name,
 				c.user_image,
+				c.user_display_name,
 				d.category_name,
 				d.category_explanation
 		from post a
@@ -164,6 +165,9 @@
             </if>
             <if test="postQueryCondition.sort != null">
                 order by ${postQueryCondition.sort} ${postQueryCondition.order}
+            </if>
+            <if test="postQueryCondition.sort != 'post_time'">
+                , post_time desc
             </if>
         </where>
         limit #{offset }, #{pageSize}

@@ -7,6 +7,7 @@ import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostDTO;
 import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.*;
+import com.example.bbs.exception.MyBusinessException;
 import com.example.bbs.service.*;
 import com.example.bbs.util.CommentUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -16,11 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Controller
 public class PostController {
@@ -88,19 +85,55 @@ public class PostController {
             post.setPostTop(0);
         }
 
-        postService.insertOrUpdatePost(post);
+//        Category category = new Category();
+//        category.setId(categoryId);
+//
+//        PostDTO postDTO = new PostDTO();
+//        BeanUtil.copyProperties(post, postDTO);
+//
+//        if(StringUtils.isNotEmpty(tags)){
+//            List<Tag> list = tagService.addOrSelectTag(StringUtils.deleteWhitespace(tags));
+//            postDTO.setTagList(list);
+//        }
+//        postDTO.setCategory(category);
+//        postService.insertOrUpdatePost(post);
+        if(post.getPostId() == null) {
 
-        //分类
-        CategoryPostRef categoryPostRef = new CategoryPostRef();
-        //这里没有new 进行赋值
-        categoryPostRef.setCategoryId(categoryId);
-        categoryPostRef.setPostId(post.getPostId());
-        categoryPostRefService.addOrSelectCategoryPostRef(categoryPostRef);
+            postService.save(post); //?
+            //分类
+            CategoryPostRef categoryPostRef = new CategoryPostRef();
+            //这里没有new 进行赋值
+            categoryPostRef.setCategoryId(categoryId);
+            categoryPostRef.setPostId(post.getPostId());
+            categoryPostRefService.addOrSelectCategoryPostRef(categoryPostRef);
 
-        if(StringUtils.isNotEmpty(tags)){
-            List<Tag> list = tagService.addOrSelectTag(StringUtils.deleteWhitespace(tags));
-            tagPostRefService.addOrSelectTagPostRef(list,post.getPostId());
+            if(StringUtils.isNotEmpty(tags)){
+                List<Tag> list = tagService.addOrSelectTag(StringUtils.deleteWhitespace(tags));
+                tagPostRefService.addOrSelectTagPostRef(list,post.getPostId());
+            }
+        } else {
+            postService.updateById(post);
+            LambdaQueryWrapper<CategoryPostRef> wrapper = Wrappers.lambdaQuery();
+            wrapper.eq(CategoryPostRef::getPostId, post.getPostId());
+            categoryPostRefService.remove(wrapper);
+
+            //分类
+            CategoryPostRef categoryPostRef = new CategoryPostRef();
+            //这里没有new 进行赋值
+            categoryPostRef.setCategoryId(categoryId);
+            categoryPostRef.setPostId(post.getPostId());
+            categoryPostRefService.addOrSelectCategoryPostRef(categoryPostRef);
+
+            LambdaQueryWrapper<TagPostRef> wrapper1 = Wrappers.lambdaQuery();
+            wrapper1.eq(TagPostRef::getPostId, post.getPostId());
+            tagPostRefService.remove(wrapper1);
+
+            if(StringUtils.isNotEmpty(tags)){
+                List<Tag> list = tagService.addOrSelectTag(StringUtils.deleteWhitespace(tags));
+                tagPostRefService.addOrSelectTagPostRef(list,post.getPostId());
+            }
         }
+
 
         return JsonResult.success("发布成功！");
     }
@@ -150,15 +183,86 @@ public class PostController {
         postQueryCondition.setSearchType(searchType);
         postQueryCondition.setSort(sort);
         PaginationDTO paginationDTO = postService.listPostManage(pageIndex, pageSize, postQueryCondition);
-        System.err.println(paginationDTO.getData());
         model.addAttribute("paginationDTO", paginationDTO);
         return "post_list";
     }
 
     @GetMapping("/postBatchDelete")
     @ResponseBody
-    public JsonResult postBatchDelete(@RequestParam("ids") String ids){
-        System.err.println(ids);
-        return JsonResult.success("111");
+    public JsonResult postBatchDelete(@RequestParam("ids") List<Integer> ids, HttpServletRequest request){
+
+        if (ids == null || ids.size() == 0 || ids.size() > 10) {
+            return JsonResult.error("参数不合法!");
+        }
+
+        List<Post> postList =postService.listByIds(ids);
+        for (Post post : postList) {
+            basicCheck(post, request);
+        }
+
+        postService.removeByIds(ids);
+        return JsonResult.success("删除成功！");
+    }
+
+    @PostMapping("/postStickIt")
+    @ResponseBody
+    public JsonResult postStickIt(@RequestParam("postId") Integer postId, HttpServletRequest request) {
+        Post post = postService.getById(postId);
+        basicCheck(post, request);
+        post.setPostTop(1);
+        postService.updateById(post);
+        return JsonResult.success("置顶成功！");
+    }
+    @PostMapping("/postUnStickIt")
+    @ResponseBody
+    public JsonResult postUnStickIt(@RequestParam("postId") Integer postId, HttpServletRequest request) {
+        Post post = postService.getById(postId);
+        basicCheck(post, request);
+        post.setPostTop(0);
+        postService.updateById(post);
+        return JsonResult.success("取消置顶成功！");
+    }
+    @PostMapping("/postThrowIt")
+    @ResponseBody
+    public JsonResult postThrowIt(@RequestParam("postId") Integer postId, HttpServletRequest request) {
+        Post post = postService.getById(postId);
+        basicCheck(post, request);
+        postService.removeById(post.getPostId());
+        return JsonResult.success("删除成功！");
+    }
+    @GetMapping("/postEdit")
+    public String postEdit(Model model,
+                           @RequestParam("postId") Integer postId,
+                           HttpServletRequest request) {
+        PostDTO postDTO = postService.findPostByPostId(postId);
+//        basicCheck(postDTO, request); 完成项目后加上去
+
+        List<String> strList = new ArrayList<>();
+        for (Tag tag : postDTO.getTagList()) {
+            strList.add(tag.getTagExplanation());
+        }
+        String[] str = strList.toArray(new String[strList.size()]);
+        String strings = StringUtils.join(str, ",");
+
+        System.err.println(postDTO.getCategory().getId());
+        List<Category> categoryList = categoryService.list();
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("strings", strings);
+        model.addAttribute("postDTO", postDTO);
+        return "post_edit";
+    }
+
+    private void basicCheck(Post post, HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+
+        if(user == null) {
+            throw new MyBusinessException("请先登录！");
+        }
+        if(post == null) {
+            throw new MyBusinessException("文章不存在！");
+        }
+        if(!Objects.equals(post.getUserId(), user.getUserId()) && user.getUserStatus()!=1) {
+            throw new MyBusinessException("无权限操作！");
+        }
     }
 }

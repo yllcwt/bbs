@@ -21,6 +21,7 @@ public interface PostService extends IService<Post> {
 
     void addPost(Post post);
 
+    @Deprecated
     void insertOrUpdatePost(Post post);
 
     PaginationDTO listPost(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition);

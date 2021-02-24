@@ -70,7 +70,11 @@ public class UserController {
                                    @RequestParam String reUserPassword,
                                    @RequestParam String userSex,
                                    @RequestParam String userAge,
-                                   @RequestParam String userEmail){
+                                   @RequestParam String userEmail,
+                                   HttpServletRequest request){
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+
+                request.getServerPort()+request.getContextPath();
+        System.err.println(basePath);
         //判断合法性
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userPassword) || StringUtils.isEmpty(reUserPassword)
                 || StringUtils.isEmpty(userSex) || StringUtils.isEmpty(userAge) || StringUtils.isEmpty(userEmail)) {
@@ -98,7 +102,7 @@ public class UserController {
             user.setUserEmail(userEmail);
             user.setUserStatus(0);
             user.setUserPassword(userPassword);
-            user.setUserImage("/static/images/avatar/" + RandomUtils.nextInt(1, 41) + ".jpeg");
+            user.setUserImage(basePath+"/static/images/avatar/" + RandomUtils.nextInt(1, 41) + ".jpeg");
             user.setUserCreateTime(new Date());
             user.setUserDisplayName(userName);
             boolean flag = false;
@@ -156,7 +160,7 @@ public class UserController {
         if(!RegexUtil.isEmail(userEmail)) {
             return JsonResult.error("邮箱格式错误！");
         }
-        if(userService.selectByUserName(userName)!=null) {
+        if(userService.selectByUserName(userName)!=null && !user.getUserName().equals(userName)) {
             return JsonResult.error("用户名已存在！");
         }
         if(StringUtils.isNotEmpty(userImage)) {

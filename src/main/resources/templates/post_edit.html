@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <div th:insert="import :: markdown"></div>
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <style>
+        .navbar-default {
+            background-color: #b1cdff;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .breadcrumb{
+            float: right;
+            background: transparent;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 7px 5px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border-radius: 2px;
+        }
+        .content-header{
+            display: block;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .label{
+            color: #fff;
+            background-color: #8a8a8a;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="bar :: top_menu"></div>
+<div class="row">
+
+    <div th:replace="bar :: sider_menu(activeUri='post_publish')"></div>
+    <div class="col-md-10 col-md-offset-2 content-wrapper">
+
+        <style>
+            .form-horizontal .control-label {
+                text-align: left;
+            }
+        </style>
+        <section class="content-header">
+            <h1 style="display: inline-block">
+                文章列表
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> 首页</a>
+                </li>
+                <li class="active">发布文章</li>
+            </ol>
+        </section>
+        <div class="container-fluid">
+            <div class="col-xs-12" >
+                <div class="box box-primary">
+                    <!--                    <form th:action="" method="post">-->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="title">帖子标题（简单扼要）:</label>
+                            <input type="text" class="form-control" th:value="${postDTO.postTitle}" id="title" name="title"
+                                   placeholder="问题标题……"
+                                   autocomplete="off">
+                        </div>
+                        <label for="postContent">帖子内容:</label>
+                        <div class="form-group" id="question-editor">
+                                <textarea name="postContent" id="postContent" th:text="${postDTO.postContent}" style="display:none;"
+                                          class="form-control"
+                                          cols="30"
+                                          rows="10"></textarea>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                var editor = editormd("question-editor", {
+                                    width: "100%",
+                                    height: 350,
+                                    path: "/js/lib/",
+                                    delay: 0,
+                                    watch: false,
+                                    tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+                                    placeholder: "请输入问题描述",
+                                    imageUpload: true,
+                                    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                                    imageUploadURL: "/upload",
+                                });
+                            });
+                        </script>
+                        <br>
+<!--                        th:if="${postDTO.category.id == cate.id}"-->
+                        <div class="form-group">
+                            <select class="form-control  input-lg" id="cateId" >
+                                <option th:each="cate:${categoryList}" th:value="${cate.id}" th:selected="${postDTO.category.id==cate.id} ? 'true':'false'" th:text="${cate.categoryName}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-lg" id="tags"  th:value="${strings}" placeholder="请输入标签,逗号分隔" >
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" id="postId" th:value="${postDTO.postId}">
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-primary" onclick="push()">发布</button>
+                    </div>
+                    <!--                    </form>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    /**
+     * 提交文章
+     * @param status 文章状态
+     */
+    function push() {
+        var title = $('#title').val();
+        var tags = $('#tags').val();
+        var cateId = $('#cateId').val();
+        // var content =  $("#edit").froalaEditor('html.get');
+        var content = $('#postContent').val();
+        var postId = $('#postId').val();
+        if(title == null || title == '') {
+            showMsg("请输入文章标题", "info", 2000);
+            return;
+        }
+        if(tags == null || tags == '') {
+            showMsg("请输入标签", "info", 2000);
+            return;
+        }
+        if(content == null || content == '' ) {
+            showMsg("请输入内容", "info", 2000);
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/savePost',
+            async: false,
+            data: {
+                'postId': postId,
+                // 'postStatus': status,
+                'postTitle': title,
+                'postContent': content,
+                'categoryId': cateId,
+                'tags': tags
+            },
+            success: function (data) {
+                if (data.code == 1) {
+                    // if(status == 1) {
+                    //     showMsg("暂存成功", "success", 2000);
+                    // } else {
+                    //     showMsgAndRedirect("发布成功", "success", 1000, "/");
+                    // }
+                    showMsgAndRedirect("发布成功！","success", 2000,'/main');
+                } else {
+                    showMsgAndRedirect(data.msg, "success", 2000, '/post_publish');
+
+                }
+            }
+        });
+    }
+</script>
+<div th:replace="import :: footer_js"></div>
+</body>
+</html>
