@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+<!--    <link href="/static/css/AdminLTE.min.css" rel="stylesheet">-->
+    <style>
+        .navbar-default {
+            background-color: #b1cdff;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .breadcrumb{
+            float: right;
+            background: transparent;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 7px 5px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border-radius: 2px;
+        }
+        .content-header{
+            display: block;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .label{
+            color: #fff;
+            background-color: #8a8a8a;
+        }
+        .navbar-nav>.user-menu .user-image {
+            float: left;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: -2px;
+        }
+        .navbar-nav {
+            float: left;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="bar :: top_menu"></div>
+<div class="row">
+
+    <div th:replace="bar :: sider_menu(activeUri='post_list')"></div>
+    <div class="col-md-10 col-md-offset-2 content-wrapper">
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    分类列表
+                    <small></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a data-pjax="true" href="/admin">
+                            <i class="fa fa-dashboard"></i> 首页</a>
+                    </li>
+                    <li><a data-pjax="true" href="/category">分类管理</a></li>
+                    <li class="active">分类列表</li>
+                </ol>
+            </section>
+            <section class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-md-5">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">更新分类</h3>
+                            </div>
+                            <form action="/admin/category/save" method="post" role="form" id="cateForm">
+                                <input type="hidden" name="id" value="14">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="cateName">分类名称</label>
+                                        <input type="text" class="form-control" id="cateName" name="cateName"
+                                               placeholder="" value="算法">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cateSort">排序</label>
+                                        <input type="number" class="form-control" id="cateSort" name="cateSort"
+                                               value="8">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cateDesc"
+                                               class="control-label">描述</label>
+                                        <textarea class="form-control" rows="3" id="cateDesc" name="cateDesc"
+                                                  style="resize: none">分享数据结构和算法以及应用实践</textarea>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="button" class="btn btn-primary btn-sm " onclick="saveCategory()">保存</button>
+                                    <a href="/admin/category" class="btn btn-info btn-sm">返回添加</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">所有分类</h3>
+                            </div>
+                            <div class="box-body table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-md-3">分类名称</th>
+                                        <th class="col-md-6">描述</th>
+                                        <th class="col-md-3">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="/category/12" target="_blank">程序人生</a>
+                                        </td>
+                                        <td>分享程序人生的酸甜苦辣</td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               href="/admin/category/edit?id=12&amp;page=1"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    onclick="removeIt(12)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/category/14" target="_blank">算法</a>
+                                        </td>
+                                        <td>分享数据结构和算法以及应用实践</td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               href="/admin/category/edit?id=14&amp;page=1"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    onclick="removeIt(14)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/category/13" target="_blank">计算机原理</a>
+                                        </td>
+                                        <td>分享学习计算机原理的成长过程</td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               href="/admin/category/edit?id=13&amp;page=1"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    onclick="removeIt(13)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/category/11" target="_blank">人工智能</a>
+                                        </td>
+                                        <td>分析AI相关技术：计算机视觉、自然语言翻译、人脸识别、知识图谱</td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               href="/admin/category/edit?id=11&amp;page=1"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    onclick="removeIt(11)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/category/10" target="_blank">大数据</a>
+                                        </td>
+                                        <td>分享大数据相关技术：数据采集、数据挖掘、数据分析</td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               href="/admin/category/edit?id=10&amp;page=1"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    onclick="removeIt(10)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/category/9" target="_blank">后端开发</a>
+                                        </td>
+                                        <td>分享后端开发技术：Java、SpringBoot、SpringCloud、分布式、高并发、面向对象</td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               href="/admin/category/edit?id=9&amp;page=1"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    onclick="removeIt(9)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/category/8" target="_blank">前端开发</a>
+                                        </td>
+                                        <td>分享前端相关技术：H5,VueJS,React,NodeJS</td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               href="/admin/category/edit?id=8&amp;page=1"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    onclick="removeIt(8)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-footer clearfix">
+                                <div class="no-margin pull-left">
+                                    第 1 / 1 页
+                                </div>
+                                <ul class="pagination no-margin pull-right">
+                                    <li><a data-pjax="true"  class="btn btn-sm disabled"
+                                           href="/admin/category">
+                                        首页
+                                    </a>
+                                    </li>
+                                    <li><a data-pjax="true" class="btn btn-sm disabled"  href="/admin/category?page=0">
+                                        上一页
+                                    </a>
+                                    </li>
+                                    <li><a data-pjax="true" class="btn btn-sm disabled"  href="/admin/category?page=2">
+                                        下一页
+                                    </a>
+                                    </li>
+                                    <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/category?page=1">
+                                        尾页
+                                    </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <script>
+
+                function saveCategory() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/category/save',
+                        async: false,
+                        data: $("#cateForm").serialize(),
+                        success: function (data) {
+                            if (data.code == 0) {
+                                showMsg(data.msg, "error", 1000);
+                            } else {
+                                showMsgAndRedirect(data.msg, "success", 1000, "/admin/category");
+                            }
+                        }
+                    });
+                };
+
+                function removeIt(id) {
+                    layer.confirm('请确认是否删除', function (index) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: '/admin/category/delete',
+                            async: false,
+                            data: {
+                                'id': id
+                            },
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    showMsg(data.msg, "error", 1000);
+                                } else {
+                                    showMsgAndRedirect(data.msg, "success", 1000, "/admin/category");
+                                }
+
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }
+
+            </script>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>
+<div th:replace="import :: footer_js"></div>
+<script src="/static/js/plugins/layer/layer.js" ></script>
+
+</body>
+</html>
