@@ -16,4 +16,9 @@
             </if>
         </where>
     </select>
+
+    <select id="listTag" resultType="com.example.bbs.entity.Tag">
+        select * from tag
+        limit #{offset }, #{pageSize}
+    </select>
 </mapper>

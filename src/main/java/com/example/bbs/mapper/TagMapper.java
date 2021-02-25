@@ -18,4 +18,6 @@ import java.util.List;
 public interface TagMapper extends BaseMapper<Tag> {
 
     List<Tag> findByPostId(Integer postId);
+
+    List<Tag> listTag(Integer offset, Integer pageSize);
 }

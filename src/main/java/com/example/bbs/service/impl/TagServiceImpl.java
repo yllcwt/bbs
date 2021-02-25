@@ -1,6 +1,7 @@
 package com.example.bbs.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.entity.Tag;
 import com.example.bbs.mapper.TagMapper;
 import com.example.bbs.service.TagService;
@@ -42,6 +43,16 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
             }
         }
         return listTags;
+    }
+
+    @Override
+    public PaginationDTO listTag(Integer pageIndex, Integer pageSize) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = tagMapper.selectCount(new QueryWrapper<>());
+        Integer offset = paginationDTO.mySetPagination(pageIndex,pageSize,totalCount);
+        List<Tag> tagList = tagMapper.listTag(offset, pageSize);
+        paginationDTO.setData(tagList);
+        return paginationDTO;
     }
 
     private Tag findTagByName(String tag) {

@@ -19,7 +19,7 @@ public class PaginationDTO<T> {
     private List<Integer> pages = new ArrayList<>();
     private Integer totalPage;
 
-    public void mySetPagination(Integer pageIndex, Integer pageSize, Integer totalCount) {
+    public Integer mySetPagination(Integer pageIndex, Integer pageSize, Integer totalCount) {
         if (totalCount % pageSize == 0) {
             this.totalPage = totalCount / pageSize;
         } else {
@@ -50,6 +50,7 @@ public class PaginationDTO<T> {
 
         this.showFirstPage = this.page != 1;
         this.showEndPage = this.page != this.totalPage;
+        return this.getPage() < 1 ? 0 : (this.getPage()-1)*pageSize;
     }
 
     public void setPagination(Integer totalPage, Integer page) {

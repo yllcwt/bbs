@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <!--    <link href="/static/css/AdminLTE.min.css" rel="stylesheet">-->
+    <style>
+        .navbar-default {
+            background-color: #b1cdff;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .breadcrumb{
+            float: right;
+            background: transparent;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 7px 5px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border-radius: 2px;
+        }
+        .content-header{
+            display: block;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .label{
+            color: #fff;
+            background-color: #8a8a8a;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="bar :: top_menu"></div>
+<div class="row">
+
+    <div th:replace="bar :: sider_menu(activeUri='post_tag_manage')"></div>
+    <div class="col-md-10 col-md-offset-2 content-wrapper">
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    标签列表
+                    <small></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a data-pjax="true" href="/admin">
+                            <i class="fa fa-dashboard"></i> 首页</a>
+                    </li>
+                    <li><a data-pjax="true" href="/category">标签管理</a></li>
+                    <li class="active">标签列表</li>
+                </ol>
+            </section>
+            <section class="content container-fluid">
+                <div class="row">
+
+                    <div class="col-md-5">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">标签管理</h3>
+                            </div>
+                            <form  method="post" role="form" id="cateForm">
+<!--                                <input type="hidden" name="id" value="14">-->
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="tagExplanation">标签名称</label>
+                                        <input type="hidden" id="tagEdit" th:value="(${targetTag!=null} ? ${targetTag.id} : '')">
+                                        <input type="text" class="form-control" id="tagExplanation" name="tagExplanation"
+                                               placeholder="" th:value="(${targetTag!=null} ? ${targetTag.tagExplanation} : '')">
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="button" class="btn btn-primary btn-sm " onclick="saveTag()">保存</button>
+                                    <a th:href="@{/postTagManage(pageIndex=${paginationDTO.page})}" class="btn btn-info btn-sm" th:if="${targetTag!=null}">返回添加</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">所有标签</h3>
+                            </div>
+                            <div class="box-body table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-md-3">标签名称</th>
+                                        <th class="col-md-3">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="tag : ${paginationDTO.getData()}">
+                                        <td>
+                                            <a th:href="@{/homepage(tag=${tag.id})}" target="_blank" th:text="${tag.tagExplanation}"></a>
+                                        </td>
+                                        <td>
+                                            <a data-pjax="true"
+                                               th:href="@{/postTagEdit(tagId=${tag.id},pageIndex=${paginationDTO.page})}"
+                                               class="btn btn-primary btn-xs ">编辑</a>
+                                            <button class="btn btn-danger btn-xs delete-category"
+                                                    th:onclick="removeIt([[${tag.id}]])">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-footer clearfix">
+                                <div class="no-margin pull-left" th:text="'第 '+${paginationDTO.page}+' / '+${paginationDTO.totalPage}+' 页'">
+                                </div>
+                                <ul class="pagination no-margin pull-right">
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showFirstPage}?'': ' disabled')"
+                                           th:href="@{/postTagManage}">
+                                        首页
+                                    </a>
+                                    </li>
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showPrevious}?'': ' disabled')"
+                                           th:href="@{/postTagManage(pageIndex=${paginationDTO.page-1})}">
+                                        上一页
+                                    </a>
+                                    </li>
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showNext}?'': ' disabled')"
+                                           th:href="@{/postTagManage(pageIndex=${paginationDTO.page+1})}">
+                                        下一页
+                                    </a>
+                                    </li>
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showEndPage}?'': ' disabled')"
+                                           th:href="@{/postTagManage(pageIndex=${paginationDTO.totalPage})}">
+                                        尾页
+                                    </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <script>
+
+                function saveTag() {
+                    const tagId = $('#tagEdit').val();
+                    const tagExplanation = $('#tagExplanation').val();
+                    if(tagExplanation == null || tagExplanation == "" ) {
+                        showMsg("请输入完成信息！", "error", 1000);
+                    } else {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/postTagSave',
+                            async: false,
+                            data: {
+                                'tagExplanation' : tagExplanation,
+                                'tagId' : tagId
+                            },
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    showMsg(data.msg, "error", 1000);
+                                } else {
+                                    showMsgAndRedirect(data.msg, "success", 1000, "/postTagManage");
+                                }
+                            }
+                        });
+                    }
+                };
+
+                function removeIt(tagId) {
+                    layer.confirm('请确认是否删除', function (index) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/postTagDelete',
+                            async: false,
+                            data: {
+                                'tagId': tagId
+                            },
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    showMsg(data.msg, "error", 1000);
+                                } else {
+                                    showMsgAndRedirect(data.msg, "success", 1000, "/postTagManage");
+                                }
+
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }
+
+            </script>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>
+<div th:replace="import :: footer_js"></div>
+<script src="/static/js/plugins/layer/layer.js" ></script>
+
+</body>
+</html>

@@ -6,6 +6,27 @@
 </head>
 <body>
     <div th:fragment="top_menu">
+        <style>
+            .navbar-nav>.user-menu .user-image {
+                float: left;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                margin-right: 10px;
+                margin-top: -2px;
+            }
+            .navbar-nav {
+                float: right;
+                margin: 0;
+            }
+            .navbar-nav>li>.dropdown-menu {
+                position: absolute;
+                right: 5%;
+                left: auto;
+                border: 1px solid #ddd;
+                background: #fff;
+            }
+        </style>
         <nav  class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -21,7 +42,7 @@
                                 <span class="hidden-xs loginUserDisplayName">管理员</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="user-header">
+                                <li class="user-header" style="text-align: center">
                                     <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="img-circle loginUserAvatar" alt="User
                                     Image">
                                     <p class="loginUserDisplayName">管理员</p>
@@ -38,6 +59,30 @@
         </nav>
     </div>
         <div th:fragment="sider_menu" class="col-md-2 sidebar">
+            <style>
+                .user-panel {
+                    position: relative;
+                    width: 100%;
+                    padding-bottom: 10px;
+                    overflow: hidden;
+                }
+                .img-circle{
+                    width: 45px;
+                    height: 45px;
+                }
+                p {
+                    padding-left: 10px;
+                    margin: revert;
+                }
+            </style>
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="img-circle loginUserAvatar" style="width: 45px;height: 45px;" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p class="loginUserDisplayName">管理员</p>
+                </div>
+            </div>
             <ul class="nav nav-sidebar">
                 <li th:class="${activeUri == 'user_manage'} ? 'active' : ''">
                     <a th:href="@{/user_manage}">个人资料 </a>
@@ -47,7 +92,12 @@
                 </li>
                 <li th:class="${activeUri == 'post_publish'} ? 'active' : ''">
                     <a th:href="@{/post_publish}">发布文章</a></li>
-                <li><a href="#">Export</a></li>
+                <li th:class="${activeUri == 'post_category_manage'} ? 'active' : ''">
+                    <a th:href="@{/postCategoryManage}">分类管理</a>
+                </li>
+                <li th:class="${activeUri == 'post_tag_manage'} ? 'active' : ''">
+                    <a th:href="@{/postTagManage}">标签管理</a>
+                </li>
             </ul>
         </div>
 

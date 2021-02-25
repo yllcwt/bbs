@@ -2,8 +2,9 @@ package com.example.bbs.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.bbs.dto.JsonResult;
+import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.TagDTO;
 import com.example.bbs.entity.Tag;
 import com.example.bbs.entity.TagPostRef;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +71,51 @@ public class TagController {
             tagDTOList.add(tagDTO);
         }
         return tagDTOList;
+    }
+    @GetMapping("/postTagManage")
+    public String postTagManage(Model model,
+                                @RequestParam(value = "pageIndex",defaultValue = "1") Integer pageIndex,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        PaginationDTO paginationDTO = tagService.listTag(pageIndex, pageSize);
+        model.addAttribute("paginationDTO", paginationDTO);
+        return "post_tag_manage";
+    }
+    @GetMapping("/postTagEdit")
+    public String postTagEdit(Model model,
+                                   @RequestParam("pageIndex") Integer pageIndex,
+                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                   @RequestParam("tagId") Integer tagId) {
+        Tag targetTag = tagService.getById(tagId);
+        PaginationDTO paginationDTO = tagService.listTag(pageIndex, pageSize);
+        model.addAttribute("paginationDTO", paginationDTO);
+        model.addAttribute("targetTag",targetTag);
+        return "post_tag_manage";
+    }
+    @PostMapping("/postTagSave")
+    @ResponseBody
+    public JsonResult postCategorySave(@RequestParam("tagExplanation") String tagExplanation,
+                                       @RequestParam(value = "tagId", required = false) Integer tagId) {
+        Tag tag = new Tag();
+        tag.setTagExplanation(tagExplanation);
+        if(tagId != null) {
+            tag.setId(tagId);
+            tagService.updateById(tag);
+        } else {
+            LambdaQueryWrapper<Tag> categoryLambdaQueryWrapper = Wrappers.lambdaQuery();
+            categoryLambdaQueryWrapper.eq(Tag::getTagExplanation, tag.getTagExplanation());
+            Tag oldTag = tagService.getOne(categoryLambdaQueryWrapper);
+            if(oldTag != null) {
+                return JsonResult.error("标签名已存在！");
+            }
+            tagService.save(tag);
+        }
+        return JsonResult.success("操作成功！");
+    }
+    @PostMapping("/postTagDelete")
+    @ResponseBody
+    public JsonResult postTagDelete(@RequestParam("tagId") Integer tagId) {
+        tagService.removeById(tagId);
+        return JsonResult.success("删除成功！");
     }
 }
 

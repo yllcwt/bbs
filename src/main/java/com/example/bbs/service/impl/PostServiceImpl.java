@@ -114,10 +114,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalCount = postMapper.calculateAmount(postQueryCondition);
-
-        paginationDTO.mySetPagination(pageIndex, pageSize, totalCount);
-
-        Integer offset = paginationDTO.getPage() < 1 ? 0 : (paginationDTO.getPage()-1)*pageSize;
+        Integer offset = paginationDTO.mySetPagination(pageIndex, pageSize, totalCount);
         List<Post> postList = postMapper.listPostManage(offset, pageSize, postQueryCondition);
         paginationDTO.setData(postList);
         return paginationDTO;

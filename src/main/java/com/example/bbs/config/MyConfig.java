@@ -29,7 +29,7 @@ public class MyConfig implements WebMvcConfigurer {
                 registry.addViewController("/user_manage").setViewName("user_manage");//后台管理
                 registry.addViewController("/post_list").setViewName("post_list");//文章列表
 
-                registry.addViewController("/category_manage").setViewName("post_category_manage");
+                registry.addViewController("/comment_list").setViewName("comment_list");
             }
         };
         return webMvcConfigurer;

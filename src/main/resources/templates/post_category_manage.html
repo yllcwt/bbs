@@ -33,25 +33,13 @@
             color: #fff;
             background-color: #8a8a8a;
         }
-        .navbar-nav>.user-menu .user-image {
-            float: left;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            margin-right: 10px;
-            margin-top: -2px;
-        }
-        .navbar-nav {
-            float: left;
-            margin: 0;
-        }
     </style>
 </head>
 <body>
 <div th:replace="bar :: top_menu"></div>
 <div class="row">
 
-    <div th:replace="bar :: sider_menu(activeUri='post_list')"></div>
+    <div th:replace="bar :: sider_menu(activeUri='post_category_manage')"></div>
     <div class="col-md-10 col-md-offset-2 content-wrapper">
         <div class="content-wrapper">
             <section class="content-header">
@@ -76,29 +64,25 @@
                             <div class="box-header with-border">
                                 <h3 class="box-title">更新分类</h3>
                             </div>
-                            <form action="/admin/category/save" method="post" role="form" id="cateForm">
+                            <form  method="post" role="form" id="cateForm">
                                 <input type="hidden" name="id" value="14">
                                 <div class="box-body">
                                     <div class="form-group">
                                         <label for="cateName">分类名称</label>
+                                        <input type="hidden" id="categoryEdit" th:value="(${targetCategory!=null} ? ${targetCategory.id} : '')">
                                         <input type="text" class="form-control" id="cateName" name="cateName"
-                                               placeholder="" value="算法">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cateSort">排序</label>
-                                        <input type="number" class="form-control" id="cateSort" name="cateSort"
-                                               value="8">
+                                               placeholder="" th:value="(${targetCategory!=null} ? ${targetCategory.categoryName} : '')">
                                     </div>
                                     <div class="form-group">
                                         <label for="cateDesc"
                                                class="control-label">描述</label>
                                         <textarea class="form-control" rows="3" id="cateDesc" name="cateDesc"
-                                                  style="resize: none">分享数据结构和算法以及应用实践</textarea>
+                                                  style="resize: none" th:text="(${targetCategory!=null} ? ${targetCategory.categoryExplanation} : '')"></textarea>
                                     </div>
                                 </div>
                                 <div class="box-footer">
                                     <button type="button" class="btn btn-primary btn-sm " onclick="saveCategory()">保存</button>
-                                    <a href="/admin/category" class="btn btn-info btn-sm">返回添加</a>
+                                    <a th:href="@{/postCategoryManage(pageIndex=${paginationDTO.page})}" class="btn btn-info btn-sm" th:if="${targetCategory!=null}">返回添加</a>
                                 </div>
                             </form>
                         </div>
@@ -118,101 +102,17 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
+                                    <tr th:each="category : ${paginationDTO.getData()}">
                                         <td>
-                                            <a href="/category/12" target="_blank">程序人生</a>
+                                            <a th:href="@{/homepage(category=${category.id})}" target="_blank" th:text="${category.categoryName}"></a>
                                         </td>
-                                        <td>分享程序人生的酸甜苦辣</td>
+                                        <td th:text="${category.categoryExplanation}"></td>
                                         <td>
                                             <a data-pjax="true"
-                                               href="/admin/category/edit?id=12&amp;page=1"
+                                               th:href="@{/postCategoryEdit(categoryId=${category.id},pageIndex=${paginationDTO.page})}"
                                                class="btn btn-primary btn-xs ">编辑</a>
                                             <button class="btn btn-danger btn-xs delete-category"
-                                                    onclick="removeIt(12)">删除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="/category/14" target="_blank">算法</a>
-                                        </td>
-                                        <td>分享数据结构和算法以及应用实践</td>
-                                        <td>
-                                            <a data-pjax="true"
-                                               href="/admin/category/edit?id=14&amp;page=1"
-                                               class="btn btn-primary btn-xs ">编辑</a>
-                                            <button class="btn btn-danger btn-xs delete-category"
-                                                    onclick="removeIt(14)">删除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="/category/13" target="_blank">计算机原理</a>
-                                        </td>
-                                        <td>分享学习计算机原理的成长过程</td>
-                                        <td>
-                                            <a data-pjax="true"
-                                               href="/admin/category/edit?id=13&amp;page=1"
-                                               class="btn btn-primary btn-xs ">编辑</a>
-                                            <button class="btn btn-danger btn-xs delete-category"
-                                                    onclick="removeIt(13)">删除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="/category/11" target="_blank">人工智能</a>
-                                        </td>
-                                        <td>分析AI相关技术：计算机视觉、自然语言翻译、人脸识别、知识图谱</td>
-                                        <td>
-                                            <a data-pjax="true"
-                                               href="/admin/category/edit?id=11&amp;page=1"
-                                               class="btn btn-primary btn-xs ">编辑</a>
-                                            <button class="btn btn-danger btn-xs delete-category"
-                                                    onclick="removeIt(11)">删除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="/category/10" target="_blank">大数据</a>
-                                        </td>
-                                        <td>分享大数据相关技术：数据采集、数据挖掘、数据分析</td>
-                                        <td>
-                                            <a data-pjax="true"
-                                               href="/admin/category/edit?id=10&amp;page=1"
-                                               class="btn btn-primary btn-xs ">编辑</a>
-                                            <button class="btn btn-danger btn-xs delete-category"
-                                                    onclick="removeIt(10)">删除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="/category/9" target="_blank">后端开发</a>
-                                        </td>
-                                        <td>分享后端开发技术：Java、SpringBoot、SpringCloud、分布式、高并发、面向对象</td>
-                                        <td>
-                                            <a data-pjax="true"
-                                               href="/admin/category/edit?id=9&amp;page=1"
-                                               class="btn btn-primary btn-xs ">编辑</a>
-                                            <button class="btn btn-danger btn-xs delete-category"
-                                                    onclick="removeIt(9)">删除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="/category/8" target="_blank">前端开发</a>
-                                        </td>
-                                        <td>分享前端相关技术：H5,VueJS,React,NodeJS</td>
-                                        <td>
-                                            <a data-pjax="true"
-                                               href="/admin/category/edit?id=8&amp;page=1"
-                                               class="btn btn-primary btn-xs ">编辑</a>
-                                            <button class="btn btn-danger btn-xs delete-category"
-                                                    onclick="removeIt(8)">删除
+                                                    th:onclick="removeIt([[${category.id}]])">删除
                                             </button>
                                         </td>
                                     </tr>
@@ -220,24 +120,26 @@
                                 </table>
                             </div>
                             <div class="box-footer clearfix">
-                                <div class="no-margin pull-left">
-                                    第 1 / 1 页
+                                <div class="no-margin pull-left" th:text="'第 '+${paginationDTO.page}+' / '+${paginationDTO.totalPage}+' 页'">
                                 </div>
                                 <ul class="pagination no-margin pull-right">
-                                    <li><a data-pjax="true"  class="btn btn-sm disabled"
-                                           href="/admin/category">
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showFirstPage}?'': ' disabled')"
+                                           th:href="@{/postCategoryManage}">
                                         首页
                                     </a>
                                     </li>
-                                    <li><a data-pjax="true" class="btn btn-sm disabled"  href="/admin/category?page=0">
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showPrevious}?'': ' disabled')"
+                                           th:href="@{/postCategoryManage(pageIndex=${paginationDTO.page-1})}">
                                         上一页
                                     </a>
                                     </li>
-                                    <li><a data-pjax="true" class="btn btn-sm disabled"  href="/admin/category?page=2">
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showNext}?'': ' disabled')"
+                                           th:href="@{/postCategoryManage(pageIndex=${paginationDTO.page+1})}">
                                         下一页
                                     </a>
                                     </li>
-                                    <li><a data-pjax="true" class="btn btn-sm disabled" href="/admin/category?page=1">
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showEndPage}?'': ' disabled')"
+                                           th:href="@{/postCategoryManage(pageIndex=${paginationDTO.totalPage})}">
                                         尾页
                                     </a>
                                     </li>
@@ -250,35 +152,46 @@
             <script>
 
                 function saveCategory() {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/admin/category/save',
-                        async: false,
-                        data: $("#cateForm").serialize(),
-                        success: function (data) {
-                            if (data.code == 0) {
-                                showMsg(data.msg, "error", 1000);
-                            } else {
-                                showMsgAndRedirect(data.msg, "success", 1000, "/admin/category");
-                            }
-                        }
-                    });
-                };
-
-                function removeIt(id) {
-                    layer.confirm('请确认是否删除', function (index) {
+                    const categoryId = $('#categoryEdit').val();
+                    const cateName = $('#cateName').val();
+                    const cateDesc = $('#cateDesc').val();
+                    if(cateName == null || cateName == "" || cateDesc == ""|| cateDesc == null) {
+                        showMsg("请输入完成信息！", "error", 1000);
+                    } else {
                         $.ajax({
-                            type: 'DELETE',
-                            url: '/admin/category/delete',
+                            type: 'POST',
+                            url: '/postCategorySave',
                             async: false,
                             data: {
-                                'id': id
+                                'cateName' : cateName,
+                                'cateDesc' : cateDesc,
+                                'categoryId' : categoryId
                             },
                             success: function (data) {
                                 if (data.code == 0) {
                                     showMsg(data.msg, "error", 1000);
                                 } else {
-                                    showMsgAndRedirect(data.msg, "success", 1000, "/admin/category");
+                                    showMsgAndRedirect(data.msg, "success", 1000, "/postCategoryManage");
+                                }
+                            }
+                        });
+                    }
+                };
+
+                function removeIt(categoryId) {
+                    layer.confirm('请确认是否删除', function (index) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/postCategoryDelete',
+                            async: false,
+                            data: {
+                                'categoryId': categoryId
+                            },
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    showMsg(data.msg, "error", 1000);
+                                } else {
+                                    showMsgAndRedirect(data.msg, "success", 1000, "/postCategoryManage");
                                 }
 
                             }
