@@ -39,7 +39,7 @@
 <div th:replace="bar :: top_menu"></div>
 <div class="row">
 
-    <div th:replace="bar :: sider_menu(activeUri='post_tag_manage')"></div>
+    <div th:replace="bar :: sider_menu(activeUri='comment_list')"></div>
     <div class="col-md-10 col-md-offset-2 content-wrapper">
         <div class="content-wrapper">
             <section class="content-header">
@@ -223,7 +223,26 @@
                         }
                     });
                 };
-
+                function doCheck() {
+                    var ch = document.getElementsByName("ids");
+                    if (document.getElementById("allSelect").checked == true) {
+                        for (var i = 0; i < ch.length; i++) {
+                            if(ch[i].checked == false) {
+                                ch[i].checked = true;
+                            } else {
+                                ch[i].checked = false;
+                            }
+                        }
+                    } else {
+                        for (var i = 0; i < ch.length; i++) {
+                            if(ch[i].checked == false) {
+                                ch[i].checked = true;
+                            } else {
+                                ch[i].checked = false;
+                            }
+                        }
+                    }
+                }
                 function replyShow(id) {
                     $('#userAgent').val(navigator.userAgent);
                     $('#id').val(id);

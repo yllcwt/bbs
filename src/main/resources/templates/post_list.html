@@ -195,11 +195,19 @@
         var ch = document.getElementsByName("ids");
         if (document.getElementById("allSelect").checked == true) {
             for (var i = 0; i < ch.length; i++) {
-                ch[i].checked = true;
+                if(ch[i].checked == false) {
+                    ch[i].checked = true;
+                } else {
+                    ch[i].checked = false;
+                }
             }
         } else {
             for (var i = 0; i < ch.length; i++) {
-                ch[i].checked = false;
+                if(ch[i].checked == false) {
+                    ch[i].checked = true;
+                } else {
+                    ch[i].checked = false;
+                }
             }
         }
     }

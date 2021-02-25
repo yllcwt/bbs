@@ -2,6 +2,8 @@ package com.example.bbs.controller;
 
 
 import cn.hutool.http.HtmlUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostQueryCondition;
@@ -114,14 +116,15 @@ public class CommentController {
     @PostMapping("/commentDelete")
     @ResponseBody
     public JsonResult commentDelete(@RequestParam("commentId") Integer commentId) {
-        List<Comment> commentList = new ArrayList<>();
         Comment comment = commentService.getById(commentId);
         if(comment.getCommentParentId() == 0) {
-            commentList.add(comment);
-            commentList = CommentUtil.getComments(commentList);
-            for (Comment commentChild : commentList) {
-                commentService.removeById(commentChild.getCommentId());
+            LambdaQueryWrapper<Comment> commentLambdaQueryWrapper = Wrappers.lambdaQuery();
+            commentLambdaQueryWrapper.eq(Comment::getCommentParentId, commentId);
+            List<Comment> commentList = commentService.list(commentLambdaQueryWrapper);
+            for (Comment childComment : commentList) {
+                commentService.removeById(childComment.getCommentId());
             }
+            commentService.removeById(commentId);
         } else {
             commentService.removeById(commentId);
         }
