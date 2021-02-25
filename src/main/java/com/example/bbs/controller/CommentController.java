@@ -3,18 +3,24 @@ package com.example.bbs.controller;
 
 import cn.hutool.http.HtmlUtil;
 import com.example.bbs.dto.JsonResult;
+import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.Comment;
 import com.example.bbs.entity.Post;
 import com.example.bbs.entity.User;
 import com.example.bbs.service.CommentService;
 import com.example.bbs.service.PostService;
 import com.example.bbs.service.UserService;
+import com.example.bbs.util.CommentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -65,10 +71,12 @@ public class CommentController {
                 comment.setCommentContent(lastContent+HtmlUtil.escape(commentContent));
                 comment.setAcceptUserId(parentComment.getUserId());
                 comment.setCommentParentId(parentComment.getCommentId());
+                comment.setCommentOriginContent(HtmlUtil.escape(commentContent));
             }
         } else {
             //回复帖子
             comment.setCommentContent(HtmlUtil.escape(commentContent));
+            comment.setCommentOriginContent(HtmlUtil.escape(commentContent));
             comment.setAcceptUserId(post.getUserId());
             comment.setCommentParentId(0);
         }
@@ -83,5 +91,41 @@ public class CommentController {
         return JsonResult.success("回复成功！");
     }
 
+    @GetMapping("/commentList")
+    public String commentList(Model model,
+                              @RequestParam(value = "pageIndex",defaultValue = "1") Integer pageIndex,
+                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                              @RequestParam(value = "keywords",defaultValue = "") String keywords,
+                              @RequestParam(value = "sort", defaultValue = "comment_time") String sort,
+                              @RequestParam(value = "order", defaultValue = "desc") String order) {
+        PostQueryCondition postQueryCondition = new PostQueryCondition();
+        postQueryCondition.setKeywords(keywords);
+        postQueryCondition.setOrder(order);
+        postQueryCondition.setSort(sort);
+        PaginationDTO paginationDTO = commentService.listComment(pageIndex, pageSize, postQueryCondition);
+        model.addAttribute("paginationDTO", paginationDTO);
+        model.addAttribute("pageIndex", pageIndex);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("keywords", keywords);
+        model.addAttribute("sort", sort);
+        model.addAttribute("order", order);
+        return "comment_list";
+    }
+    @PostMapping("/commentDelete")
+    @ResponseBody
+    public JsonResult commentDelete(@RequestParam("commentId") Integer commentId) {
+        List<Comment> commentList = new ArrayList<>();
+        Comment comment = commentService.getById(commentId);
+        if(comment.getCommentParentId() == 0) {
+            commentList.add(comment);
+            commentList = CommentUtil.getComments(commentList);
+            for (Comment commentChild : commentList) {
+                commentService.removeById(commentChild.getCommentId());
+            }
+        } else {
+            commentService.removeById(commentId);
+        }
+        return JsonResult.success("删除成功！");
+    }
 }
 

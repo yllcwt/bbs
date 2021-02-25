@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bbs.mapper.CommentMapper">
+
+    <resultMap id="resultComment" type="com.example.bbs.dto.CommentDTO">
+        <id column="comment_id" property="commentId"/>
+        <result column="post_id" property="postId"/>
+        <result column="user_id" property="userId"/>
+        <result column="comment_content" property="commentContent"/>
+        <result column="comment_time" property="commentTime"/>
+        <result column="comment_parent_id" property="commentParentId"/>
+        <result column="accept_user_id" property="acceptUserId"/>
+        <result column="comment_like" property="commentLike"/>
+        <result column="comment_origin_content" property="commentOriginContent"/>
+        <result column="user_display_name" property="userDisplayName"/>
+    </resultMap>
+
+    <select id="listCommentCount" resultType="Integer">
+        select count(*) from comment
+        <where>
+            <if test="postQueryCondition.keywords != null">
+                comment_content like CONCAT('%', #{postQueryCondition.keywords} ,'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="listComment" resultMap="resultComment">
+        select  a.comment_id,
+                a.post_id,
+                a.user_id,
+                a.comment_content,
+                a.comment_time,
+                a.comment_parent_id,
+                a.accept_user_id,
+                a.comment_like,
+                a.comment_origin_content,
+                b.user_display_name
+         from comment a
+        left join user b on a.user_id = b.user_id
+        <where>
+            <if test="postQueryCondition.keywords != null">
+                comment_origin_content like CONCAT('%', #{postQueryCondition.keywords} ,'%')
+            </if>
+        </where>
+        <if test="postQueryCondition.sort != null and postQueryCondition.sort != ''">
+            order by ${postQueryCondition.sort} ${postQueryCondition.order}
+        </if>
+        limit #{offset }, #{pageSize}
+    </select>
+</mapper>

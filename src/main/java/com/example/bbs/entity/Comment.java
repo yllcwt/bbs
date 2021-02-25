@@ -47,6 +47,8 @@ public class Comment implements Serializable {
 
     private Date commentTime;
 
+    private String commentOriginContent;
+
     @TableField(exist = false)
     private Post post;
 

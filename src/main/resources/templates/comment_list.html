@@ -64,15 +64,15 @@
                         </div>
                         <div class="col-md-8 col-xs-12"
                              style="margin-bottom: 10px; text-align:right;padding-left: 0; padding-right: 0;">
-                            <form class="form-inline" action="/admin/comment">
+                            <form class="form-inline" action="/commentList">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="keywords" name="keywords"
                                            value="" placeholder="请输入关键字">
                                 </div>
                                 <div class="form-group">
                                     <select class="form-control" name="sort">
-                                        <option value="createTime" disabled>排序字段</option>
-                                        <option value="createTime" selected="selected">回复时间</option>
+                                        <option value="comment_time" disabled>排序字段</option>
+                                        <option value="comment_time" selected="selected">回复时间</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -100,15 +100,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr id="comment-24">
-                                        <td><input type="checkbox" name="ids" value="24"></td>
-                                        <td><a href="/user/1">管理员</a></td>
+                                    <tr th:each="comment:${paginationDTO.getData()}" th:id="'comment-'+${comment.commentId}">
+                                        <td><input type="checkbox" name="ids" th:value="${comment.commentId}"></td>
+                                        <td><a href="/user/1" th:text="${comment.userDisplayName}"></a></td>
                                         <td>
-                                            <span style="cursor: pointer;" title="开发安全、高质量代码的 5 款顶级 Python 工具"><a href='#comment-id-9'>@zhaoyun</a> zhaoyun: zdxs</span>
+                                            <span style="cursor: pointer;" title="开发安全、高质量代码的 5 款顶级 Python 工具" th:utext="${comment.commentContent}"></span>
                                         </td>
-                                        <td>2021-02-23 16:19</td>
+                                        <td th:text="${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}"></td>
                                         <td>
-                                            <a href="/post/18" class="btn btn-success btn-xs"
+                                            <a th:href="'/post/'+${comment.postId}" class="btn btn-success btn-xs"
                                                target="_blank">
                                                 查看
                                             </a>
@@ -116,259 +116,7 @@
                                                     onclick="replyShow(24)">回复
                                             </button>
                                             <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(24)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-23">
-                                        <td><input type="checkbox" name="ids" value="23"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="开发安全、高质量代码的 5 款顶级 Python 工具"><a href='#comment-id-22'>@管理员</a> sadasd</span>
-                                        </td>
-                                        <td>2021-02-23 16:19</td>
-                                        <td>
-                                            <a href="/post/18" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(23)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(23)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-22">
-                                        <td><input type="checkbox" name="ids" value="22"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="开发安全、高质量代码的 5 款顶级 Python 工具"><a href='#comment-id-10'>@zhaoyun</a> dfdf</span>
-                                        </td>
-                                        <td>2021-02-23 16:17</td>
-                                        <td>
-                                            <a href="/post/18" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(22)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(22)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-21">
-                                        <td><input type="checkbox" name="ids" value="21"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍"><a href='#comment-id-18'>@管理员</a> sdsd</span>
-                                        </td>
-                                        <td>2021-02-23 16:17</td>
-                                        <td>
-                                            <a href="/post/25" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(21)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(21)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-20">
-                                        <td><input type="checkbox" name="ids" value="20"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍">222</span>
-                                        </td>
-                                        <td>2020-08-17 22:59</td>
-                                        <td>
-                                            <a href="/post/25" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(20)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(20)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-19">
-                                        <td><input type="checkbox" name="ids" value="19"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍">22222</span>
-                                        </td>
-                                        <td>2020-08-17 22:59</td>
-                                        <td>
-                                            <a href="/post/25" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(19)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(19)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-18">
-                                        <td><input type="checkbox" name="ids" value="18"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍"><a href='#comment-id-17'>@管理员</a> 222</span>
-                                        </td>
-                                        <td>2020-08-17 22:35</td>
-                                        <td>
-                                            <a href="/post/25" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(18)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(18)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-17">
-                                        <td><input type="checkbox" name="ids" value="17"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍">111</span>
-                                        </td>
-                                        <td>2020-08-17 22:19</td>
-                                        <td>
-                                            <a href="/post/25" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(17)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(17)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-13">
-                                        <td><input type="checkbox" name="ids" value="13"></td>
-                                        <td><a href="/user/3">张三</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="CPU 上运算比 GPU 还快？美国莱斯大学最新研究克服硬件障碍">6666</span>
-                                        </td>
-                                        <td>2020-03-12 18:50</td>
-                                        <td>
-                                            <a href="/post/24" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(13)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(13)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-12">
-                                        <td><input type="checkbox" name="ids" value="12"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="Java 失宠，谷歌宣布 Kotlin 现在是 Android 开发的首选语言"><a href='#comment-id-11'>@管理员</a> 管理员: 回复测试！</span>
-                                        </td>
-                                        <td>2020-03-12 18:44</td>
-                                        <td>
-                                            <a href="/post/14" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(12)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(12)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-11">
-                                        <td><input type="checkbox" name="ids" value="11"></td>
-                                        <td><a href="/user/1">管理员</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="Java 失宠，谷歌宣布 Kotlin 现在是 Android 开发的首选语言">看来要学Kotlin啦！</span>
-                                        </td>
-                                        <td>2020-03-12 18:43</td>
-                                        <td>
-                                            <a href="/post/14" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(11)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(11)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-10">
-                                        <td><input type="checkbox" name="ids" value="10"></td>
-                                        <td><a href="/user/9">zhaoyun</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="开发安全、高质量代码的 5 款顶级 Python 工具"><a href='#comment-id-9'>@zhaoyun</a> zhaoyun: 再赞！</span>
-                                        </td>
-                                        <td>2020-03-12 18:25</td>
-                                        <td>
-                                            <a href="/post/18" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(10)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(10)">删除
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                    <tr id="comment-9">
-                                        <td><input type="checkbox" name="ids" value="9"></td>
-                                        <td><a href="/user/9">zhaoyun</a></td>
-                                        <td>
-                                            <span style="cursor: pointer;" title="开发安全、高质量代码的 5 款顶级 Python 工具">赞！！！</span>
-                                        </td>
-                                        <td>2020-03-12 18:25</td>
-                                        <td>
-                                            <a href="/post/18" class="btn btn-success btn-xs"
-                                               target="_blank">
-                                                查看
-                                            </a>
-                                            <button class="btn btn-primary btn-xs "
-                                                    onclick="replyShow(9)">回复
-                                            </button>
-                                            <button class="btn btn-danger btn-xs "
-                                                    onclick="removeIt(9)">删除
+                                                    th:onclick="removeIt([[${comment.commentId}]])">删除
                                             </button>
 
                                         </td>
@@ -377,27 +125,26 @@
                                 </table>
                             </div>
                             <div class="box-footer clearfix">
-                                <div class="no-margin pull-left">
-                                    第 1 / 1 页
+                                <div class="no-margin pull-left" th:text="'第 '+${paginationDTO.page}+' / '+${paginationDTO.totalPage}+' 页'">
                                 </div>
                                 <ul class="pagination no-margin pull-right">
-                                    <li><a data-pjax="true" class="btn btn-sm disabled"
-                                           href="/admin/comment?keywords=&amp;sort=createTime&amp;order=desc">
+                                    <li><a th:class="('btn btn-sm'+${paginationDTO.showFirstPage} ? ' disabled' : '')"
+                                           th:href="@{/commentList(keywords=${keywords},sort=${sort},order=${order},pageIndex=1)}">
                                         首页
                                     </a>
                                     </li>
-                                    <li><a data-pjax="true" class="btn btn-sm disabled"
-                                           href="/admin/comment?page=0&amp;keywords=&amp;sort=createTime&amp;order=desc">
+                                    <li><a th:class="('btn btn-sm'+${paginationDTO.showPrevious} ? ' disabled' : '')"
+                                           th:href="@{/commentList(keywords=${keywords},sort=${sort},order=${order},pageIndex=${paginationDTO.page-1})}">
                                         上一页
                                     </a>
                                     </li>
-                                    <li><a data-pjax="true" class="btn btn-sm disabled"
-                                           href="/admin/comment?page=2&amp;keywords=&amp;sort=createTime&amp;order=desc">
+                                    <li><a th:class="('btn btn-sm'+${paginationDTO.showNext} ? ' disabled' : '')"
+                                           th:href="@{/commentList(keywords=${keywords},sort=${sort},order=${order},pageIndex=${paginationDTO.page+1})}">
                                         下一页
                                     </a>
                                     </li>
-                                    <li><a data-pjax="true" class="btn btn-sm disabled"
-                                           href="/admin/comment?page=1&amp;keywords=&amp;sort=createTime&amp;order=desc">
+                                    <li><a th:class="('btn btn-sm'+${paginationDTO.showEndPage} ? ' disabled' : '')"
+                                           th:href="@{/commentList(keywords=${keywords},sort=${sort},order=${order},pageIndex=${paginationDTO.totalPage})}">
                                         尾页
                                     </a>
                                     </li>
@@ -442,18 +189,17 @@
                 function removeIt(id) {
                     layer.confirm('请确认是否删除', function (index) {
                         $.ajax({
-                            type: 'DELETE',
-                            url: '/admin/comment/delete',
+                            type: 'POST',
+                            url: '/commentDelete',
                             async: false,
                             data: {
-                                'id': id
+                                'commentId': id
                             },
                             success: function (data) {
                                 if (data.code == 0) {
                                     showMsg(data.msg, "error", 1000);
                                 } else {
-                                    showMsg(data.msg, "success", 2000);
-                                    $('#comment-' + id).remove();
+                                    showMsgAndRedirect(data.msg, "success", 2000, '/commentList')
                                 }
                             }
                         });

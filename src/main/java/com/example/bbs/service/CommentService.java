@@ -1,5 +1,7 @@
 package com.example.bbs.service;
 
+import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CommentService extends IService<Comment> {
 
+    PaginationDTO listComment(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition);
 }
