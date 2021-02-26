@@ -41,6 +41,9 @@
             <if test="postQueryCondition.keywords != null">
                 comment_origin_content like CONCAT('%', #{postQueryCondition.keywords} ,'%')
             </if>
+            <if test="postQueryCondition.userId != null">
+                and a.user_id = #{postQueryCondition.userId}
+            </if>
         </where>
         <if test="postQueryCondition.sort != null and postQueryCondition.sort != ''">
             order by ${postQueryCondition.sort} ${postQueryCondition.order}

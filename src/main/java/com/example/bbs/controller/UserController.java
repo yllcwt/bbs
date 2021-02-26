@@ -4,6 +4,8 @@ package com.example.bbs.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
+import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.User;
 import com.example.bbs.service.MailService;
 import com.example.bbs.service.UserService;
@@ -206,6 +208,22 @@ public class UserController {
             return JsonResult.success("密码更新成功！");
         }
         return JsonResult.error("密码更新失败！");
+    }
+    @GetMapping("/userList")
+    public String userList(Model model,
+                           @RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
+                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                           @RequestParam(value = "sort",defaultValue = "none") String userPower,
+                           @RequestParam(value = "order", defaultValue = "desc") String order,
+                           @RequestParam(value = "searchType",defaultValue = "userDisplayName") String searchType,
+                           @RequestParam(value = "keywords", defaultValue = "")String keywords) {
+        PostQueryCondition postQueryCondition = new PostQueryCondition();
+        postQueryCondition.setSort(userPower);
+        postQueryCondition.setOrder(order);
+        postQueryCondition.setKeywords(keywords);
+        postQueryCondition.setSearchType(searchType);
+        PaginationDTO paginationDTO = userService.listUser(pageIndex,pageSize,postQueryCondition);
+
     }
 
 }

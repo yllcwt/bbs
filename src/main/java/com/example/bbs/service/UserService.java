@@ -1,6 +1,8 @@
 package com.example.bbs.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.User;
 
 
@@ -23,4 +25,6 @@ public interface UserService extends IService<User> {
     User selectByUserName(String userName);
 
     void updateUserPasswordByUserId(Integer userId, String newPassword);
+
+    PaginationDTO listUser(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition);
 }

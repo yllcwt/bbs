@@ -101,6 +101,12 @@
                 <li th:class="${activeUri == 'comment_list'} ? 'active' : ''">
                     <a th:href="@{/commentList}">所有评论</a>
                 </li>
+                <li th:class="${activeUri == 'comment_mine'} ? 'active' : ''">
+                    <a th:href="@{/commentMine}">我的评论</a>
+                </li>
+                <li th:class="${activeUri == 'user_list'} ? 'active' : ''">
+                    <a th:href="@{/userList}">用户列表</a>
+                </li>
             </ul>
         </div>
 

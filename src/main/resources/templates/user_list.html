@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <!--    <link href="/static/css/AdminLTE.min.css" rel="stylesheet">-->
+    <style>
+        .navbar-default {
+            background-color: #b1cdff;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .breadcrumb{
+            float: right;
+            background: transparent;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 7px 5px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border-radius: 2px;
+        }
+        .content-header{
+            display: block;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .label{
+            color: #fff;
+            background-color: #8a8a8a;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="bar :: top_menu"></div>
+<div class="row">
+
+    <div th:replace="bar :: sider_menu(activeUri='user_list')"></div>
+    <div class="col-md-10 col-md-offset-2 content-wrapper">
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1 style="display: inline-block;">用户管理</h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a data-pjax="true" href="/admin">
+                            <i class="fa fa-dashboard"></i> 首页</a>
+                    </li>
+                    <li><a data-pjax="true" href="#">用户管理</a></li>
+                    <li class="active">用户列表</li>
+                </ol>
+            </section>
+            <section class="content container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-md-4 col-xs-12" style="margin-bottom: 10px;padding-left: 0;">
+                            <a class="btn btn-primary" href="/admin/user/new">
+                                <i class="fa fa-plus"></i> 新增
+                            </a>
+                            <button type="button" class="btn btn-danger" onclick="batchDelete()">
+                                <i class="fa fa-remove"></i> 批量删除
+                            </button>
+                        </div>
+                        <div class="col-md-8 col-xs-12"
+                             style="margin-bottom: 10px; text-align:right;padding-left: 0; padding-right: 0;">
+                            <form class="form-inline" action="/admin/user">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="keywords" name="keywords"
+                                           value="" placeholder="请输入关键字">
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" name="searchType">
+                                        <option value="content" disabled>搜索范围</option>
+                                        <option value="userName">用户名</option>
+                                        <option value="userDisplayName">显示名</option>
+                                        <option value="email">电子邮箱</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" name="sort">
+                                        <option value="none" disabled>角色</option>
+                                        <option value="none" selected>不限</option>
+                                        <option value="admin">
+                                            管理员
+                                        </option>
+                                        <option value="user">
+                                            用户
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" name="order">
+                                        <option value="desc" disabled>升序/降序</option>
+                                        <option value="asc">升序</option>
+                                        <option value="desc" selected="selected">倒序</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="box box-primary">
+                            <div class="box-body table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="allSelect" onclick="doCheck()"></th>
+                                        <th>用户名</th>
+                                        <th>昵称</th>
+                                        <th>邮箱</th>
+                                        <th>状态</th>
+                                        <th>创建时间</th>
+                                        <th>操作</th>
+                                        <th>ID</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id="user-24">
+                                        <td><input type="checkbox" name="ids" value="24"></td>
+                                        <td>
+                                            mayun34
+                                        </td>
+                                        <td>mayun34</td>
+                                        <td>mayun34@qq.com</td>
+                                        <td>
+                                            <span class="text-success">正常</span>
+
+                                        </td>
+                                        <td>2020-08-18 23:43</td>
+                                        <td>
+                                            <a href="/admin/user/edit?id=24"
+                                               class="btn btn-info btn-xs ">编辑</a>
+                                            <a href="javascript:void(0)" onclick="removeIt(24)"
+                                               class="btn btn-danger btn-xs ">删除</a>
+                                        </td>
+                                        <td>24</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-footer clearfix">
+                                <div class="no-margin pull-left" th:text="'第 '+${paginationDTO.page}+' / '+${paginationDTO.totalPage}+' 页'">
+                                </div>
+                                <ul class="pagination no-margin pull-right">
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showFirstPage} ? '' : ' disabled')"
+                                           th:href="@{/commentMine(keywords=${keywords},sort=${sort},order=${order},pageIndex=1)}">
+                                        首页
+                                    </a>
+                                    </li>
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showPrevious} ? '' : ' disabled')"
+                                           th:href="@{/commentMine(keywords=${keywords},sort=${sort},order=${order},pageIndex=${paginationDTO.page-1})}">
+                                        上一页
+                                    </a>
+                                    </li>
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showNext} ? '' : ' disabled')"
+                                           th:href="@{/commentMine(keywords=${keywords},sort=${sort},order=${order},pageIndex=${paginationDTO.page+1})}">
+                                        下一页
+                                    </a>
+                                    </li>
+                                    <li><a th:class="'btn btn-sm'+(${paginationDTO.showEndPage} ? '' : ' disabled')"
+                                           th:href="@{/commentMine(keywords=${keywords},sort=${sort},order=${order},pageIndex=${paginationDTO.totalPage})}">
+                                        尾页
+                                    </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <script>
+
+                function removeIt(id) {
+                    layer.confirm("你确定是否删除？", function (index) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: '/admin/user/delete',
+                            async: false,
+                            data: {
+                                'id': id
+                            },
+                            success: function (data) {
+                                if (data.code == 0) {
+                                    showMsg(data.msg, "error", 1000);
+                                } else {
+                                    showMsg(data.msg, "success", 2000);
+                                    $('#user-' + id).remove();
+                                }
+
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }
+
+                function batchDelete() {
+                    var arr = [];
+                    $('input[name="ids"]:checked').each(function () {
+                        arr.push($(this).val());
+                    });
+                    if (arr.length <= 0) {
+                        showMsg('请选择要删除的记录', "error", 1000);
+                    } else {
+                        layer.confirm('你确定是否删除?', function (index) {
+                            $.ajax({
+                                url: "/admin/user/batchDelete?ids=" + arr,
+                                type: "DELETE",
+                                success: function (data) {
+                                    if (data.code == 0) {
+                                        showMsg(data.msg, "error", 1000);
+                                    } else {
+                                        showMsgAndReload(data.msg, "success", 2000);
+                                    }
+                                }
+                            });
+                            layer.close(index);
+                        });
+                    }
+                }
+
+            </script>
+        </div>
+    </div>
+</div>
+<div th:replace="import :: footer_js"></div>
+<script src="/static/js/plugins/layer/layer.js" ></script>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
 package com.example.bbs.service.impl;
 
 import cn.hutool.core.util.NumberUtil;
+import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.User;
 import com.example.bbs.mapper.UserMapper;
 import com.example.bbs.service.UserService;
@@ -54,4 +56,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         map.put("newPassword", newPassword);
         userMapper.updateUserPasswordByUserId(map);
     }
+
+    @Override
+    public PaginationDTO listUser(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = userMapper.listUser(postQueryCondition);
+
+        paginationDTO
+        return null;
+    }
+
 }

@@ -10,6 +10,7 @@ import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.Comment;
 import com.example.bbs.entity.Post;
 import com.example.bbs.entity.User;
+import com.example.bbs.exception.MyBusinessException;
 import com.example.bbs.service.CommentService;
 import com.example.bbs.service.PostService;
 import com.example.bbs.service.UserService;
@@ -129,6 +130,54 @@ public class CommentController {
             commentService.removeById(commentId);
         }
         return JsonResult.success("删除成功！");
+    }
+    @GetMapping("/commentBatchDelete")
+    @ResponseBody
+    public JsonResult commentBatchDelete(@RequestParam("ids") List<Integer> ids,
+                                         HttpServletRequest request) {
+        List<Comment> commentList = commentService.listByIds(ids);
+        for (Comment comment : commentList) {
+            basicCheck(comment, request);
+        }
+        commentService.removeByIds(ids);
+        return JsonResult.success("删除成功！");
+    }
+    @GetMapping("/commentMine")
+    public String commentMine(Model model,
+                              @RequestParam(value = "pageIndex",defaultValue = "1") Integer pageIndex,
+                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                              @RequestParam(value = "keywords",defaultValue = "") String keywords,
+                              @RequestParam(value = "sort", defaultValue = "comment_time") String sort,
+                              @RequestParam(value = "order", defaultValue = "desc") String order,
+                              HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        PostQueryCondition postQueryCondition = new PostQueryCondition();
+        postQueryCondition.setKeywords(keywords);
+        postQueryCondition.setOrder(order);
+        postQueryCondition.setSort(sort);
+        postQueryCondition.setUserId(user.getUserId());
+        PaginationDTO paginationDTO = commentService.listComment(pageIndex, pageSize, postQueryCondition);
+        System.err.println(paginationDTO);
+        model.addAttribute("paginationDTO", paginationDTO);
+        model.addAttribute("pageIndex", pageIndex);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("keywords", keywords);
+        model.addAttribute("sort", sort);
+        model.addAttribute("order", order);
+        return "comment_mine";
+    }
+    private void basicCheck(Comment comment, HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+
+        if(user == null) {
+            throw new MyBusinessException("请先登录！");
+        }
+        if(comment == null) {
+            throw new MyBusinessException("评论不存在！");
+        }
+        if(!Objects.equals(comment.getUserId(), user.getUserId()) && user.getUserStatus()!=1) {
+            throw new MyBusinessException("无权限操作！");
+        }
     }
 }
 
