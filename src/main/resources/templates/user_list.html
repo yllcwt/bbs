@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-md-8 col-xs-12"
                              style="margin-bottom: 10px; text-align:right;padding-left: 0; padding-right: 0;">
-                            <form class="form-inline" action="/admin/user">
+                            <form class="form-inline" action="/userList">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="keywords" name="keywords"
                                            value="" placeholder="请输入关键字">
@@ -74,30 +74,30 @@
                                 <div class="form-group">
                                     <select class="form-control" name="searchType">
                                         <option value="content" disabled>搜索范围</option>
-                                        <option value="userName">用户名</option>
-                                        <option value="userDisplayName">显示名</option>
-                                        <option value="email">电子邮箱</option>
+                                        <option value="userName" th:selected="${searchType.equals('userName')} ? 'true' : 'false'">用户名</option>
+                                        <option value="userDisplayName" th:selected="${searchType.equals('userDisplayName')} ? 'true' : 'false'">显示名</option>
+                                        <option value="userEmail" th:selected="${searchType.equals('userEmail')} ? 'true' : 'false'">电子邮箱</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <select class="form-control" name="sort">
                                         <option value="none" disabled>角色</option>
-                                        <option value="none" selected>不限</option>
-                                        <option value="admin">
+                                        <option value="none" th:selected="${sort.equals('userName')} ? 'true' : 'false'">不限</option>
+                                        <option value="admin" th:selected="${sort.equals('admin')} ? 'true' : 'false'">
                                             管理员
                                         </option>
-                                        <option value="user">
+                                        <option value="user" th:selected="${sort.equals('user')} ? 'true' : 'false'">
                                             用户
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <select class="form-control" name="order">
-                                        <option value="desc" disabled>升序/降序</option>
-                                        <option value="asc">升序</option>
-                                        <option value="desc" selected="selected">倒序</option>
-                                    </select>
-                                </div>
+<!--                                <div class="form-group">-->
+<!--                                    <select class="form-control" name="order">-->
+<!--                                        <option value="desc" disabled>升序/降序</option>-->
+<!--                                        <option value="asc">升序</option>-->
+<!--                                        <option value="desc" selected="selected">倒序</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
                             </form>
                         </div>
@@ -112,32 +112,28 @@
                                         <th>用户名</th>
                                         <th>昵称</th>
                                         <th>邮箱</th>
-                                        <th>状态</th>
+                                        <th>身份</th>
                                         <th>创建时间</th>
                                         <th>操作</th>
                                         <th>ID</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr id="user-24">
-                                        <td><input type="checkbox" name="ids" value="24"></td>
-                                        <td>
-                                            mayun34
+                                    <tr th:id="'user-'+${user.userId}" th:each="user : ${paginationDTO.getData()}">
+                                        <td><input type="checkbox" name="ids" th:value="${user.userId}"></td>
+                                        <td th:text="${user.userName}"></td>
+                                        <td th:text="${user.userDisplayName}"></td>
+                                        <td th:text="${user.userEmail}"></td>
+                                        <td th:text="${user.userStatus==1} ? '管理员' : '用户'" th:class="${user.userStatus==1} ? 'text-danger' : 'text-success'">
                                         </td>
-                                        <td>mayun34</td>
-                                        <td>mayun34@qq.com</td>
-                                        <td>
-                                            <span class="text-success">正常</span>
-
-                                        </td>
-                                        <td>2020-08-18 23:43</td>
-                                        <td>
-                                            <a href="/admin/user/edit?id=24"
+                                        <td th:text="${#dates.format(user.userCreateTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                        <td >
+                                            <a th:href="@{/userEdit(userId=${user.userId})}"
                                                class="btn btn-info btn-xs ">编辑</a>
-                                            <a href="javascript:void(0)" onclick="removeIt(24)"
+                                            <a href="javascript:void(0)" th:onclick="removeIt([[${user.userId}]])"
                                                class="btn btn-danger btn-xs ">删除</a>
                                         </td>
-                                        <td>24</td>
+                                        <td th:text="${user.userId}"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -173,15 +169,39 @@
                 </div>
             </section>
             <script>
+                /**
+                 * 全选和反选
+                 * @constructor
+                 */
+                function doCheck() {
+                    var ch = document.getElementsByName("ids");
+                    if (document.getElementById("allSelect").checked == true) {
+                        for (var i = 0; i < ch.length; i++) {
+                            if(ch[i].checked == false) {
+                                ch[i].checked = true;
+                            } else {
+                                ch[i].checked = false;
+                            }
+                        }
+                    } else {
+                        for (var i = 0; i < ch.length; i++) {
+                            if(ch[i].checked == false) {
+                                ch[i].checked = true;
+                            } else {
+                                ch[i].checked = false;
+                            }
+                        }
+                    }
+                }
 
                 function removeIt(id) {
                     layer.confirm("你确定是否删除？", function (index) {
                         $.ajax({
-                            type: 'DELETE',
-                            url: '/admin/user/delete',
+                            type: 'Post',
+                            url: '/userDelete',
                             async: false,
                             data: {
-                                'id': id
+                                'userId': id
                             },
                             success: function (data) {
                                 if (data.code == 0) {
@@ -207,8 +227,8 @@
                     } else {
                         layer.confirm('你确定是否删除?', function (index) {
                             $.ajax({
-                                url: "/admin/user/batchDelete?ids=" + arr,
-                                type: "DELETE",
+                                url: "/userBatchDelete?ids=" + arr,
+                                type: "POST",
                                 success: function (data) {
                                     if (data.code == 0) {
                                         showMsg(data.msg, "error", 1000);

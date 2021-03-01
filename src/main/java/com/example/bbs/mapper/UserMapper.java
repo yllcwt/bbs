@@ -1,5 +1,6 @@
 package com.example.bbs.mapper;
 
+import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,4 +28,8 @@ public interface UserMapper extends BaseMapper<User> {
     User selectByUserName(String userName);
 
     void updateUserPasswordByUserId(Map<String, String> map);
+
+    Integer calculateAmount(@Param("postQueryCondition") PostQueryCondition postQueryCondition);
+
+    List<User> listUser(PostQueryCondition postQueryCondition, Integer offset, Integer pageSize);
 }

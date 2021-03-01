@@ -55,5 +55,28 @@
          user_id= #{userId}
         </where>
     </select>
+    <select id="calculateAmount" resultType="java.lang.Integer">
+        select count(*) from user
+        <where>
+            <if test="postQueryCondition.keywords != null and postQueryCondition.keywords != ''">
+                ${postQueryCondition.searchType} like CONCAT('%', #{postQueryCondition.keywords},'%')
+            </if>
+            <if test="postQueryCondition.sort != null and postQueryCondition.sort != 'none'">
+                AND user_status = ${postQueryCondition.sort}
+            </if>
+        </where>
 
+    </select>
+    <select id="listUser" resultMap="resultUsers">
+        select <include refid="Base_User_Info"></include> from user
+        <where>
+            <if test="postQueryCondition.keywords != null and postQueryCondition.keywords != ''">
+                ${postQueryCondition.searchType} like CONCAT('%', #{postQueryCondition.keywords},'%')
+            </if>
+            <if test="postQueryCondition.sort != null and postQueryCondition.sort != 'none'">
+                AND user_status = ${postQueryCondition.sort}
+            </if>
+        </where>
+        limit #{offset}, #{pageSize}
+    </select>
 </mapper>

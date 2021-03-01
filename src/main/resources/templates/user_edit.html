@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import :: head_js"></div>
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <link href="/static/js/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .navbar-default {
+            background-color: #b1cdff;
+        }
+        .nav-tabs {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .breadcrumb{
+            float: right;
+            background: transparent;
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 7px 5px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border-radius: 2px;
+        }
+        .content-header{
+            display: block;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="bar :: top_menu"></div>
+<div class="row">
+
+    <div th:replace="bar :: sider_menu(activeUri='user_edit')"></div>
+    <div class="col-md-10 col-md-offset-2 content-wrapper">
+
+        <style>
+            .form-horizontal .control-label {
+                text-align: left;
+            }
+        </style>
+        <section class="content-header">
+            <h1 style="display: inline-block">
+                信息修改
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> 首页</a>
+                </li>
+                <li><a data-pjax="true" href="#">用户管理</a></li>
+                <li class="active">信息修改</li>
+            </ol>
+        </section>
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#general"
+                               data-toggle="tab">基本信息</a>
+                        </li>
+                        <li>
+                            <a href="#pass"
+                               data-toggle="tab">修改密码</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="general">
+                            <form method="post" class="form-horizontal" id="uploadForm">
+                                <div class="box-body">
+                                    <input type="hidden" id="userId" th:value="${userInfo.userId}">
+                                    <div class="form-group">
+                                        <label for="imageText"
+                                               class="col-lg-2 col-sm-4 control-label">头像</label>
+                                        <div class="col-lg-4 col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control"
+                                                       id="imageText" th:value="${userInfo.userImage}"
+                                                       name="userAvatar" readonly="readonly">
+                                                <span class="input-group-btn">
+                                                                <input type="file" id="file" name="file" accept=".png, .jpg, .jpeg" style="display: none" onchange="mychange()">
+                                                                    <button onclick="$('#file').click();" class="btn btn-default "
+                                                                            type="button">选择</button>
+                                                                </span>
+                                            </div>
+                                            <img th:src="${userInfo.userImage}" id="userAvatarImg" style="width: 200px;" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="uName"
+                                               class="col-lg-2 col-sm-4 control-label">用户名
+                                            <span data-toggle="tooltip" data-placement="top"
+                                                  title="用户登录的账号"
+                                                  style="cursor: pointer">
+                                                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                                            </span>
+                                        </label>
+                                        <div class="col-lg-4 col-sm-8">
+                                            <input type="text" class="form-control" id="uName" name="uName"
+                                                   th:value="${userInfo.userName}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userDisplayName"
+                                               class="col-lg-2 col-sm-4 control-label">显示名
+                                            <span data-toggle="tooltip" data-placement="top"
+                                                  title="用于显示的名称"
+                                                  style="cursor: pointer">
+                                                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                                            </span>
+                                        </label>
+                                        <div class="col-lg-4 col-sm-8">
+                                            <input type="text" class="form-control" id="userDisplayName"
+                                                   name="userDisplayName"
+                                                   th:value="${userInfo.userDisplayName}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userEmail"
+                                               class="col-lg-2 col-sm-4 control-label">电子邮箱</label>
+                                        <div class="col-lg-4 col-sm-8">
+                                            <input type="email" class="form-control" id="userEmail"
+                                                   name="userEmail"
+                                                   th:value="${userInfo.userEmail}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userDesc"
+                                               class="col-lg-2 col-sm-4 control-label">个人描述
+                                        </label>
+                                        <div class="col-lg-4 col-sm-8">
+                                                            <textarea class="form-control" rows="3" id="userDesc" name="userDesc"
+                                                                      style="resize: none" th:text="${userInfo.userInterest}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="button" class="btn btn-primary btn-sm "
+                                            onclick="saveUser()">保存</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="pass">
+                            <form method="post" class="form-horizontal" id="passForm">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="newPass"
+                                               class="col-sm-2 control-label">新密码</label>
+                                        <div class="col-sm-4">
+                                            <input type="password" class="form-control" id="newPass"
+                                                   name="newPass">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reNewPass"
+                                               class="col-sm-2 control-label">确认密码</label>
+                                        <div class="col-sm-4">
+                                            <input type="password" class="form-control" id="reNewPass"
+                                                   name="reNewPass">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="button" class="btn btn-primary btn-sm "
+                                            th:onclick="changPass([[${userInfo.userId}]])">修改</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function mychange(){
+        var formData = new FormData($('#uploadForm')[0]);
+        $.ajax({
+            type: 'post',
+            url: "/upload", //上传文件的请求路径必须是绝对路劲
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $('#imageText').val(data.url);
+                $('#userAvatarImg').attr('src',data.url);
+            }
+        });
+    }
+
+    function saveUser() {
+        const imageText = $('#imageText').val();
+        const userName = $("#uName").val();
+        const userEmail = $("#userEmail").val();
+        const userDesc = $('#userDesc').val();
+        const userId = $('#userId').val();
+        const userDisplayName = $('#userDisplayName').val();
+        if (userName == "" || userEmail == "" || userDisplayName == "") {
+            showMsg("请输入完整信息！", "error", 1000);
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/userUpdateInfo',
+                async: false,
+                data: {
+                    'userName': userName,
+                    'userEmail': userEmail,
+                    'userImage': imageText,
+                    'userInterest': userDesc,
+                    'userDisplayName': userDisplayName,
+                    'userId' : userId
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        showMsgAndRedirect(data.msg, "success", 1000, "/userEdit?userId="+userId);
+                    } else {
+                        showMsg(data.msg, "error", 1000);
+                    }
+                }
+            });
+        }
+    }
+
+    function changPass(userId) {
+        const newPassword = $("#newPass").val();
+        const reNewPassword = $("#reNewPass").val();
+        if ( newPassword == "" || reNewPassword == "") {
+            showMsg("请输入完整信息！", "error", 1000);
+        } if(newPassword!=reNewPassword){
+            showMsg("输入的新密码不一致！", "error", 1000);
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/userEditPassword',
+                async: false,
+                data: {
+                    'newPassword': newPassword,
+                    'reNewPassword': reNewPassword
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        showMsgAndRedirect(data.msg, "success", 1000, "/userEdit?userId="+userId);
+                    } else {
+                        showMsg(data.msg, "error", 1000);
+                    }
+                }
+            });
+        }
+    }
+</script>
+<div th:replace="import :: footer_js"></div>
+</body>
+</html>

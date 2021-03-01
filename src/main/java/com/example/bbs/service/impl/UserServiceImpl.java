@@ -60,10 +60,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public PaginationDTO listUser(Integer pageIndex, Integer pageSize, PostQueryCondition postQueryCondition) {
         PaginationDTO paginationDTO = new PaginationDTO();
-        Integer totalCount = userMapper.listUser(postQueryCondition);
+        Integer totalCount = userMapper.calculateAmount(postQueryCondition);
+        Integer offset = paginationDTO.mySetPagination(pageIndex,pageSize,totalCount);
+        List<User> userList = userMapper.listUser(postQueryCondition, offset, pageSize);
 
-        paginationDTO
-        return null;
+        paginationDTO.setData(userList);
+        return paginationDTO;
     }
 
 }

@@ -10,6 +10,7 @@ import com.example.bbs.entity.User;
 import com.example.bbs.service.MailService;
 import com.example.bbs.service.UserService;
 import com.example.bbs.util.RegexUtil;
+import com.example.bbs.util.SensUtils;
 import io.github.biezhi.ome.SendMailException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -154,11 +155,18 @@ public class UserController {
                                       @RequestParam("userDisplayName") String userDisplayName,
                                       @RequestParam("userEmail") String userEmail,
                                       @RequestParam(value = "userInterest",required = false) String userInterest,
+                                      @RequestParam(value = "userId", required = false) Integer userId,
                                       HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute("user");
-        if(user == null){
-            return JsonResult.error("请先登录！");
+        User user = null;
+        if(userId == null) {
+            user = (User)request.getSession().getAttribute("user");
+            if(user == null){
+                return JsonResult.error("请先登录！");
+            }
+        } else {
+            user = userService.getById(userId);
         }
+
         if(!RegexUtil.isEmail(userEmail)) {
             return JsonResult.error("邮箱格式错误！");
         }
@@ -174,8 +182,10 @@ public class UserController {
         user.setUserInterest(userInterest);
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(User::getUserId, user.getUserId());
-        if(userService.update(user, wrapper)) {
+        if(userService.update(user, wrapper) && userId == null) {
             request.getSession().setAttribute("user", user);
+            return JsonResult.success("更新成功！");
+        } else if(userService.update(user, wrapper) && userId != null){
             return JsonResult.success("更新成功！");
         }
         return JsonResult.error("更新失败！");
@@ -214,17 +224,60 @@ public class UserController {
                            @RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                            @RequestParam(value = "sort",defaultValue = "none") String userPower,
-                           @RequestParam(value = "order", defaultValue = "desc") String order,
                            @RequestParam(value = "searchType",defaultValue = "userDisplayName") String searchType,
                            @RequestParam(value = "keywords", defaultValue = "")String keywords) {
         PostQueryCondition postQueryCondition = new PostQueryCondition();
-        postQueryCondition.setSort(userPower);
-        postQueryCondition.setOrder(order);
+        postQueryCondition.setSort(userPower.equals("none") ? "none": userPower.equals("admin") ? "1" : "0");
+//        postQueryCondition.setOrder(order);
         postQueryCondition.setKeywords(keywords);
-        postQueryCondition.setSearchType(searchType);
+        postQueryCondition.setSearchType(SensUtils.HumpToUnderline(searchType));
         PaginationDTO paginationDTO = userService.listUser(pageIndex,pageSize,postQueryCondition);
 
+        model.addAttribute("paginationDTO", paginationDTO);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("sort", userPower);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("keywords", keywords);
+        return "user_list";
+    }
+    @PostMapping("/userDelete")
+    @ResponseBody
+    public JsonResult userDelete(@RequestParam("userId") Integer userId) {
+        userService.removeById(userId);
+        return JsonResult.success("删除成功！");
+    }
+    //需要做拦截
+    @PostMapping("/userBatchDelete")
+    @ResponseBody
+    public JsonResult userBatchDelete(@RequestParam("ids") List<Integer> ids) {
+        if (ids == null || ids.size() == 0 || ids.size() >= 10) {
+            return JsonResult.error("参数不合法!");
+        }
+        List<User> userList = userService.listByIds(ids);
+        for (User user : userList) {
+            userService.removeById(user.getUserId());
+        }
+        return JsonResult.success("删除成功！");
     }
 
+    @GetMapping("/userEdit")
+    public String userEdit(@RequestParam(value = "userId", required = false) Integer userId,
+                           HttpServletRequest request,
+                           Model model) {
+        if(userId == null) {
+            User user = (User)request.getSession().getAttribute("user");
+            userId = user.getUserId();
+        }
+        User userInfo = userService.getById(userId);
+        model.addAttribute("userInfo", userInfo);
+        return "user_edit";
+    }
+    @GetMapping("/userInformation")
+    public String userInformation(HttpServletRequest request,
+                                  Model model) {
+        User user = (User)request.getSession().getAttribute("user");
+        model.addAttribute("user", user);
+        return "user_manage";
+    }
 }
 

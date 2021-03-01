@@ -26,10 +26,9 @@ public class MyConfig implements WebMvcConfigurer {
                 registry.addViewController("/main").setViewName("index");
                 registry.addViewController("/login").setViewName("login");
                 registry.addViewController("/menu").setViewName("menu_manage");
-                registry.addViewController("/user_manage").setViewName("user_manage");//后台管理
                 registry.addViewController("/post_list").setViewName("post_list");//文章列表
 
-                registry.addViewController("/user_list").setViewName("user_list");
+//                registry.addViewController("/user_list").setViewName("user_list");
             }
         };
         return webMvcConfigurer;
