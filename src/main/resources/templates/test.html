@@ -71,6 +71,25 @@
 </head>
 <body>
 <button type="button" id="myTest">dfd</button>
+<div class="tt-item">
+    <a href="javascript:void(0)" data-id="14" class="tt-icon-btn tt-position-bottom post-like">
+        <i class="tt-icon">
+            <svg>
+                <use xlink:href="#icon-like" id="dianzan"></use>
+            </svg>
+        </i>
+        <span class="tt-text"></span>
+    </a>
+</div>
+
+<div th:replace="import :: footer_js"></div>
+<!--Calendar-->
+<!--<script src="/static/css/front/js/bundle.js"></script>-->
+<!--<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>-->
+<!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/highlight.css">-->
+<!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/prettify.css">-->
+<!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/highlight.js"></script>-->
+<!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/prettify.js"></script>-->
 <script type="text/javascript">
     function showMsg(text, icon, hideAfter) {
         if (heading == undefined) {
@@ -90,23 +109,27 @@
             loaderBg: '#ffffff'
         });
     }
-    $('#comment-btn').click(function () {
-        showMsg("请输入内容", "info", 2000);
-
+    // $('#comment-btn').click(function () {
+    //     showMsg("请输入内容", "info", 2000);
+    //
+    // });
+    // $('#myTest').click(function () {
+    //     showMsg("请输入内容", "info", 2000);
+    //
+    // });
+    $('.post-like').click(function (){
+        $('#dianzan').attr('style', 'fill: red;pointer-events: none;')
     });
-    $('#myTest').click(function () {
-        showMsg("请输入内容", "info", 2000);
-
-    });
-
 </script>
-<div th:replace="import :: footer_js"></div>
-<!--Calendar-->
-<!--<script src="/static/css/front/js/bundle.js"></script>-->
-<script src="/static/css/front/js/jsmodern-1.1.1.min.js"></script>
-<!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/highlight.css">-->
-<!--<link rel="stylesheet" href="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/css/prettify.css">-->
-<!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/highlight.js"></script>-->
-<!--<script src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/front/js/prettify.js"></script>-->
+<svg with="0" height="0" class="hidden">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 117 117" id="icon-search"><path d="M54 108C24.22 108 0 83.78 0 54S24.22 0 54 0s54 24.22 54 54-24.22 54-54 54zm0-99C29.19 9 9 29.19 9 54s20.19 45 45 45 45-20.19 45-45S78.81 9 54 9z"></path><path d="M112.5 117c-1.15 0-2.3-.44-3.18-1.32l-23.5-23.5a4.49 4.49 0 0 1 0-6.36 4.49 4.49 0 0 1 6.36 0l23.5 23.5a4.49 4.49 0 0 1 0 6.36c-.88.88-2.03 1.32-3.18 1.32z"></path></symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 86" id="icon-load_lore_icon"><path d="M65 86H3c-1.66 0-3-1.34-3-3V21c0-1.66 1.34-3 3-3h62c1.66 0 3 1.34 3 3v62c0 1.66-1.34 3-3 3zM6 80h56V24H6v56z"></path><path d="M47 15c-1.66 0-3-1.34-3-3V6H24v6c0 1.66-1.34 3-3 3s-3-1.34-3-3V3c0-1.66 1.34-3 3-3h26c1.66 0 3 1.34 3 3v9c0 1.66-1.34 3-3 3z" opacity=".25"></path><path d="M34 69.33c-.77 0-1.54-.29-2.12-.88L21.21 57.79a3 3 0 0 1 0-4.24 3 3 0 0 1 4.24 0L34 62.09l8.54-8.54a3 3 0 0 1 4.24 0 3 3 0 0 1 0 4.24L36.12 68.45c-.58.59-1.35.88-2.12.88z"></path><path d="M34 66c-1.66 0-3-1.34-3-3V37c0-1.66 1.34-3 3-3s3 1.34 3 3v26c0 1.66-1.34 3-3 3z"></path><path d="M56 24c-1.66 0-3-1.34-3-3v-6H15v6c0 1.66-1.34 3-3 3s-3-1.34-3-3v-9c0-1.66 1.34-3 3-3h44c1.66 0 3 1.34 3 3v9c0 1.66-1.34 3-3 3z" opacity=".5"></path></symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81 123" id="icon-pinned"><path d="M76.5 61h-5.24l-7.38-41h3.62c2.48 0 4.5-2.02 4.5-4.5v-11C72 2.02 69.98 0 67.5 0h-54C11.02 0 9 2.02 9 4.5v11c0 2.48 2.02 4.5 4.5 4.5h3.62L9.74 61H4.5A4.5 4.5 0 0 0 0 65.5v11C0 78.98 2.02 81 4.5 81h72c2.48 0 4.5-2.02 4.5-4.5v-11c0-2.48-2.02-4.5-4.5-4.5zM36 54c0 2.48-2.02 4.5-4.5 4.5S27 56.48 27 54V27c0-2.48 2.02-4.5 4.5-4.5S36 24.51 36 27v27zm4.5 69c-3.04 0-5.5-2.46-5.5-5.5v-25c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5v25c0 3.04-2.46 5.5-5.5 5.5z"></path></symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 117 101.57" id="icon-reply"><path d="M112.5 101.57c-1.91 0-3.65-1.22-4.27-3.08-5.81-17.44-16.92-27.46-33.01-29.75-8.34-1.19-15.9.02-19.94.93v27.4c0 1.82-1.1 3.46-2.78 4.16-1.68.7-3.62.31-4.9-.98L1.32 53.97C.47 53.13 0 51.98 0 50.79s.47-2.34 1.32-3.18L47.6 1.32a4.503 4.503 0 0 1 4.9-.98c1.68.7 2.78 2.34 2.78 4.16v26.61c6 .55 17.14 2.32 28.37 7.94C98.87 46.65 117 62.89 117 97.07c0 2.21-1.6 4.09-3.78 4.44-.24.04-.48.06-.72.06z"></path></symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 79" id="icon-dislike"><path d="M12 0h56c1.66 0 3 1.34 3 3v45c0 1.66-1.34 3-3 3h-9.73L32.16 78.08c-.57.59-1.35.92-2.16.92h-.01c-.82 0-1.6-.34-2.16-.94l-9-9.5a3 3 0 0 1-.52-3.38L25.2 51H3c-.9 0-1.75-.4-2.32-1.1-.57-.69-.8-1.61-.62-2.49l9-45C9.34 1.01 10.57 0 12 0zm74 0h9c1.66 0 3 1.34 3 3v45c0 1.66-1.34 3-3 3h-9c-1.66 0-3-1.34-3-3V3c0-1.66 1.34-3 3-3z"></path></symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 79" id="icon-like"><path d="M86 79H30c-1.66 0-3-1.34-3-3V31c0-1.66 1.34-3 3-3h9.73L65.84.92C66.41.33 67.19 0 68 0h.01c.82 0 1.6.34 2.16.94l9 9.5a3 3 0 0 1 .52 3.38L72.8 28H95c.9 0 1.75.4 2.32 1.1.57.69.8 1.61.62 2.49l-9 45A2.999 2.999 0 0 1 86 79zm-74 0H3c-1.66 0-3-1.34-3-3V31c0-1.66 1.34-3 3-3h9c1.66 0 3 1.34 3 3v45c0 1.66-1.34 3-3 3z"></path></symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126 126" id="icon-time"><path d="M63 0C28.21 0 0 28.21 0 63s28.21 63 63 63 63-28.21 63-63S97.79 0 63 0zm31.6 94.6a6.471 6.471 0 0 1-4.6 1.9c-1.66 0-3.33-.63-4.6-1.9l-27-27a6.507 6.507 0 0 1-1.55-6.72l10-29a6.499 6.499 0 1 1 12.29 4.23l-8.67 25.16L94.6 85.4a6.525 6.525 0 0 1 0 9.2z" fill="#666f75"></path></symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 90" id="icon-view"><path d="M72 0C32.24 0 0 36 0 45s32.24 45 72 45 72-36 72-45S111.76 0 72 0zm0 72c-14.91 0-27-12.09-27-27s12.09-27 27-27 27 12.09 27 27-12.09 27-27 27z"></path></symbol>
+</svg>
 </body>
 </html>

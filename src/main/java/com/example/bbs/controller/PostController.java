@@ -36,6 +36,8 @@ public class PostController {
     private CommentService commentService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserLikeService userLikeService;
 
     @GetMapping("test")
     public String testUser(Model model){
@@ -147,7 +149,10 @@ public class PostController {
 
     @GetMapping("/post/{id}")
     public String postView(@PathVariable("id") Integer postId,
-                           Model model){
+                           Model model,
+                           HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+
         PostDTO postDTO = postService.findPostByPostId(postId);
         model.addAttribute("postDTO", postDTO);
 
@@ -163,6 +168,16 @@ public class PostController {
         commentList = CommentUtil.getComments(commentList);
         System.err.println(commentList);
         model.addAttribute("commentList", commentList);
+
+        if(user != null){
+            LambdaQueryWrapper<UserLike> userLikeLambdaQueryWrapper = Wrappers.lambdaQuery();
+            userLikeLambdaQueryWrapper.eq(UserLike::getUserId, user.getUserId());
+            userLikeLambdaQueryWrapper.eq(UserLike::getPostId, postId);
+            UserLike userLike = userLikeService.getOne(userLikeLambdaQueryWrapper);
+            if(userLike != null) {
+                model.addAttribute("userLike", userLike);
+            }
+        }
 
         //增加帖子点击量
         postService.addPostView(postId);
@@ -250,6 +265,36 @@ public class PostController {
         model.addAttribute("strings", strings);
         model.addAttribute("postDTO", postDTO);
         return "post_edit";
+    }
+    @PostMapping("/postLike")
+    @ResponseBody
+    public JsonResult postLike(@RequestParam("postId") Integer postId,
+                               @RequestParam("postLike") Integer postLike,
+                               HttpServletRequest request) {
+        //to do 判断是否登录
+        User user = (User) request.getSession().getAttribute("user");
+        LambdaQueryWrapper<UserLike> userLikeLambdaQueryWrapper = Wrappers.lambdaQuery();
+        userLikeLambdaQueryWrapper.eq(UserLike::getUserId, user.getUserId());
+        userLikeLambdaQueryWrapper.eq(UserLike::getPostId, postId);
+        UserLike userLike = userLikeService.getOne(userLikeLambdaQueryWrapper);
+        if(userLike == null) {
+            UserLike newUserLike = new UserLike();
+            newUserLike.setPostId(postId);
+            newUserLike.setUserId(user.getUserId());
+            userLikeService.save(newUserLike);
+
+            Post post = postService.getById(postId);
+            post.setPostLike(postLike+1);
+            postService.updateById(post);
+            return JsonResult.success("点赞成功！");
+        } else {
+            userLikeService.remove(userLikeLambdaQueryWrapper);
+            Post post = postService.getById(postId);
+            post.setPostLike(postLike-1);
+            postService.updateById(post);
+            return JsonResult.error("取消点赞成功！");
+        }
+
     }
 
     private void basicCheck(Post post, HttpServletRequest request) {

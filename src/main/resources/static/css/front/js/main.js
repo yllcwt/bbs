@@ -313,28 +313,32 @@ $('.comment-dislike').click(function () {
  * 文章点赞
  */
 $('.post-like').click(function () {
-    const a = $(this);
+    const a = $('#userLike');
+    const postCount = parseInt($('#postLikeCount').text());
     const postId = $(this).attr('data-id');
-    const item = localStorage.getItem("post-like-" + postId);
-    if (item != null) {
-        showMsg('您已经点过赞了！', "info", 1000);
-        return;
-    }
+    // const item = localStorage.getItem("post-like-" + postId);
+    // if (item != null) {
+    //     showMsg('您已经点过赞了！', "info", 1000);
+    //     return;
+    // }
     $.ajax({
         type: 'POST',
-        url: '/post/like',
+        url: '/postLike',
         async: false,
         data: {
-            'postId': postId
+            'postId': postId,
+            'postLike': postCount
         },
         success: function (data) {
             if (data.code == 1) {
-                const count = parseInt(a.find('.tt-text').text()) + 1;
-                a.find('.tt-text').text(count);
-                a.attr('style', 'color: #2172cda;pointer-events: none;');
-                localStorage.setItem("post-like-" + postId, count);
+                const count = postCount+ 1;
+                $('#postLikeCount').text(count);
+                a.attr('style', 'fill: #2172cd;');
+                // localStorage.setItem("post-like-" + postId, count);
             } else {
-                showMsg(data.msg, "error", 1000);
+               const count = postCount -1;
+               $('#postLikeCount').text(count);
+                a.attr('style', '');
             }
         }
     });

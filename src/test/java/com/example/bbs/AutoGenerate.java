@@ -21,7 +21,7 @@ public class AutoGenerate {
         // Step2：全局配置
         GlobalConfig gc = new GlobalConfig();
         // 填写代码生成的目录(需要修改)
-        String projectPath = "G:\\myideaproject\\bbs";
+        String projectPath = "F:\\my_software\\myproject\\bbs";
         // 拼接出代码最终输出的目录
         gc.setOutputDir(projectPath + "/src/main/java");
         // 配置开发者信息（可选）（需要修改）
@@ -72,7 +72,7 @@ public class AutoGenerate {
         // Step5：策略配置（数据库表配置）
         StrategyConfig strategy = new StrategyConfig();
         // 指定表名（可以同时操作多个表，使用 , 隔开）（需要修改）
-        strategy.setInclude("comment");
+        strategy.setInclude("user_like");
         // 配置数据表与实体类名之间映射的策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         // 配置数据表的字段与实体类的属性名之间映射的策略

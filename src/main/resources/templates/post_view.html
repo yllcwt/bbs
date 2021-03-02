@@ -108,13 +108,13 @@
                             </a>
                         </div>
                         <div class="tt-item">
-                            <a href="javascript:void(0)" data-id="14" class="tt-icon-btn tt-position-bottom post-like">
+                            <a href="javascript:void(0)" th:data-id="${postDTO.postId}" class="tt-icon-btn tt-position-bottom post-like">
                                 <i class="tt-icon">
                                     <svg>
-                                        <use xlink:href="#icon-like"></use>
+                                        <use xlink:href="#icon-like" id="userLike" th:style="${userLike != null} ? 'fill: #2172cd;' : ''"></use>
                                     </svg>
                                 </i>
-                                <span class="tt-text" th:text="${postDTO.postLike}"></span>
+                                <span class="tt-text" th:text="${postDTO.postLike}" id="postLikeCount"></span>
                             </a>
                         </div>
                     </div>
