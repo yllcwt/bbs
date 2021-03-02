@@ -6,9 +6,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostQueryCondition;
-import com.example.bbs.entity.User;
-import com.example.bbs.service.MailService;
-import com.example.bbs.service.UserService;
+import com.example.bbs.entity.*;
+import com.example.bbs.service.*;
 import com.example.bbs.util.RegexUtil;
 import com.example.bbs.util.SensUtils;
 import io.github.biezhi.ome.SendMailException;
@@ -43,7 +42,14 @@ public class UserController {
     private UserService userService;
     @Autowired
     private MailService mailService;
-
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private CategoryPostRefService categoryPostRefService;
+    @Autowired
+    private TagPostRefService tagPostRefService;
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("testUser")
     @ResponseBody
@@ -242,19 +248,23 @@ public class UserController {
     }
     @PostMapping("/userDelete")
     @ResponseBody
-    public JsonResult userDelete(@RequestParam("userId") Integer userId) {
+    public JsonResult userDelete(@RequestParam("userId") Integer userId,
+                                 HttpServletRequest request) {
+        deleteUserRelation(userId, request);
         userService.removeById(userId);
         return JsonResult.success("删除成功！");
     }
     //需要做拦截
     @PostMapping("/userBatchDelete")
     @ResponseBody
-    public JsonResult userBatchDelete(@RequestParam("ids") List<Integer> ids) {
+    public JsonResult userBatchDelete(@RequestParam("ids") List<Integer> ids,
+                                      HttpServletRequest request) {
         if (ids == null || ids.size() == 0 || ids.size() >= 10) {
             return JsonResult.error("参数不合法!");
         }
         List<User> userList = userService.listByIds(ids);
         for (User user : userList) {
+            deleteUserRelation(user.getUserId(), request);
             userService.removeById(user.getUserId());
         }
         return JsonResult.success("删除成功！");
@@ -278,6 +288,37 @@ public class UserController {
         User user = (User)request.getSession().getAttribute("user");
         model.addAttribute("user", user);
         return "user_manage";
+    }
+    private void deleteUserRelation(Integer userId, HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        //删除该用户发表文章
+        LambdaQueryWrapper<Post> postLambdaQueryWrapper = Wrappers.lambdaQuery();
+        postLambdaQueryWrapper.eq(Post::getUserId, userId);
+        List<Post> postList = postService.list(postLambdaQueryWrapper);
+        for (Post post : postList) {
+            //删除文章分类关联关系
+            LambdaQueryWrapper<CategoryPostRef> categoryPostRefLambdaQueryWrapper = Wrappers.lambdaQuery();
+            categoryPostRefLambdaQueryWrapper.eq(CategoryPostRef::getPostId, post.getPostId());
+            categoryPostRefService.remove(categoryPostRefLambdaQueryWrapper);
+            //删除文章标签关联关系
+            LambdaQueryWrapper<TagPostRef> tagPostRefLambdaQueryWrapper = Wrappers.lambdaQuery();
+            tagPostRefLambdaQueryWrapper.eq(TagPostRef::getPostId, post.getPostId());
+            List<TagPostRef> tagPostRefList = tagPostRefService.list(tagPostRefLambdaQueryWrapper);
+            for (TagPostRef tagPostRef : tagPostRefList) {
+                tagPostRefService.removeById(tagPostRef.getId());
+            }
+        }
+        for (Post post : postList) {
+            postService.removeById(post.getPostId());
+        }
+        //删除用户发表的评论
+        LambdaQueryWrapper<Comment> commentLambdaQueryWrapper = Wrappers.lambdaQuery();
+        commentLambdaQueryWrapper.eq(Comment::getUserId, userId);
+        commentService.remove(commentLambdaQueryWrapper);
+
+        if(user.getUserId() == userId) {
+            request.getSession().invalidate();
+        }
     }
 }
 

@@ -181,6 +181,13 @@
                                         <img th:src="${childComment.user.userImage}" th:id="'comment-'+${comment.commentId}+'-user'" class="avatar" alt="">
                                     </div>
                                     <div class="topic-inner-title"><a href="/user/1" th:text="${childComment.user.userDisplayName}"></a></div>
+                                    <a  class="tt-info-time" style="padding-left: 700px;font-size: 14px;color: #666f74">
+                                        <i class="tt-icon">
+                                            <svg style="height: 16px;width: 16px;margin-right: 16px;">
+                                                <use xlink:href="#icon-time"></use>
+                                            </svg>
+                                        </i>&nbsp;<span th:text="${#dates.format(childComment.commentTime, 'yyyy-MM-dd HH:mm')}"></span>
+                                    </a>
                                 </div>
                                 <div class="topic-inner-description" th:utext="${childComment.commentContent}"></div>
                             </div>
@@ -216,7 +223,7 @@
             </div>
         </div>
         <div class="tt-wrapper-inner">
-            <h4 class="tt-title-separator"><span>已经到了末尾了</span></h4>
+            <h4 c   lass="tt-title-separator"><span>已经到了末尾了</span></h4>
         </div>
 
     </div>
