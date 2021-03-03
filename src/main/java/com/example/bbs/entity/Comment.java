@@ -63,4 +63,7 @@ public class Comment implements Serializable {
      */
     @TableField(exist = false)
     private List<Comment> childComments;
+
+    @TableField(exist = false)
+    private boolean userLikeComment;
 }

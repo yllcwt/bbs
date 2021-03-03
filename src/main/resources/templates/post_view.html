@@ -181,7 +181,7 @@
                                         <img th:src="${childComment.user.userImage}" th:id="'comment-'+${comment.commentId}+'-user'" class="avatar" alt="">
                                     </div>
                                     <div class="topic-inner-title"><a href="/user/1" th:text="${childComment.user.userDisplayName}"></a></div>
-                                    <a  class="tt-info-time" style="padding-left: 700px;font-size: 14px;color: #666f74">
+                                    <a  class="tt-info-time" style="padding-left: 650px;font-size: 14px;color: #666f74">
                                         <i class="tt-icon">
                                             <svg style="height: 16px;width: 16px;margin-right: 16px;">
                                                 <use xlink:href="#icon-time"></use>
@@ -197,18 +197,18 @@
                         <a href="javascript:void(0)" th:data-id="${comment.commentId}" class="tt-icon-btn comment-like">
                             <i class="tt-icon">
                                 <svg>
-                                    <use xlink:href="#icon-like"></use>
+                                    <use xlink:href="#icon-like" th:id="'c-like'+${comment.commentId}" th:style="${comment.userLikeComment} ? 'fill: #2172cd;' : ''"></use>
                                 </svg>
                             </i>
-                            <span class="tt-text">0</span>
+                            <span class="tt-text" th:id="'commentCount-'+${comment.commentId}" th:text="${comment.commentLike}"></span>
                         </a>
                         <a href="javascript:void(0)" th:data-id="${comment.commentId}" class="tt-icon-btn comment-dislike">
                             <i class="tt-icon">
                                 <svg>
-                                    <use xlink:href="#icon-dislike"></use>
+                                    <use xlink:href="#icon-dislike" th:id="'c-dislike'+${comment.commentId}"></use>
                                 </svg>
                             </i>
-                            <span class="tt-text">0</span>
+<!--                            <span class="tt-text">0</span>-->
                         </a>
 
                         <a href="#comment" th:data-id="${comment.commentId}"  class="tt-icon-btn tt-hover-02 tt-small-indent reply-btn">
@@ -228,6 +228,9 @@
 
     </div>
 </main>
+<script type="text/javascript">
+
+</script>
 <div th:replace="import :: footer_js"></div>
 <script src="/static/css/front/js/main.js"></script>
 <!--Calendar-->

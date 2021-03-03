@@ -38,6 +38,8 @@ public class PostController {
     private UserService userService;
     @Autowired
     private UserLikeService userLikeService;
+    @Autowired
+    private CommentLikeService commentLikeService;
 
     @GetMapping("test")
     public String testUser(Model model){
@@ -166,8 +168,6 @@ public class PostController {
         }
 
         commentList = CommentUtil.getComments(commentList);
-        System.err.println(commentList);
-        model.addAttribute("commentList", commentList);
 
         if(user != null){
             LambdaQueryWrapper<UserLike> userLikeLambdaQueryWrapper = Wrappers.lambdaQuery();
@@ -177,7 +177,22 @@ public class PostController {
             if(userLike != null) {
                 model.addAttribute("userLike", userLike);
             }
+
+            for (Comment comment : commentList) {
+                LambdaQueryWrapper<CommentLike> commentLikeLambdaQueryWrapper = Wrappers.lambdaQuery();
+                commentLikeLambdaQueryWrapper.eq(CommentLike::getCommentId, comment.getCommentId())
+                                             .eq(CommentLike::getUserId, user.getUserId());
+                CommentLike commentLike = commentLikeService.getOne(commentLikeLambdaQueryWrapper);
+                if(commentLike == null) {
+                    comment.setUserLikeComment(false);
+                } else {
+                    comment.setUserLikeComment(true);
+                }
+            }
         }
+
+        System.err.println(commentList);
+        model.addAttribute("commentList", commentList);
 
         //增加帖子点击量
         postService.addPostView(postId);

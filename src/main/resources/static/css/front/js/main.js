@@ -251,27 +251,33 @@ $('#comment-cancel-btn').click(function () {
 $('.comment-like').click(function () {
     const a = $(this);
     const commentId = $(this).attr('data-id');
-    const item = localStorage.getItem("comment-like-" + commentId);
-    if (item != null) {
-        showMsg('您已经点过赞了！', "info", 1000);
-        return;
-    }
+    const commentCount = parseInt($('#commentCount-'+commentId).text());
+    // const item = localStorage.getItem("comment-like-" + commentId);
+    // if (item != null) {
+    //     showMsg('您已经点过赞了！', "info", 1000);
+    //     return;
+    // }
 
     $.ajax({
         type: 'POST',
-        url: '/comment/like',
+        url: '/commentLike',
         async: false,
         data: {
-            'commentId': commentId
+            'commentId': commentId,
+            'commentLike' : commentCount
         },
         success: function (data) {
             if (data.code == 1) {
-                const count = parseInt(a.find('.tt-text').text()) + 1;
-                a.find('.tt-text').text(count);
-                a.attr('style', 'color: #2172cda;pointer-events: none;');
-                localStorage.setItem("comment-like-" + commentId, count);
+                const count = commentCount + 1;
+                $('#commentCount-'+commentId).text(count);
+                a.find('#c-like'+commentId).attr('style', 'fill: #2172cd;');
+                showMsg(data.msg, "success", 1000);
+                // localStorage.setItem("comment-like-" + commentId, count);
             } else {
-                showMsg(data.msg, "error", 1000);
+                const count = commentCount - 1;
+                $('#commentCount-'+commentId).text(count);
+                a.find('#c-like'+commentId).attr('style', '');
+                showMsg(data.msg, "success", 1000);
             }
         }
     });
@@ -281,32 +287,43 @@ $('.comment-like').click(function () {
  * 评论点踩
  */
 $('.comment-dislike').click(function () {
-    const a = $(this);
     const commentId = $(this).attr('data-id');
-    const item = localStorage.getItem("comment-dislike-" + commentId);
-    if (item != null) {
-        showMsg('您已经点过踩了！', "info", 1000);
-        return;
-    }
-    $.ajax({
-        type: 'POST',
-        url: '/comment/dislike',
-        async: false,
-        data: {
-            'commentId': commentId
-        },
-        success: function (data) {
-            if (data.code == 1) {
-                const count = parseInt(a.find('.tt-text').text()) + 1;
-                a.find('.tt-text').text(count);
-                a.attr('style', 'color: #2172cda;pointer-events: none;');
-                localStorage.setItem("comment-dislike-" + commentId, count);
-            } else {
-                showMsg(data.msg, "error", 1000);
-            }
-        }
-    });
+    const item = localStorage.getItem("dislike"+commentId);
+   if(item == null) {
+       localStorage.setItem("dislike"+commentId, "1");
+       $('#c-dislike'+commentId).attr('style', 'fill: #2172cd;');
+   } else {
+       localStorage.removeItem("dislike"+commentId);
+       $('#c-dislike'+commentId).attr('style', '');
+   }
 });
+// $('.comment-dislike').click(function () {
+//     const a = $(this);
+//     const commentId = $(this).attr('data-id');
+//     const item = localStorage.getItem("comment-dislike-" + commentId);
+//     if (item != null) {
+//         showMsg('您已经点过踩了！', "info", 1000);
+//         return;
+//     }
+//     $.ajax({
+//         type: 'POST',
+//         url: '/comment/dislike',
+//         async: false,
+//         data: {
+//             'commentId': commentId
+//         },
+//         success: function (data) {
+//             if (data.code == 1) {
+//                 const count = parseInt(a.find('.tt-text').text()) + 1;
+//                 a.find('.tt-text').text(count);
+//                 a.attr('style', 'color: #2172cda;pointer-events: none;');
+//                 localStorage.setItem("comment-dislike-" + commentId, count);
+//             } else {
+//                 showMsg(data.msg, "error", 1000);
+//             }
+//         }
+//     });
+// });
 
 
 /**

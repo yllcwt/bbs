@@ -8,9 +8,11 @@ import com.example.bbs.dto.JsonResult;
 import com.example.bbs.dto.PaginationDTO;
 import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.Comment;
+import com.example.bbs.entity.CommentLike;
 import com.example.bbs.entity.Post;
 import com.example.bbs.entity.User;
 import com.example.bbs.exception.MyBusinessException;
+import com.example.bbs.service.CommentLikeService;
 import com.example.bbs.service.CommentService;
 import com.example.bbs.service.PostService;
 import com.example.bbs.service.UserService;
@@ -44,6 +46,8 @@ public class CommentController {
     private CommentService commentService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommentLikeService commentLikeService;
 
     @PostMapping("/comment")
     @ResponseBody
@@ -82,6 +86,7 @@ public class CommentController {
             comment.setCommentOriginContent(HtmlUtil.escape(commentContent));
             comment.setAcceptUserId(post.getUserId());
             comment.setCommentParentId(0);
+            comment.setCommentLike(0);
         }
         comment.setCommentTime(new Date());
         comment.setUserId(user.getUserId());
@@ -126,6 +131,10 @@ public class CommentController {
                 commentService.removeById(childComment.getCommentId());
             }
             commentService.removeById(commentId);
+            //删除评论点赞关系
+            LambdaQueryWrapper<CommentLike> wrapper = Wrappers.lambdaQuery();
+            wrapper.eq(CommentLike::getCommentId, commentId);
+            commentLikeService.remove(wrapper);
         } else {
             commentService.removeById(commentId);
         }
@@ -142,15 +151,16 @@ public class CommentController {
         commentService.removeByIds(ids);
         return JsonResult.success("删除成功！");
     }
+
     @GetMapping("/commentMine")
     public String commentMine(Model model,
-                              @RequestParam(value = "pageIndex",defaultValue = "1") Integer pageIndex,
+                              @RequestParam(value = "pageIndex", defaultValue = "1") Integer pageIndex,
                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                              @RequestParam(value = "keywords",defaultValue = "") String keywords,
+                              @RequestParam(value = "keywords", defaultValue = "") String keywords,
                               @RequestParam(value = "sort", defaultValue = "comment_time") String sort,
                               @RequestParam(value = "order", defaultValue = "desc") String order,
                               HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         PostQueryCondition postQueryCondition = new PostQueryCondition();
         postQueryCondition.setKeywords(keywords);
         postQueryCondition.setOrder(order);
@@ -165,6 +175,42 @@ public class CommentController {
         model.addAttribute("sort", sort);
         model.addAttribute("order", order);
         return "comment_mine";
+    }
+
+    @PostMapping("/commentLike")
+    @ResponseBody
+    public JsonResult commentLike(@RequestParam("commentId") Integer commentId,
+                                  @RequestParam("commentLike") Integer commentLike,
+                                  HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        LambdaQueryWrapper<CommentLike> commentLikeLambdaQueryWrapper = Wrappers.lambdaQuery();
+        commentLikeLambdaQueryWrapper.eq(CommentLike::getUserId, user.getUserId())
+                                     .eq(CommentLike::getCommentId, commentId);
+        CommentLike commentLikeCount = commentLikeService.getOne(commentLikeLambdaQueryWrapper);
+
+        if (commentLikeCount == null) {
+            CommentLike c = new CommentLike(commentId, user.getUserId());
+            commentLikeService.save(c);
+
+//            Comment comment = new Comment();
+//            comment.setCommentLike(commentLike+1);
+//            comment.setCommentId(commentId);
+            Comment comment = commentService.getById(commentId);
+            comment.setCommentLike(commentLike+1);
+            commentService.updateById(comment);
+            return JsonResult.success("点赞成功！");
+        } else {
+            commentLikeService.remove(commentLikeLambdaQueryWrapper);
+
+//            Comment comment = new Comment();
+//            comment.setCommentLike(commentLike-1);
+//            comment.setCommentId(commentId);
+            Comment comment = commentService.getById(commentId);
+            comment.setCommentLike(commentLike-1);
+            commentService.updateById(comment);
+            return JsonResult.error("取消点赞成功！");
+        }
+
     }
     private void basicCheck(Comment comment, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute("user");
