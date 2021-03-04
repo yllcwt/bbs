@@ -26,7 +26,7 @@ public class CategoryController {
     @Autowired
     private CategoryPostRefService categoryPostRefService;
 
-    @GetMapping("/post_category")
+    @GetMapping("/postCategory")
     public String categoryList(Model model){
         List<Category> categoryList = categoryService.list();
         model.addAttribute("categoryList", categoryList);

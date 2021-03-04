@@ -39,7 +39,7 @@ public class TagController {
     @Autowired
     private TagPostRefService tagPostRefService;
 
-    @GetMapping("/post_tag")
+    @GetMapping("/postTag")
     public String tagList(Model model){
 
         List<Tag> tagList = tagService.list();

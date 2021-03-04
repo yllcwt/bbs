@@ -136,11 +136,11 @@
                         <nav>
                             <ul>
                                 <li th:class="${activeUri == 'post_category'} ? 'active' : ''">
-                                    <a th:href="@{/post_category}"><span>分类</span></a>
+                                    <a th:href="@{/postCategory}"><span>分类</span></a>
                                 </li>
                                 <!--                                    <li><a href="/user"><span>活跃用户</span></a></li>-->
                                 <li th:class="${activeUri == 'post_tag'} ? 'active' : ''">
-                                    <a th:href="@{/post_tag}"><span>热门标签</span></a>
+                                    <a th:href="@{/postTag}"><span>热门标签</span></a>
                                 </li>
                                 <li><a th:href="@{/post_publish}" class=""><span>发布文章</span></a></li>
                             </ul>

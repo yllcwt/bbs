@@ -130,11 +130,8 @@ public class CommentController {
             for (Comment childComment : commentList) {
                 commentService.removeById(childComment.getCommentId());
             }
+            deleteCommentRelation(comment);
             commentService.removeById(commentId);
-            //删除评论点赞关系
-            LambdaQueryWrapper<CommentLike> wrapper = Wrappers.lambdaQuery();
-            wrapper.eq(CommentLike::getCommentId, commentId);
-            commentLikeService.remove(wrapper);
         } else {
             commentService.removeById(commentId);
         }
@@ -146,6 +143,9 @@ public class CommentController {
                                          HttpServletRequest request) {
         List<Comment> commentList = commentService.listByIds(ids);
         for (Comment comment : commentList) {
+            if(comment.getCommentParentId() == 0) {
+                deleteCommentRelation(comment);
+            }
             basicCheck(comment, request);
         }
         commentService.removeByIds(ids);
@@ -212,6 +212,18 @@ public class CommentController {
         }
 
     }
+
+    private void deleteCommentRelation(Comment comment) {
+        //删除评论点赞关系
+        LambdaQueryWrapper<CommentLike> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(CommentLike::getCommentId, comment.getCommentId());
+        commentLikeService.remove(wrapper);
+        //文章点赞数-1
+        Post post = postService.getById(comment.getPostId());
+        post.setPostCommentCount(post.getPostCommentCount()-1);
+        postService.updateById(post);
+    }
+
     private void basicCheck(Comment comment, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute("user");
 
