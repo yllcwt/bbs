@@ -57,6 +57,10 @@ public class UserController {
         out.println( userService.listUsers());
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
     @PostMapping("userLogin")
     @ResponseBody
     public JsonResult userLogin(@RequestParam String userName,

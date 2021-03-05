@@ -333,6 +333,9 @@ $('.post-like').click(function () {
     const a = $('#userLike');
     const postCount = parseInt($('#postLikeCount').text());
     const postId = $(this).attr('data-id');
+    const user = sessionStorage.getItem("user");
+    alert(user);
+    alert("ddd");
     // const item = localStorage.getItem("post-like-" + postId);
     // if (item != null) {
     //     showMsg('您已经点过赞了！', "info", 1000);

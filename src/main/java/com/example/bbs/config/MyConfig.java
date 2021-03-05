@@ -23,7 +23,7 @@ public class MyConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry){
                 registry.addViewController("/register").setViewName("registration");
                 registry.addViewController("/main").setViewName("index");
-                registry.addViewController("/login").setViewName("login");
+//                registry.addViewController("/login").setViewName("login");
                 registry.addViewController("/menu").setViewName("menu_manage");
                 registry.addViewController("/post_list").setViewName("post_list");//文章列表
 
@@ -51,11 +51,13 @@ public class MyConfig implements WebMvcConfigurer {
                 "**.css",             //css静态资源
                 "**.woff",
                 "**.ttf",
+                "/static/*",
                 "/homepage",
                 "/post/**",
                 "/postCategory",
                 "/postTag",
-                "/register"
+                "/register",
+                "**.jpg"
         );
     }
 }
