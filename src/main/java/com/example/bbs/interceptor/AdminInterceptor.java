@@ -18,10 +18,12 @@ public class AdminInterceptor implements HandlerInterceptor {
                 return true;
             }else {
                 if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { //如果是ajax请求响应头会有x-requested-with
-                    System.out.println("ajax请求被拦截");
-//                    response.getWriter().print("loseSession");
-                    response.sendRedirect(request.getContextPath()+"login");
-                    return true;
+                    System.err.println("ajax请求被拦截");
+                    String path = request.getServletPath();
+                    if("/userLogin".equals(path) || "/userRegister".equals(path) ) {
+                        return true;
+                    }
+                    return false;
                 }
                 response.sendRedirect(request.getContextPath()+"login");
 //                return false;

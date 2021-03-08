@@ -30,26 +30,26 @@
         <nav  class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Project name</a>
+                    <a class="navbar-brand" th:href="@{/homepage}">论坛</a>
                 </div>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <li><a href="/" title="前往前台" target="_blank"><i class="fa fa-location-arrow"></i></a></li>
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="user-image loginUserAvatar" alt="User
+                                <img th:src="${session.user.userImage}" class="user-image loginUserAvatar" alt="User
                                 Image">
-                                <span class="hidden-xs loginUserDisplayName">管理员</span>
+                                <span class="hidden-xs loginUserDisplayName" th:text="${session.user.userDisplayName}"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header" style="text-align: center">
-                                    <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="img-circle loginUserAvatar" alt="User
+                                    <img th:src="${session.user.userImage}" class="img-circle loginUserAvatar" alt="User
                                     Image">
-                                    <p class="loginUserDisplayName">管理员</p>
+                                    <p class="loginUserDisplayName" th:text="${session.user.userDisplayName}"></p>
                                 </li>
                                 <li class="user-footer">
-                                    <div class="pull-left"><a data-pjax="true" href="/admin/user/profile" class="btn btn-default "><i class="fa fa-user"></i>个人资料</a></div>
-                                    <div class="pull-right"><a href="/logout" class="btn btn-default "><i class="fa fa-sign-out"></i>登出</a></div>
+                                    <div class="pull-left"><a data-pjax="true" th:href="@{/userInformation}" class="btn btn-default "><i class="fa fa-user"></i>个人资料</a></div>
+                                    <div class="pull-right"><a th:href="@{/logout}" class="btn btn-default "><i class="fa fa-sign-out"></i>登出</a></div>
                                 </li>
                             </ul>
                         </li>
@@ -69,6 +69,7 @@
                 .img-circle{
                     width: 45px;
                     height: 45px;
+                    border-radius: 50%;
                 }
                 p {
                     padding-left: 10px;
@@ -77,10 +78,10 @@
             </style>
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="https://oss.liuyanzhao.com/static/ChuyunBlog/static/images/avatar/1.jpeg" class="img-circle loginUserAvatar" style="width: 45px;height: 45px;" alt="User Image">
+                    <img th:src="${session.user.userImage}" style="width: 45px;height: 45px;" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p class="loginUserDisplayName">管理员</p>
+                    <p class="loginUserDisplayName" th:text="${session.user.userDisplayName}"></p>
                 </div>
             </div>
             <ul class="nav nav-sidebar">
@@ -200,7 +201,7 @@
                     　　
                     <div class="tt-user-info d-flex justify-content-center" th:if="${session.user!=null}">
                         <a href="/logout" class="btn btn-primary">退出</a>
-                        <a href="/user_manage" class="btn btn-secondary">后台</a>
+                        <a href="/userInformation" class="btn btn-secondary">后台</a>
                     </div>
 
 

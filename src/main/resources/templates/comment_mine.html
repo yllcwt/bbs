@@ -102,7 +102,7 @@
                                     <tbody>
                                     <tr th:each="comment:${paginationDTO.getData()}" th:id="'comment-'+${comment.commentId}">
                                         <td><input type="checkbox" name="ids" th:value="${comment.commentId}"></td>
-                                        <td><a href="/user/1" th:text="${comment.userDisplayName}"></a></td>
+                                        <td><a th:href="@{'/user/'+${comment.userId}}" th:text="${comment.userDisplayName}"></a></td>
                                         <td>
                                             <span style="cursor: pointer;" title="开发安全、高质量代码的 5 款顶级 Python 工具" th:utext="${comment.commentContent}"></span>
                                         </td>

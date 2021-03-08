@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.bbs.dto.JsonResult;
 import com.example.bbs.dto.PaginationDTO;
+import com.example.bbs.dto.PostDTO;
 import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.*;
 import com.example.bbs.service.*;
@@ -292,6 +293,22 @@ public class UserController {
         User user = (User)request.getSession().getAttribute("user");
         model.addAttribute("user", user);
         return "user_manage";
+    }
+    @GetMapping("/user/{userId}")
+    public String UserPost(@PathVariable Integer userId,
+                           Model model,
+                           @RequestParam(value = "pageIndex",defaultValue = "1") Integer pageIndex,
+                           @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+        PostQueryCondition postQueryCondition = new PostQueryCondition();
+        postQueryCondition.setUserId(userId);
+        PaginationDTO paginationDTO = postService.listPost(pageIndex, pageSize, postQueryCondition);
+        PostDTO postDTO = (PostDTO)paginationDTO.getData().get(0);
+        User user = postDTO.getUser();
+        model.addAttribute("paginationDTO", paginationDTO);
+        model.addAttribute("userId", userId);
+        model.addAttribute("user", user);
+        System.err.println(user.getUserInterest());
+        return "user_post";
     }
     private void deleteUserRelation(Integer userId, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute("user");

@@ -18,4 +18,6 @@ public class PostQueryCondition {
     private String order;
 
     private String searchType;
+
+    private Integer buttonType;
 }

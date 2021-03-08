@@ -28,6 +28,7 @@
             <result column="user_name" property="userName"/>
             <result column="user_image" property="userImage"/>
             <result column="user_display_name" property="userDisplayName"/>
+            <result column="user_interest" property="userInterest"/>
         </association>
         <association property="category" javaType="com.example.bbs.entity.Category">
             <id column="id" property="id"/>
@@ -59,6 +60,7 @@
 				c.user_name,
 				c.user_image,
 				c.user_display_name,
+				c.user_interest,
 				d.category_name,
 				d.category_explanation
         from post a
@@ -69,9 +71,6 @@
         LEFT JOIN tag_post_ref e ON a.post_id = e.post_id
         </if>
         <where>
-            <if test="postQueryCondition.userId != null">
-                a.user_id = #{postQueryCondition.userId}
-            </if>
             <if test="postQueryCondition.categoryId != null">
                 AND d.id = #{postQueryCondition.categoryId}
             </if>
@@ -81,8 +80,15 @@
             <if test="postQueryCondition.tagId != null">
                 AND e.tag_id = #{postQueryCondition.tagId}
             </if>
+            <if test="postQueryCondition.userId != null">
+                AND a.user_id = #{postQueryCondition.userId}
+            </if>
         </where>
-        order by post_top desc , post_time desc
+        order by post_top desc
+        <if test="postQueryCondition.buttonType == 2">
+            , post_like desc
+        </if>
+        ,post_time desc
         limit #{offset }, #{pageSize}
     </select>
     
