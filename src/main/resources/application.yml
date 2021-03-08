@@ -8,9 +8,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: 123456
+#    url: jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: bbs
+    password: E2s7FyC7mHmKr4LC
+    url: jdbc:mysql://47.115.185.147:3306/bbs?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
   thymeleaf:
     mode: HTML5
     cache: false
