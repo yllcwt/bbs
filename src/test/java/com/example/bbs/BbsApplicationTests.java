@@ -35,15 +35,15 @@ class BbsApplicationTests {
         List<User> users = userService.listUsers();
         System.err.println(users);
     }
-    @Test
-    public void testEmail() throws SendMailException {
-
-        OhMyEmail.config(SMTP_QQ(false), "2724059421@qq.com", "joejlbqanbbzdfec");
-        OhMyEmail.subject("这是一封测试TEXT邮件")
-                .from("yl")
-                .to("980775536@qq.com")
-                .text("信件内容")
-                .send();
-    }
+//    @Test
+//    public void testEmail() throws SendMailException {
+//
+//        OhMyEmail.config(SMTP_QQ(false), "2724059421@qq.com", "joejlbqanbbzdfec");
+//        OhMyEmail.subject("这是一封测试TEXT邮件")
+//                .from("yl")
+//                .to("2724059421@qq.com")
+//                .text("信件内容")
+//                .send();
+//    }
 
 }
