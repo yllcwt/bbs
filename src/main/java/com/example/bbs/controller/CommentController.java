@@ -121,8 +121,10 @@ public class CommentController {
     }
     @PostMapping("/commentDelete")
     @ResponseBody
-    public JsonResult commentDelete(@RequestParam("commentId") Integer commentId) {
+    public JsonResult commentDelete(@RequestParam("commentId") Integer commentId,
+                                    HttpServletRequest request) {
         Comment comment = commentService.getById(commentId);
+        basicCheck(comment, request);
         if(comment.getCommentParentId() == 0) {
             LambdaQueryWrapper<Comment> commentLambdaQueryWrapper = Wrappers.lambdaQuery();
             commentLambdaQueryWrapper.eq(Comment::getCommentParentId, commentId);

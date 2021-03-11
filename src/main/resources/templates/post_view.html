@@ -44,7 +44,7 @@
                                 <img th:src="${postDTO.user.userImage}" class="avatar" alt="">
                             </div>
                             <div class="tt-avatar-title">
-                                <a href="/user/1" th:text="${postDTO.user.userDisplayName}"></a>
+                                <a th:href="'/user/'+${postDTO.user.userId}" th:text="${postDTO.user.userDisplayName}"></a>
                             </div>
                             <a href="#" class="tt-info-time">
                                 <i class="tt-icon">

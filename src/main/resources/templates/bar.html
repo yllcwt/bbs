@@ -100,7 +100,7 @@
                 <li th:if="${session.user.userStatus==1}" th:class="${activeUri == 'post_tag_manage'} ? 'active' : ''">
                     <a th:href="@{/postTagManage}">标签管理</a>
                 </li>
-                <li th:if="${session.user.userStatus==1}" th:class="${activeUri == 'comment_list'} ? 'active' : ''">
+                <li th:class="${activeUri == 'comment_list'} ? 'active' : ''">
                     <a th:href="@{/commentList}">所有评论</a>
                 </li>
                 <li th:class="${activeUri == 'comment_mine'} ? 'active' : ''">

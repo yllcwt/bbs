@@ -282,7 +282,7 @@ public class PostController {
                            @RequestParam("postId") Integer postId,
                            HttpServletRequest request) {
         PostDTO postDTO = postService.findPostByPostId(postId);
-//        basicCheck(postDTO, request); 完成项目后加上去
+        basicCheck(postDTO, request); //完成项目后加上去
 
         List<String> strList = new ArrayList<>();
         for (Tag tag : postDTO.getTagList()) {
