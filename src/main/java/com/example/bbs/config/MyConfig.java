@@ -61,6 +61,7 @@ public class MyConfig implements WebMvcConfigurer {
                 "/user/**",
                 "/js/**",
                 "/static/**",
+                "/userForget",
                 "/homepage",
                 "/post/**",
                 "/postCategory",

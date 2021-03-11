@@ -160,6 +160,9 @@
             <if test="postQueryCondition.keywords != null and postQueryCondition.keywords != ''">
                 ${postQueryCondition.searchType} LIKE CONCAT ('%', #{postQueryCondition.keywords}, '%')
             </if>
+            <if test="postQueryCondition.userId != null">
+                AND user_id = #{postQueryCondition.userId}
+            </if>
         </where>
     </select>
 
@@ -168,6 +171,9 @@
         <where>
             <if test="postQueryCondition.keywords != null ">
                 ${postQueryCondition.searchType} LIKE CONCAT ('%', #{postQueryCondition.keywords}, '%')
+            </if>
+            <if test="postQueryCondition.userId != null">
+                AND user_id = #{postQueryCondition.userId}
             </if>
             <if test="postQueryCondition.sort != null">
                 order by ${postQueryCondition.sort} ${postQueryCondition.order}

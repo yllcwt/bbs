@@ -236,7 +236,11 @@ public class UserController {
                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                            @RequestParam(value = "sort",defaultValue = "none") String userPower,
                            @RequestParam(value = "searchType",defaultValue = "userDisplayName") String searchType,
-                           @RequestParam(value = "keywords", defaultValue = "")String keywords) {
+                           @RequestParam(value = "keywords", defaultValue = "")String keywords,
+                           HttpServletRequest request) {
+        if(!SensUtils.isAdmin(request)) {
+            return "redirect:/login";
+        }
         PostQueryCondition postQueryCondition = new PostQueryCondition();
         postQueryCondition.setSort(userPower.equals("none") ? "none": userPower.equals("admin") ? "1" : "0");
 //        postQueryCondition.setOrder(order);
@@ -255,6 +259,9 @@ public class UserController {
     @ResponseBody
     public JsonResult userDelete(@RequestParam("userId") Integer userId,
                                  HttpServletRequest request) {
+        if(!SensUtils.isAdmin(request)) {
+            return JsonResult.error("无权限操作！");
+        }
         deleteUserRelation(userId, request);
         userService.removeById(userId);
         return JsonResult.success("删除成功！");
@@ -264,6 +271,9 @@ public class UserController {
     @ResponseBody
     public JsonResult userBatchDelete(@RequestParam("ids") List<Integer> ids,
                                       HttpServletRequest request) {
+        if(!SensUtils.isAdmin(request)) {
+            return JsonResult.error("无权限操作！");
+        }
         if (ids == null || ids.size() == 0 || ids.size() >= 10) {
             return JsonResult.error("参数不合法!");
         }
@@ -276,14 +286,17 @@ public class UserController {
     }
 
     @GetMapping("/userEdit")
-    public String userEdit(@RequestParam(value = "userId", required = false) Integer userId,
+    public String userEdit(@RequestParam("userId") Integer userId,
                            HttpServletRequest request,
                            Model model) {
-        if(userId == null) {
-            User user = (User)request.getSession().getAttribute("user");
-            userId = user.getUserId();
-        }
+//        if(userId == null) {
+//            User user = (User)request.getSession().getAttribute("user");
+//            userId = user.getUserId();
+//        }
         User userInfo = userService.getById(userId);
+        if(!SensUtils.isAdmin(request) || userInfo==null) {
+            return "redirect:/login";
+        }
         model.addAttribute("userInfo", userInfo);
         return "user_edit";
     }
@@ -302,6 +315,9 @@ public class UserController {
         PostQueryCondition postQueryCondition = new PostQueryCondition();
         postQueryCondition.setUserId(userId);
         PaginationDTO paginationDTO = postService.listPost(pageIndex, pageSize, postQueryCondition);
+        if(paginationDTO.getData() == null) {
+            return "redirect:/login";
+        }
         PostDTO postDTO = (PostDTO)paginationDTO.getData().get(0);
         User user = postDTO.getUser();
         model.addAttribute("paginationDTO", paginationDTO);
@@ -341,5 +357,6 @@ public class UserController {
             request.getSession().invalidate();
         }
     }
+
 }
 

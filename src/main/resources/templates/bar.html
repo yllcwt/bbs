@@ -94,19 +94,19 @@
                 </li>
                 <li th:class="${activeUri == 'post_publish'} ? 'active' : ''">
                     <a th:href="@{/post_publish}">发布文章</a></li>
-                <li th:class="${activeUri == 'post_category_manage'} ? 'active' : ''">
+                <li th:if="${session.user.userStatus==1}" th:class="${activeUri == 'post_category_manage'} ? 'active' : ''">
                     <a th:href="@{/postCategoryManage}">分类管理</a>
                 </li>
-                <li th:class="${activeUri == 'post_tag_manage'} ? 'active' : ''">
+                <li th:if="${session.user.userStatus==1}" th:class="${activeUri == 'post_tag_manage'} ? 'active' : ''">
                     <a th:href="@{/postTagManage}">标签管理</a>
                 </li>
-                <li th:class="${activeUri == 'comment_list'} ? 'active' : ''">
+                <li th:if="${session.user.userStatus==1}" th:class="${activeUri == 'comment_list'} ? 'active' : ''">
                     <a th:href="@{/commentList}">所有评论</a>
                 </li>
                 <li th:class="${activeUri == 'comment_mine'} ? 'active' : ''">
                     <a th:href="@{/commentMine}">我的评论</a>
                 </li>
-                <li th:class="${activeUri == 'user_list'} ? 'active' : ''">
+                <li th:if="${session.user.userStatus==1}" th:class="${activeUri == 'user_list'} ? 'active' : ''">
                     <a th:href="@{/userList}">用户列表</a>
                 </li>
             </ul>

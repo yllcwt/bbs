@@ -10,6 +10,7 @@ import com.example.bbs.entity.*;
 import com.example.bbs.exception.MyBusinessException;
 import com.example.bbs.service.*;
 import com.example.bbs.util.CommentUtil;
+import com.example.bbs.util.SensUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
@@ -207,20 +208,32 @@ public class PostController {
                              @RequestParam(value = "keywords", defaultValue = "") String keywords,
                              @RequestParam(value = "sort", defaultValue = "post_top") String sort,
                              @RequestParam(value = "order", defaultValue = "desc") String order,
-                             @RequestParam(value = "searchType", defaultValue = "post_title") String searchType) {
+                             @RequestParam(value = "searchType", defaultValue = "post_title") String searchType,
+                             HttpServletRequest request) {
         PostQueryCondition postQueryCondition = new PostQueryCondition();
+        if(!SensUtils.isAdmin(request)) {
+            User user = (User)request.getSession().getAttribute("user");
+            postQueryCondition.setUserId(user.getUserId());
+        }
         postQueryCondition.setKeywords(keywords);
         postQueryCondition.setOrder(order);
         postQueryCondition.setSearchType(searchType);
         postQueryCondition.setSort(sort);
         PaginationDTO paginationDTO = postService.listPostManage(pageIndex, pageSize, postQueryCondition);
         model.addAttribute("paginationDTO", paginationDTO);
+        model.addAttribute("keywords", keywords);
+        model.addAttribute("order", order);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("sort",sort);
         return "post_list";
     }
 
     @GetMapping("/postBatchDelete")
     @ResponseBody
     public JsonResult postBatchDelete(@RequestParam("ids") List<Integer> ids, HttpServletRequest request){
+        if(!SensUtils.isAdmin(request)) {
+            return JsonResult.error("无权限操作！");
+        }
 
         if (ids == null || ids.size() == 0 || ids.size() > 10) {
             return JsonResult.error("参数不合法!");
@@ -238,6 +251,9 @@ public class PostController {
     @PostMapping("/postStickIt")
     @ResponseBody
     public JsonResult postStickIt(@RequestParam("postId") Integer postId, HttpServletRequest request) {
+        if(!SensUtils.isAdmin(request)) {
+            return JsonResult.error("无权限操作！");
+        }
         Post post = postService.getById(postId);
         basicCheck(post, request);
         post.setPostTop(1);

@@ -54,7 +54,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li>
-                    <a data-pjax="true" href="/admin">
+                    <a data-pjax="true" href="/homepage">
                         <i class="fa fa-dashboard"></i> 首页</a>
                 </li>
                 <li class="active">文章列表</li>
@@ -78,25 +78,25 @@
                         <div class="form-group">
                             <select class="form-control" name="searchType">
                                 <option value="post_title" disabled="">搜索范围</option>
-                                <option value="post_title">标题</option>
-                                <option value="post_content">内容</option>
+                                <option value="post_title" th:selected="${searchType.equals('post_title')} ? 'true' : 'false'">标题</option>
+                                <option value="post_content" th:selected="${searchType.equals('post_content')} ? 'true' : 'false'">内容</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <select class="form-control" name="sort">
                                 <option value="post_time" disabled="">排序字段</option>
-                                <option value="post_time">发布时间</option>
-                                <option value="post_view">访问量</option>
-                                <option value="post_comment_count">回复数</option>
-                                <option value="post_like">点赞数</option>
-                                <option value="post_top">是否置顶</option>
+                                <option value="post_time" th:selected="${sort.equals('post_time')} ? 'true' : 'false'">发布时间</option>
+                                <option value="post_view" th:selected="${sort.equals('post_view')} ? 'true' : 'false'">访问量</option>
+                                <option value="post_comment_count" th:selected="(${sort.equals('post_comment_count')} ? 'true' : 'false')">回复数</option>
+                                <option value="post_like" th:selected="${sort.equals('post_like')} ? 'true' : 'false'">点赞数</option>
+                                <option value="post_top" th:selected="${sort.equals('post_top')} ? 'true' : 'false'">是否置顶</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <select class="form-control" name="order">
                                 <option value="desc" disabled="">升序/降序</option>
-                                <option value="asc">升序</option>
-                                <option value="desc" selected="selected">倒序</option>
+                                <option value="asc" th:selected="${order.equals('asc')} ? 'true' : 'false'">升序</option>
+                                <option value="desc" th:selected="${order.equals('desc')} ? 'true' : 'false'">倒序</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
@@ -141,10 +141,12 @@
 
                                 <td>
                                     <a th:href="@{'/post/'+${post.postId}}" class="btn btn-primary btn-xs" target="_blank">查看</a>
-                                    <button class="btn btn-success btn-xs " th:if="${post.postTop==0}" th:onclick="stickIt([[${post.postId}]])">置顶
-                                    </button>
-                                    <button class="btn btn-success btn-xs " th:if="${post.postTop==1}" th:onclick="unStickIt([[${post.postId}]])">取消置顶
-                                    </button>
+                                    <span th:if="${session.user.userStatus == 1}">
+                                        <button class="btn btn-success btn-xs " th:if="${post.postTop==0}" th:onclick="stickIt([[${post.postId}]])">置顶
+                                        </button>
+                                        <button class="btn btn-success btn-xs " th:if="${post.postTop==1}" th:onclick="unStickIt([[${post.postId}]])">取消置顶
+                                        </button>
+                                    </span>
 
                                     <a th:href="@{/postEdit(postId=${post.postId})}" class="btn btn-info btn-xs ">编辑</a>
                                     <button class="btn btn-danger btn-xs " th:onclick="throwIt([[${post.postId}]])">
@@ -161,19 +163,23 @@
                         <div class="no-margin pull-left" th:text="'第 '+${paginationDTO.page}+' / '+${paginationDTO.totalPage}+' 页'">
                         </div>
                         <ul class="pagination no-margin pull-right">
-                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showFirstPage==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=1,pageSize=3)}">
+                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showFirstPage==true} ? ' ' : ' disabled')"
+                                    th:href="@{/postManage(pageIndex=1,pageSize=3)}">
                                 首页
                             </a>
                             </li>
-                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showPrevious==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.page-1},pageSize=3)}">
+                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showPrevious==true} ? ' ' : ' disabled')"
+                                    th:href="@{/postManage(pageIndex=${paginationDTO.page-1},searchType=${searchType},keywords=${keywords},sort=${sort},order=${order})}">
                                 上一页
                             </a>
                             </li>
-                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showNext==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.page+1},pageSize=3)}">
+                            <li><a  th:class="'btn btn-sm'+(${paginationDTO.showNext==true} ? ' ' : ' disabled')"
+                                    th:href="@{/postManage(pageIndex=${paginationDTO.page+1},searchType=${searchType},keywords=${keywords},sort=${sort},order=${order})}">
                                 下一页
                             </a>
                             </li>
-                            <li><a data-pjax="true" th:class="'btn btn-sm'+(${paginationDTO.showEndPage==true} ? ' ' : ' disabled')" th:href="@{/postManage(pageIndex=${paginationDTO.totalPage},pageSize=3)}">
+                            <li><a data-pjax="true" th:class="'btn btn-sm'+(${paginationDTO.showEndPage==true} ? ' ' : ' disabled')"
+                                   th:href="@{/postManage(pageIndex=${paginationDTO.totalPage},searchType=${searchType},keywords=${keywords},sort=${sort},order=${order})}">
                                 尾页
                             </a>
                             </li>

@@ -1,8 +1,10 @@
 package com.example.bbs.util;
 
+import com.example.bbs.entity.User;
 import io.github.biezhi.ome.OhMyEmail;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Properties;
 
 /**
@@ -37,6 +39,14 @@ public class SensUtils {
             }
         }
         return sb.toString().toUpperCase();
+    }
+    public static boolean isAdmin(HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        System.err.println(user.getUserStatus());
+        if(user.getUserStatus() == 0) {
+            return false;
+        }
+        return true;
     }
 
 }
