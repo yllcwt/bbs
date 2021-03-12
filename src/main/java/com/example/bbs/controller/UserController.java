@@ -315,15 +315,12 @@ public class UserController {
         PostQueryCondition postQueryCondition = new PostQueryCondition();
         postQueryCondition.setUserId(userId);
         PaginationDTO paginationDTO = postService.listPost(pageIndex, pageSize, postQueryCondition);
-        if(paginationDTO.getData() == null) {
-            return "redirect:/login";
-        }
-        PostDTO postDTO = (PostDTO)paginationDTO.getData().get(0);
-        User user = postDTO.getUser();
+        LambdaQueryWrapper<User> userLambdaQueryWrapper = Wrappers.lambdaQuery();
+        userLambdaQueryWrapper.eq(User::getUserId,userId);
+        User user  = userService.getOne(userLambdaQueryWrapper);
         model.addAttribute("paginationDTO", paginationDTO);
         model.addAttribute("userId", userId);
         model.addAttribute("user", user);
-        System.err.println(user.getUserInterest());
         return "user_post";
     }
     private void deleteUserRelation(Integer userId, HttpServletRequest request) {

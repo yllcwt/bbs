@@ -231,9 +231,6 @@ public class PostController {
     @GetMapping("/postBatchDelete")
     @ResponseBody
     public JsonResult postBatchDelete(@RequestParam("ids") List<Integer> ids, HttpServletRequest request){
-        if(!SensUtils.isAdmin(request)) {
-            return JsonResult.error("无权限操作！");
-        }
 
         if (ids == null || ids.size() == 0 || ids.size() > 10) {
             return JsonResult.error("参数不合法!");
@@ -242,6 +239,9 @@ public class PostController {
         List<Post> postList =postService.listByIds(ids);
         for (Post post : postList) {
             basicCheck(post, request);
+            LambdaQueryWrapper<Comment> commentLambdaQueryWrapper = Wrappers.lambdaQuery();
+            commentLambdaQueryWrapper.eq(Comment::getPostId, post.getPostId());
+            commentService.remove(commentLambdaQueryWrapper);
         }
 
         postService.removeByIds(ids);

@@ -402,11 +402,13 @@
             },
             success: function (data) {
                 if (data.code == 1) {
+                    showMsg(data.msg, "success", 1000);
                     const count = postCount+ 1;
                     $('#postLikeCount').text(count);
                     a.attr('style', 'fill: #2172cd;');
                     // localStorage.setItem("post-like-" + postId, count);
                 } else {
+                    showMsg(data.msg, "success", 1000);
                     const count = postCount -1;
                     $('#postLikeCount').text(count);
                     a.attr('style', '');
