@@ -30,27 +30,27 @@
 
     <div class="form-signin">
         <div class="form-signin-heading text-center">
-            <h1 class="sign-title">Sign In</h1>
+            <h1 class="sign-title">用户登录</h1>
             <img src="images/login-logo.png" alt=""/>
         </div>
         <div class="login-wrap">
-            <input type="text" id="userName" name="userName" value="123456" class="form-control" placeholder="User ID" autofocus>
-            <input type="password" id="userPass" name="userPassword" value="123456" class="form-control" placeholder="Password">
+            <input type="text" id="userName" name="userName" value="123456" class="form-control" placeholder="用户名" autofocus>
+            <input type="password" id="userPass" name="userPassword" value="123456" class="form-control" placeholder="密码">
 
             <button class="btn btn-lg btn-login btn-block" id="user-login" type="button" >
                 <i class="fa fa-check"></i>
             </button>
 
             <div class="registration">
-                Not a member yet?
+                没有账号？
                 <a class="" th:href="@{/register}">
-                    Signup
+                    注册
                 </a>
             </div>
             <label class="checkbox">
-                <input type="checkbox" value="remember-me" id="rememberMe"> Remember me
+                <input type="checkbox" value="remember-me" id="rememberMe"> 记住我
                 <span class="pull-right">
-                    <a data-toggle="modal" href="#myModal"> Forgot Password?</a>
+                    <a data-toggle="modal" href="#myModal"> 忘记密码？</a>
 
                 </span>
             </label>
@@ -63,7 +63,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Forgot Password ?</h4>
+                        <h4 class="modal-title">忘记密码？</h4>
                     </div>
                     <div class="modal-body">
                         <p>请输入账号</p>

@@ -27,36 +27,36 @@
 
     <div class="form-signin" >
         <div class="form-signin-heading text-center">
-            <h1 class="sign-title">Registration</h1>
+            <h1 class="sign-title">用户注册</h1>
             <img src="images/login-logo.png" alt=""/>
         </div>
 
 <!--    <form action="/userRegister" method="post">-->
         <div class="login-wrap">
-            <p>Enter your personal details below</p>
-            <input type="text" autofocus="" placeholder="Email" class="form-control" name="userEmail" id="userEmail">
-            <input type="text" autofocus="" placeholder="User Age" class="form-control" name="userAge" id="userAge">
+<!--            <p>Enter your personal details below</p>-->
+            <input type="text" autofocus="" placeholder="邮箱" class="form-control" name="userEmail" id="userEmail">
+            <input type="text" autofocus="" placeholder="年龄" class="form-control" name="userAge" id="userAge">
             <div class="radios">
                 <label for="radio-01" class="label_radio col-lg-6 col-sm-6">
-                    <input type="radio" value="1" id="radio-01" name="userSex"> Male
+                    <input type="radio" value="1" id="radio-01" name="userSex"> 男
                 </label>
                 <label for="radio-02" class="label_radio col-lg-6 col-sm-6">
-                    <input type="radio" value="0" id="radio-02" name="userSex"> Female
+                    <input type="radio" value="0" id="radio-02" name="userSex"> 女
                 </label>
             </div>
 
-            <p> Enter your account details below</p>
-            <input type="text" autofocus="" placeholder="User Name" class="form-control" name="userName" id="userName">
-            <input type="password" placeholder="Password" class="form-control" name="userPassword" id="userPassword">
-            <input type="password" placeholder="Re-type Password" class="form-control" name="reUserPassword" id="reUserPassword">
+<!--            <p> Enter your account details below</p>-->
+            <input type="text" autofocus="" placeholder="用户名" class="form-control" name="userName" id="userName">
+            <input type="password" placeholder="密码" class="form-control" name="userPassword" id="userPassword">
+            <input type="password" placeholder="再次确认密码" class="form-control" name="reUserPassword" id="reUserPassword">
             <button type="submit" class="btn btn-lg btn-login btn-block" id="userRegister">
                 <i class="fa fa-check"></i>
             </button>
 
             <div class="registration">
-                Already Registered.
+                已经注册
                 <a th:href="@{/login}" class="">
-                    Login
+                    登录
                 </a>
             </div>
 

@@ -9,6 +9,7 @@ import com.example.bbs.dto.PostDTO;
 import com.example.bbs.dto.PostQueryCondition;
 import com.example.bbs.entity.*;
 import com.example.bbs.service.*;
+import com.example.bbs.task.MyTask;
 import com.example.bbs.util.RegexUtil;
 import com.example.bbs.util.SensUtils;
 import io.github.biezhi.ome.SendMailException;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +53,8 @@ public class UserController {
     private TagPostRefService tagPostRefService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @GetMapping("testUser")
     @ResponseBody
@@ -138,12 +142,12 @@ public class UserController {
             String newPassword = RandomStringUtils.randomNumeric(8);
             userService.updateUserPasswordByUserId(user.getUserId(),newPassword);
             //send email
-            try {
-                mailService.sendEmail(email, "重置密码", "你的密码已重置："+newPassword);
-            }catch (SendMailException e){
-                e.printStackTrace();
-                return JsonResult.error("邮箱发送失败，系统配置smtp失败");
-            }
+//            try {
+                threadPoolTaskExecutor.execute(new MyTask(mailService, email, newPassword));
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                return JsonResult.error("邮箱发送失败，系统配置smtp失败");
+//            }
         }else {
             return JsonResult.error("用户名与邮箱账号不一致！");
         }
