@@ -220,7 +220,7 @@
                 },
                 success: function (data) {
                     if (data.code == 1) {
-                        showMsgAndRedirect(data.msg, "success", 1000, "/userEdit?userId="+userId);
+                        showMsgAndRedirect(data.msg, "success", 1000, "/userList");
                     } else {
                         showMsg(data.msg, "error", 1000);
                     }
@@ -243,7 +243,8 @@
                 async: false,
                 data: {
                     'newPassword': newPassword,
-                    'reNewPassword': reNewPassword
+                    'reNewPassword': reNewPassword,
+                    'userId': userId
                 },
                 success: function (data) {
                     if (data.code == 1) {

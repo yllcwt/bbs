@@ -303,7 +303,6 @@ public class PostController {
     public JsonResult postLike(@RequestParam("postId") Integer postId,
                                @RequestParam("postLike") Integer postLike,
                                HttpServletRequest request) {
-        //to do 判断是否登录
         User user = (User) request.getSession().getAttribute("user");
         LambdaQueryWrapper<UserLike> userLikeLambdaQueryWrapper = Wrappers.lambdaQuery();
         userLikeLambdaQueryWrapper.eq(UserLike::getUserId, user.getUserId());

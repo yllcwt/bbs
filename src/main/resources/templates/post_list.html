@@ -164,12 +164,12 @@
                         </div>
                         <ul class="pagination no-margin pull-right">
                             <li><a  th:class="'btn btn-sm'+(${paginationDTO.showFirstPage==true} ? ' ' : ' disabled')"
-                                    th:href="@{/postManage(pageIndex=1,pageSize=3)}">
+                                    th:href="@{/postManage(pageIndex=1)}">
                                 首页
                             </a>
                             </li>
                             <li><a  th:class="'btn btn-sm'+(${paginationDTO.showPrevious==true} ? ' ' : ' disabled')"
-                                    th:href="@{/postManage(pageIndex=${paginationDTO.page-1},searchType=${searchType},keywords=${keywords},sort=${sort},order=${order})}">
+                                    th:href="@{/postManage(pageIndex=${(paginationDTO.page)-1},searchType=${searchType},keywords=${keywords},sort=${sort},order=${order})}">
                                 上一页
                             </a>
                             </li>

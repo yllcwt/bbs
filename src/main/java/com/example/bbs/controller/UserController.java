@@ -26,6 +26,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.System.*;
 
@@ -176,17 +177,17 @@ public class UserController {
         if(userId == null) {
             user = (User)request.getSession().getAttribute("user");
             if(user == null){
-                return JsonResult.error("请先登录！");
+                return JsonResult.error("请先登录！", 0);
             }
         } else {
             user = userService.getById(userId);
         }
 
         if(!RegexUtil.isEmail(userEmail)) {
-            return JsonResult.error("邮箱格式错误！");
+            return JsonResult.error("邮箱格式错误！", 0);
         }
         if(userService.selectByUserName(userName)!=null && !user.getUserName().equals(userName)) {
-            return JsonResult.error("用户名已存在！");
+            return JsonResult.error("用户名已存在！", 0);
         }
         if(StringUtils.isNotEmpty(userImage)) {
             user.setUserImage(userImage);
@@ -199,11 +200,11 @@ public class UserController {
         wrapper.eq(User::getUserId, user.getUserId());
         if(userService.update(user, wrapper) && userId == null) {
             request.getSession().setAttribute("user", user);
-            return JsonResult.success("更新成功！");
+            return JsonResult.success("更新成功！", 1);
         } else if(userService.update(user, wrapper) && userId != null){
-            return JsonResult.success("更新成功！");
+            return JsonResult.success("更新成功！", 1);
         }
-        return JsonResult.error("更新失败！");
+        return JsonResult.error("更新失败！", 0);
     }
 
     @PostMapping("/userUpdatePassword")
@@ -327,6 +328,19 @@ public class UserController {
         model.addAttribute("user", user);
         return "user_post";
     }
+
+    @PostMapping("/userEditPassword")
+    @ResponseBody
+    public JsonResult userEditPassword(@RequestParam("reNewPassword") String reNewPassword,
+                                       @RequestParam("userId") Integer userId) {
+        User user = userService.getById(userId);
+        if(user != null) {
+            user.setUserPassword(reNewPassword);
+        }
+        userService.updateById(user);
+        return JsonResult.success("修改成功", 1);
+    }
+
     private void deleteUserRelation(Integer userId, HttpServletRequest request) {
         User user = (User)request.getSession().getAttribute("user");
         //删除该用户发表文章
@@ -344,6 +358,14 @@ public class UserController {
             List<TagPostRef> tagPostRefList = tagPostRefService.list(tagPostRefLambdaQueryWrapper);
             for (TagPostRef tagPostRef : tagPostRefList) {
                 tagPostRefService.removeById(tagPostRef.getId());
+            }
+            //删除文章下的评论
+            LambdaQueryWrapper<Comment> wrapper = Wrappers.lambdaQuery();
+            wrapper.eq(Comment::getPostId, post.getPostId());
+            List<Comment> comments = commentService.list(wrapper);
+            if(!comments.isEmpty()) {
+                List<Integer> commentIds = comments.stream().map(p -> p.getCommentId()).collect(Collectors.toList());
+                commentService.removeByIds(commentIds);
             }
         }
         for (Post post : postList) {
